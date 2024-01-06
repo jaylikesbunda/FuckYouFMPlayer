@@ -5,12 +5,18 @@ body {
     margin: 0;
     padding: 20px;
     overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    min-height: 100vh; /* Full viewport height */
 }
 
 /* Now Playing Styles */
 .now-playing {
     font-size: 16px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 /* Track selection style */
@@ -19,9 +25,12 @@ body {
     border: 1px solid white;
     padding: 10px;
     background: #000;
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Padding included in width */
+    max-width: 600px; /* Max width */
 }
 
-/* Mute and unmute button styles */
+/* Mute, unmute, and other button styles */
 .jp-mute, .jp-unmute, .jp-controls button {
     cursor: pointer;
     display: inline-block;
@@ -33,6 +42,7 @@ body {
     text-align: center;
     font-size: 14px;
     transition: background-color 0.2s ease;
+    margin-bottom: 10px; /* Spacing below the buttons */
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
@@ -49,22 +59,23 @@ body {
     color: white;
 }
 
-/* Volume bar styles */
+/* Volume bar brought back */
 .jp-volume-bar {
     width: 100px;
     height: 10px;
     background-color: #333;
     cursor: pointer;
-    display: none; /* Initially hidden */
+    display: block; /* Make it visible */
     position: absolute;
-    bottom: 30px;
-    left: 10px;
+    bottom: 10%; /* Adjusted position */
+    left: 50%;
+    transform: translateX(-50%); /* Centering */
 }
 
 .jp-volume-bar-value {
     height: 100%;
     background-color: #fff;
-    transition: width 0.2s ease; /* Smooth transition for volume changes */
+    transition: width 0.2s ease;
 }
 
 /* Responsive video player styles */
@@ -73,10 +84,7 @@ body {
     height: auto;
 }
 
-/* Audio player hover styles for volume control */
-.jp-audio:hover .jp-volume-bar {
-    display: block; /* Show on hover */
-}
+/* Audio player hover styles removed for volume control since it's always visible */
 
 /* Time bar styles */
 .jp-seek-bar {
@@ -87,6 +95,7 @@ body {
     position: relative;
     display: block;
     margin: 10px 0;
+    max-width: 600px; /* Consistent with track selection */
 }
 
 .jp-play-bar {
@@ -110,12 +119,14 @@ body {
     text-align: center;
     cursor: pointer;
     background: #000;
-    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover and playing state */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Padding included in width */
+    max-width: 600px; /* Consistent with track selection */
 }
 
 .track-item.playing, .track-item:hover {
-    background-color: #222; /* Slightly lighter on hover and playing state */
-    border-color: #fff; /* Highlight border on hover and playing state */
+    background-color: #222;
+    border-color: #fff;
 }
 
 /* Responsive header image */
@@ -124,6 +135,7 @@ body {
     max-height: 300px;
     object-fit: cover;
     margin-bottom: 20px;
+    max-width: 600px; /* Consistent with track selection */
 }
 
 /* Button styles for play, pause, stop */
