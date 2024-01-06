@@ -5,12 +5,12 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/jdN2TbTn5tl8LDLklLVcpGjtPzkFfpRx",
-      image: "https://lh3.googleusercontent.com/9AKnVhbmPuNCPRaV_MfYjTIxqW5XJwJ39qLG3PRB7Yim6loJICpvw3_jK5tdPmtLTelqRmhfY2OUX0Q-HKdF3a3tUTOftzn83uXRD6PeDIZh6nZuris1E4GAiny1UoFWVg=w1280"
+      image: "https://i.ibb.co/2M3nVrp/348368204-1030155491281535-6750310068sdfsdff33836061-n.jpg"
     },
     { 
       name: "FuckYouFM: UTOPIA",
       file: "https://audio.jukehost.co.uk/SmFrnGF37HsQntp8DW74RAG1LYJboFHy",
-      image: "https://lh5.googleusercontent.com/tBLFarPKk8cgabB-gvN6xEZRYv_8TYA_Wp5FyudPCLk7GBA1PC_IbtXIV6KVsIYiRhSpHd_haxlGimlgbEJvZ0H69dxqnU5tpKCsXFkTSUYaN8TMpnAvDSR7yPNLOCkq3w=w1280"
+      image: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png"
     },
     // Add more tracks with their respective images as needed
   ];
