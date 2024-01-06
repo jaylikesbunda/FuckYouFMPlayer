@@ -74,16 +74,14 @@ body {
 
 /* Time Information */
 .time-info {
-    display: block; /* Changed to block to move it out of the seek bar */
-    width: 100%;
-    margin: 10px 0;
-    color: white;
-    text-align: center;
+    /* Time information is now placed to the sides of the seek bar */
+    position: absolute;
+    width: calc(100% - 40px); /* Account for padding */
+    top: -30px; /* Adjusted to position correctly */
 }
-
 .current-time, .duration {
-    display: inline-block;
-    width: 50%;
+    /* Individual time elements positioned on opposite sides */
+    position: absolute;
 }
 
 
@@ -106,20 +104,23 @@ body {
 
 /* Media Player Specific Styles */
 .jp-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    /* Controls are now placed under the seek bar */
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .jp-controls button {
-    padding: 0.625em 1em; /* Responsive padding */
-    font-size: 1rem; /* Adjust font size */
+    /* Dynamic sizing for buttons, max width set */
+    max-width: 120px;
+    width: auto;
+    font-size: 1rem;
 }
 
 /* Seek Bar and Time Styling */
 .jp-progress, .jp-seek-bar {
-    margin: 0 auto; /* Center align and add margin for spacing */
+    /* Seek bar styles unchanged, ensure there's no overlap with time info */
+    margin-bottom: 50px; /* Increased space for time info */
 }
 
 .time-info {
@@ -129,6 +130,22 @@ body {
 
 .current-time, .duration {
     padding: 0 5px; /* Padding to prevent text from touching the edges */
+}
+/* Volume Text and Bar Placement */
+.volume-text {
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 80px; /* Positioned above the volume bar */
+    left: 0;
+    font-size: 1rem;
+}
+
+.jp-volume-bar {
+    position: fixed;
+    bottom: 20px; /* Positioned at the bottom of the screen */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
 }
 
 
@@ -179,46 +196,27 @@ body {
     }
 }
 
-/* Mobile Phones */
 @media screen and (max-width: 480px) {
-    /* Increase button size for better touch interaction */
-    .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 5vw; /* Responsive padding for touch accessibility */
-        font-size: 5vw; /* Responsive font size for legibility */
-        min-width: 60px; /* Minimum width for touch targets */
-        min-height: 60px; /* Minimum height for touch targets */
+    /* Style adjustments for better UX on mobile phones */
+    .jp-controls button {
+        /* Adjust padding and font size for a compact and readable layout */
     }
 
-    /* Adjust control gaps for smaller screens */
-    .jp-controls {
-        flex-wrap: wrap;
-        gap: 4vw; /* Responsive gap for spacing between controls */
-    }
-
-    /* Hide volume bar on very small screens where interaction can be fiddly */
+    /* Volume bar is hidden to avoid overlapping with device's own volume control */
     .jp-volume-bar {
-        display: none; /* Hide the volume bar to avoid usability issues */
+        display: none;
     }
-
-    /* Header image should not take too much space */
-    #header-image {
-        max-height: 150px; /* Fixed height to control size on small screens */
-    }
-
-    /* Ensure text items are not too small to read */
-    .now-playing, .track-item {
-        font-size: 12px; /* Minimum legible font size */
-        padding: 12px; /* Comfortable padding */
-    }
-
-    /* Time information should remain visible */
+    
+    /* Adjust time info font size and margin for clarity and visibility */
     .time-info {
-        font-size: 4vw; /* Responsive font size for time information */
-        margin: 1em 0; /* Space around for clarity */
+        font-size: 5vw;
+        margin: 0; /* Remove margin as it's now positioned absolutely */
     }
-
-    /* Full-width seek bar for ease of use */
+    
+    /* The seek bar takes almost full width for easier interaction */
     .jp-progress, .jp-seek-bar {
-        width: 90vw; /* Almost full width to make it easier to interact with */
+        width: 90vw;
+		height: 10vw;
     }
+    
 }
