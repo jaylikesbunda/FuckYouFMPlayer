@@ -8,33 +8,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="header">
-        <img id="header-image" src="" alt="Now Playing" />
-    </div>
-    <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-    <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
-        <!-- Add player controls here -->
+    <header id="header">
+        <img id="header-image" src="" alt="Now Playing Cover Art" />
+    </header>
+
+    <main id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+        
         <div class="jp-controls">
-            <button class="jp-play">Play</button>
-            <button class="jp-pause">Pause</button>
-            <button class="jp-stop">Stop</button>
-            <button class="jp-mute">Mute</button>
-            <button class="jp-unmute">Unmute</button>
-            <div class="jp-volume-bar">
+            <button class="jp-play" aria-label="play">Play</button>
+            <button class="jp-pause" aria-label="pause">Pause</button>
+            <button class="jp-stop" aria-label="stop">Stop</button>
+            <button class="jp-mute" aria-label="mute">Mute</button>
+            <button class="jp-unmute" aria-label="unmute">Unmute</button>
+        </div>
+
+        <div class="jp-volume-controls">
+            <label for="jp-volume-bar" class="volume-label">Volume</label>
+            <div class="jp-volume-bar" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" tabindex="0">
                 <div class="jp-volume-bar-value"></div>
             </div>
-            <!-- Other controls as needed -->
         </div>
-        <div class="jp-progress">
+
+        <div class="jp-progress" aria-label="Seek bar">
             <div class="jp-seek-bar">
                 <div class="jp-play-bar"></div>
             </div>
+            <div class="time-info">
+                <span class="current-time" aria-label="current time">00:00</span>
+                <span class="duration" aria-label="track duration">00:00</span>
+            </div>
         </div>
-        <!-- Additional elements for time, duration, etc. -->
-    </div>
-    <div id="track-selection">
+    </main>
+
+    <section id="track-selection" aria-label="Track List">
         <!-- Track list will be populated by JavaScript -->
-    </div>
+    </section>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

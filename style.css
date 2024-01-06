@@ -85,7 +85,26 @@ body {
     height: auto;
 }
 
-/* Audio player hover styles removed for volume control since it's always visible */
+/* Time display next to the seek bar */
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 4vw;
+    padding: 0 5px; /* Padding to not overlap with the edge of the screen */
+}
+
+.current-time, .duration {
+    color: white;
+}
+
+/* Additional styles for larger seek bar and positioning */
+.jp-progress {
+    height: 20px; /* Larger touch target for seek bar */
+    position: relative; /* Position relative to allow absolute positioning inside */
+    margin-bottom: 10px; /* Space for time info */
+}
+
 
 /* Time bar styles */
 .jp-seek-bar {
@@ -176,18 +195,15 @@ body {
         gap: 10px; /* Ensures space between controls */
     }
 
+
     .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 10px; /* Increase padding for touch targets */
-        font-size: 12px; /* Adjust font size for readability */
-        width: 48%; /* Make buttons take up half the width of their container */
-        margin: 0; /* Remove individual margins */
-        box-sizing: border-box; /* Include padding and border in the element's width */
+        font-size: 4vw; /* Use viewport width for responsive font size */
+        padding: 4vw; /* Use viewport width for responsive padding */
     }
 
     .jp-volume-bar, .jp-seek-bar {
-        width: 90%; /* Increase width for better usability */
-        margin: 15px auto; /* Increase margin for spacing and centering */
-        height: 15px; /* Increase height for a larger touch target */
+        width: 80vw; /* Use viewport width for seek bar and volume bar */
+        height: 5vh; /* Use viewport height for a larger touch area */
     }
 
     .jp-volume-bar-value, .jp-play-bar {
@@ -201,8 +217,7 @@ body {
     }
 
     #header-image {
-        max-height: 180px; /* Slightly reduce header image height for balance */
-        margin-bottom: 15px; /* Add some space between the image and the player controls */
+        max-height: 25vh; /* Use viewport height for a responsive image */
     }
 
     .now-playing {
@@ -226,23 +241,20 @@ body {
     }
 
     .jp-controls {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px; /* Add space between buttons */
+        gap: 5px; /* Reduce space between buttons */
     }
 
     .jp-controls button {
-        flex: 0 0 48%; /* Allow buttons to wrap and take up nearly half the container width */
+        flex: 1 0 45%; /* Allow buttons to take up equal space */
     }
 
     .jp-mute, .jp-unmute {
         flex: 0 0 48%; /* Consistency in mute and unmute button sizing */
     }
 
+
     .jp-seek-bar {
-        width: 100%; /* Full width for better touch target */
-        margin: 10px 0; /* Adjusted margin for spacing */
+        width: 90vw; /* Increase width for better usability */
     }
 
     .jp-play-bar {
@@ -260,29 +272,8 @@ body {
     .now-playing, .track-item {
         font-size: 10px; /* Smaller font size for track information */
     }
-}
 
-/* Time display next to the seek bar */
-.time-info {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 10px;
-    padding: 0 5px; /* Padding to not overlap with the edge of the screen */
-}
-
-.current-time, .duration {
-    color: white;
-}
-
-/* Additional styles for larger seek bar and positioning */
-.jp-progress {
-    height: 20px; /* Larger touch target for seek bar */
-    position: relative; /* Position relative to allow absolute positioning inside */
-    margin-bottom: 10px; /* Space for time info */
-}
-
-/* Ensure buttons do not overlap the seek bar by adding bottom margin */
-.jp-controls button {
-    margin-bottom: 20px;
+    .time-info {
+        font-size: 4vw; /* Smaller font size for time information */
+    }
 }
