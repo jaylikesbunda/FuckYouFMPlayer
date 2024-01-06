@@ -4,47 +4,47 @@ body {
     color: white;
     margin: 0;
     padding: 20px;
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
-
+/* Track selection style */
 #track-selection {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
-
+/* Mute and unmute button styles */
 .jp-mute, .jp-unmute {
-  cursor: pointer;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 10px;
 }
 
+/* Loading indicator styles */
 .jp-loading {
-  display: none; /* Hide by default */
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
 }
 
-/* Responsive player */
+/* Responsive video player styles */
 .jp-video-responsive {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
-/* Volume controls visible on hover */
+/* Audio player hover styles for volume control */
 .jp-audio {
-  position: relative;
+    position: relative;
 }
 
 .jp-audio:hover .jp-volume-bar {
-  display: block;
+    display: block; /* Show on hover */
 }
 
-/* Make sure controls are big enough for touch devices */
-.jp-controls button {
-  padding: 15px; /* Increase hit area */
-}
-
-/* Visual feedback on interaction */
-.jp-controls button:active {
-  opacity: 0.8;
-}
-
+/* Volume bar styles */
 .jp-volume-bar {
     width: 100px;
     height: 10px;
@@ -59,42 +59,21 @@ body {
 .jp-volume-bar-value {
     height: 100%;
     background-color: #fff;
+    transition: width 0.2s ease; /* Smooth transition for volume changes */
 }
 
-.jp-mute, .jp-unmute {
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 10px;
-}
-
-.jp-loading {
-    display: none; /* Hide by default */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-}
-
-/* Responsive player */
-.jp-video-responsive {
-    max-width: 100%;
-    height: auto;
-}
-
-.jp-audio:hover .jp-volume-bar {
-    display: block; /* Show on hover */
-}
-
-/* Make sure controls are big enough for touch devices */
+/* Controls with larger touch targets */
 .jp-controls button {
     padding: 15px; /* Increase hit area */
-    font-size: 16px; /* Adjust font size as needed */
+    font-size: 16px; /* Adjust font size for readability */
+    border: none; /* Remove default border */
+    background: none; /* Remove default background */
+    color: inherit; /* Inherit color from parent */
 }
 
-/* Visual feedback on interaction */
+/* Active state for controls */
 .jp-controls button:active {
-    opacity: 0.8;
+    opacity: 0.8; /* Visual feedback on interaction */
 }
 
 /* Track item styles */
@@ -107,14 +86,15 @@ body {
     margin-bottom: 5px;
     text-align: center;
     cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover and playing state */
 }
 
 .track-item.playing, .track-item:hover {
-    background-color: #444; /* Slightly lighter than the playing state */
-    transition: background-color 0.3s ease;
+    background-color: #444; /* Slightly lighter on hover and playing state */
+    border-color: #fff; /* Highlight border on hover and playing state */
 }
 
-/* Header Image */
+/* Responsive header image */
 #header-image {
     width: 100%;
     max-height: 300px;
