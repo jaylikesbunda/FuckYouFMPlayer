@@ -30,7 +30,7 @@ body {
     max-width: 600px; /* Max width */
 }
 
-/* Mute, unmute, and other button styles */
+/* Button styles - Play, Stop, Mute */
 .jp-mute, .jp-unmute, .jp-controls button {
     cursor: pointer;
     display: inline-block;
@@ -38,11 +38,11 @@ body {
     background: #000;
     color: white;
     border: 1px solid white;
-    padding: 5px 10px;
+    padding: 10px 15px; /* Increased padding */
     text-align: center;
-    font-size: 14px;
+    font-size: 16px; /* Increased font size, same as other text */
     transition: background-color 0.2s ease;
-    margin-bottom: 10px; /* Spacing below the buttons */
+    margin-bottom: 15px; /* Increased spacing below the buttons */
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
@@ -89,12 +89,12 @@ body {
 /* Time bar styles */
 .jp-seek-bar {
     width: 100%;
-    height: 10px;
+    height: 15px; /* Increased height for better visibility */
     background-color: #333;
     cursor: pointer;
     position: relative;
     display: block;
-    margin: 10px 0;
+    margin: 20px 0; /* Increased margin for better spacing */
     max-width: 600px; /* Consistent with track selection */
 }
 
@@ -132,7 +132,7 @@ body {
 /* Responsive header image */
 #header-image {
     width: 100%;
-    max-height: 300px;
+    max-height: 200px; /* Reduced height for better proportion */
     object-fit: cover;
     margin-bottom: 20px;
     max-width: 600px; /* Consistent with track selection */

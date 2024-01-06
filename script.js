@@ -124,9 +124,10 @@ $(document).ready(function() {
     function updateSeekBar(currentTime, duration) {
         var percentage = (currentTime / duration) * 100;
         $(".jp-play-bar").css("width", percentage + "%");
-        // Optional: Display current time and duration
+
+        // Display current time and duration
         $(".current-time").text(formatTime(currentTime));
-        $(".duration").text(formatTime(duration));
+        $(".duration").text(formatTime(duration - currentTime)); // Changed to display time left
     }
 
     function updateSeekBarPosition(pageX) {
@@ -137,6 +138,9 @@ $(document).ready(function() {
         var percentage = (position / progressBarWidth) * 100;
         $(".jp-play-bar").css("width", percentage + "%");
         $("#jquery_jplayer_1").jPlayer("playHead", percentage);
+        // Update the current time based on the new position
+        var currentTime = $("#jquery_jplayer_1").data("jPlayer").status.duration * (percentage / 100);
+        $(".current-time").text(formatTime(currentTime));
     }
 
     function formatTime(seconds) {
