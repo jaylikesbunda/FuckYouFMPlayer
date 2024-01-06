@@ -33,15 +33,18 @@ body {
 
 /* Controls Styles */
 .jp-controls button, .jp-mute, .jp-unmute {
+    /* Use 'Press Start 2P' font, apply consistent styling */
+    font-family: 'Press Start 2P', cursive;
     cursor: pointer;
     background: #000;
     color: white;
     border: 1px solid white;
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 0.75rem; /* Slightly smaller font size for better appearance */
     transition: background-color 0.2s, transform 0.1s;
     display: inline-block;
     margin: 0 5px;
+    text-transform: uppercase; /* Stylistic choice for uppercase letters */
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
@@ -56,8 +59,8 @@ body {
     position: relative;
     display: block;
     margin: 20px 0;
-    width: 100%;
-    max-width: 600px;
+    width: 90%; /* Adjusted to prevent edge bleeding */
+    max-width: 600px; /* Maximum width consistent with layout */
 }
 
 .jp-volume-bar-value, .jp-play-bar {
@@ -71,16 +74,18 @@ body {
 
 /* Time Information */
 .time-info {
-    display: flex;
-    justify-content: space-between;
+    display: block; /* Changed to block to move it out of the seek bar */
     width: 100%;
-    font-size: 4vw;
-    padding: 0 5px;
+    margin: 10px 0;
+    color: white;
+    text-align: center;
 }
 
 .current-time, .duration {
-    color: white;
+    display: inline-block;
+    width: 50%;
 }
+
 
 /* Track Item Styles */
 .track-item {
@@ -103,8 +108,8 @@ body {
 .jp-controls {
     display: flex;
     justify-content: center;
-    gap: 10px; /* Ensures space between controls */
-    flex-wrap: wrap; /* Allows controls to wrap on smaller screens */
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .jp-controls button {
@@ -114,8 +119,7 @@ body {
 
 /* Seek Bar and Time Styling */
 .jp-progress, .jp-seek-bar {
-    width: 90%; /* Set to the desired width relative to its container */
-    margin: 0 auto 10px; /* Center align and add margin for spacing */
+    margin: 0 auto; /* Center align and add margin for spacing */
 }
 
 .time-info {
@@ -136,68 +140,85 @@ body {
     margin-bottom: 20px;
 }
 
-/* Responsive Design */
+/* Tablet and Small Desktops */
 @media screen and (max-width: 768px) {
     body {
-        padding: 10px;
+        padding: 10px; /* Sufficient padding without taking too much screen real estate */
     }
 
+    /* Increase touch targets for controls for better accessibility */
     .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 4vw;
-        font-size: 4vw;
+        padding: 10px; /* Increase padding for touch targets */
+        font-size: 3vw; /* Adjust font size for readability and aesthetic */
+        min-width: 50px; /* Minimum width for touch targets */
+        min-height: 50px; /* Minimum height for touch targets */
     }
 
-    .jp-volume-bar, .jp-progress {
-        width: 80vw;
-        height: 5vh;
+    /* Seek and volume bars should be easy to interact with */
+    .jp-progress, .jp-volume-bar {
+        width: 80vw; /* Use viewport width for a consistent experience */
+        height: 6vh; /* Use viewport height for a larger touch area */
     }
 
-    .track-item {
-        padding: 10px;
-        font-size: 14px;
-        margin-bottom: 10px;
+    /* Ensure text is legible and not too crowded */
+    .track-item, .now-playing {
+        padding: 1em; /* Comfortable padding around text */
+        font-size: 3.5vw; /* Legible font size */
+        margin-bottom: 1em; /* Space between track items */
     }
 
+    /* Header image should be proportional and not dominate the screen */
     #header-image {
-        max-height: 25vh;
+        max-height: 25vh; /* Limit height to maintain content proportion */
     }
 
-    .now-playing {
-        margin-bottom: 15px;
-    }
-
+    /* Time information should be clear and easy to read */
     .time-info {
-        font-size: 5vw;
+        font-size: 3.5vw; /* Legible and clear font size */
+        margin: 1em 0; /* Space around for better separation of elements */
     }
 }
 
+/* Mobile Phones */
 @media screen and (max-width: 480px) {
+    /* Increase button size for better touch interaction */
     .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 3vw;
-        font-size: 5vw;
+        padding: 5vw; /* Responsive padding for touch accessibility */
+        font-size: 5vw; /* Responsive font size for legibility */
+        min-width: 60px; /* Minimum width for touch targets */
+        min-height: 60px; /* Minimum height for touch targets */
     }
 
+    /* Adjust control gaps for smaller screens */
     .jp-controls {
         flex-wrap: wrap;
-		gap: 5vw;
+        gap: 4vw; /* Responsive gap for spacing between controls */
     }
 
+    /* Hide volume bar on very small screens where interaction can be fiddly */
     .jp-volume-bar {
-        display: none;
+        display: none; /* Hide the volume bar to avoid usability issues */
     }
 
+    /* Header image should not take too much space */
     #header-image {
-        max-height: 150px;
+        max-height: 150px; /* Fixed height to control size on small screens */
     }
 
+    /* Ensure text items are not too small to read */
     .now-playing, .track-item {
-        font-size: 10px;
+        font-size: 12px; /* Minimum legible font size */
+        padding: 12px; /* Comfortable padding */
     }
 
+    /* Time information should remain visible */
     .time-info {
-        font-size: 4vw;
+        font-size: 4vw; /* Responsive font size for time information */
+        margin: 1em 0; /* Space around for clarity */
     }
+
+    /* Full-width seek bar for ease of use */
     .jp-progress, .jp-seek-bar {
-        width: 90vw; /* Full width for smaller screens */
+        width: 90vw; /* Almost full width to make it easier to interact with */
     }
 }
