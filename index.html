@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Mac jPlayer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="header">
+        <img id="header-image" src="" alt="Now Playing" />
+    </div>
+    <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+    <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+        <!-- Add player controls here -->
+        <div class="jp-controls">
+            <button class="jp-play">Play</button>
+            <button class="jp-pause">Pause</button>
+            <button class="jp-stop">Stop</button>
+            <button class="jp-mute">Mute</button>
+            <button class="jp-unmute">Unmute</button>
+            <div class="jp-volume-bar">
+                <div class="jp-volume-bar-value"></div>
+            </div>
+            <!-- Other controls as needed -->
+        </div>
+        <div class="jp-progress">
+            <div class="jp-seek-bar">
+                <div class="jp-play-bar"></div>
+            </div>
+        </div>
+        <!-- Additional elements for time, duration, etc. -->
+    </div>
+    <div id="track-selection">
+        <!-- Track list will be populated by JavaScript -->
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

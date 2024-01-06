@@ -1,0 +1,123 @@
+body {
+    background-color: black;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+
+#track-selection {
+  margin-top: 20px;
+}
+
+
+.jp-mute, .jp-unmute {
+  cursor: pointer;
+}
+
+.jp-loading {
+  display: none; /* Hide by default */
+}
+
+/* Responsive player */
+.jp-video-responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Volume controls visible on hover */
+.jp-audio {
+  position: relative;
+}
+
+.jp-audio:hover .jp-volume-bar {
+  display: block;
+}
+
+/* Make sure controls are big enough for touch devices */
+.jp-controls button {
+  padding: 15px; /* Increase hit area */
+}
+
+/* Visual feedback on interaction */
+.jp-controls button:active {
+  opacity: 0.8;
+}
+
+.jp-volume-bar {
+    width: 100px;
+    height: 10px;
+    background-color: #888;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+    position: absolute;
+    bottom: 30px; /* Positioning */
+    left: 10px; /* Positioning */
+}
+
+.jp-volume-bar-value {
+    height: 100%;
+    background-color: #fff;
+}
+
+.jp-mute, .jp-unmute {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.jp-loading {
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+/* Responsive player */
+.jp-video-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+.jp-audio:hover .jp-volume-bar {
+    display: block; /* Show on hover */
+}
+
+/* Make sure controls are big enough for touch devices */
+.jp-controls button {
+    padding: 15px; /* Increase hit area */
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+/* Visual feedback on interaction */
+.jp-controls button:active {
+    opacity: 0.8;
+}
+
+/* Track item styles */
+.track-item {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border: 1px solid white;
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.track-item.playing, .track-item:hover {
+    background-color: #444; /* Slightly lighter than the playing state */
+    transition: background-color 0.3s ease;
+}
+
+/* Header Image */
+#header-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
