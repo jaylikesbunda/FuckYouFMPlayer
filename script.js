@@ -15,92 +15,89 @@ $(document).ready(function() {
     // Add more tracks with their respective images as needed
   ];
 
-    function populateTrackList() {
-        var trackSelection = $('#track-selection');
-        trackList.forEach(function(track, index) {
-            $('<a>', {
-                'class': 'track-item',
-                'href': '#',
-                'data-src': track.file,
-                'data-image': track.image,
-                'text': track.name,
-                'click': function(e) {
-                    e.preventDefault();
-                    selectTrack(index);
-                }
-            }).appendTo(trackSelection);
-        });
-    }
+	function populateTrackList() {
+	  const trackSelection = $('#track-selection');
+	  trackList.forEach((track, index) => {
+		$('<a>', {
+		  'class': 'track-item',
+		  'href': '#',
+		  'data-src': track.file,
+		  'data-image': track.image,
+		  'text': track.name
+		}).on('click', (e) => {
+		  e.preventDefault();
+		  selectTrack(index);
+		}).appendTo(trackSelection);
+	  });
+	}
 
-    function initializePlayer() {
-        $("#jquery_jplayer_1").jPlayer({
-            ready: function() {
-                selectTrack(0);
-            },
-            swfPath: "/js",
-            supplied: "mp3",
-            cssSelectorAncestor: "#jp_container_1",
-            useStateClassSkin: true,
-            autoBlur: false,
-            smoothPlayBar: true,
-            keyEnabled: true,
-            remainingDuration: true,
-            toggleDuration: true,
-            timeupdate: function(event) {
-                if (!isSeeking) {
-                    updateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
-                }
-            }
-        });
+	function initializePlayer() {
+		$("#jquery_jplayer_1").jPlayer({
+			ready: function() {
+				selectTrack(0);
+			},
+			swfPath: "/js",
+			supplied: "mp3",
+			cssSelectorAncestor: "#jp_container_1",
+			useStateClassSkin: true,
+			autoBlur: false,
+			smoothPlayBar: true,
+			keyEnabled: true,
+			remainingDuration: true,
+			toggleDuration: true,
+			timeupdate: function(event) {
+				if (!isSeeking) {
+					updateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
+				}
+			}
+		});
 
-        $('.jp-progress').mousedown(function(e) {
-            isSeeking = true;
-            updateSeekBarPosition(e.pageX);
-        }).mousemove(function(e) {
-            if (isSeeking) {
-                updateSeekBarPosition(e.pageX);
-            }
-        }).mouseup(function(e) {
-            if (isSeeking) {
-                isSeeking = false;
-                updateSeekBarPosition(e.pageX);
-            }
-        }).on('touchstart', function(e) {
-            e.preventDefault();
-            isSeeking = true;
-            updateSeekBarPosition(e.originalEvent.touches[0].pageX);
-        }).on('touchmove', function(e) {
-            if (isSeeking) {
-                updateSeekBarPosition(e.originalEvent.touches[0].pageX);
-            }
-        }).on('touchend', function() {
-            isSeeking = false;
-        });
+		// Consolidate progress bar event handlers
+		$('.jp-progress').on('mousedown touchstart', function(e) {
+			isSeeking = true;
+			// Determine the location of the event
+			var pageX = e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX;
+			updateSeekBarPosition(pageX);
+		}).on('mousemove touchmove', function(e) {
+			if (isSeeking) {
+				var pageX = e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX;
+				updateSeekBarPosition(pageX);
+			}
+		}).on('mouseup touchend', function(e) {
+			if (isSeeking) {
+				isSeeking = false;
+				// For mouseup, we update the position one last time
+				if (e.type === 'mouseup') {
+					updateSeekBarPosition(e.pageX);
+				}
+			}
+		});
 
-        // Volume control click
-        $('.jp-volume-bar').click(function(e) {
-            var volumeLevel = e.pageX - $(this).offset().left;
-            var volumePercentage = volumeLevel / $(this).width();
-            $("#jquery_jplayer_1").jPlayer("volume", volumePercentage);
-        });
+		// Volume control
+		$('.jp-volume-bar').on('click', function(e) {
+			var volumeLevel = e.pageX - $(this).offset().left;
+			var volumePercentage = volumeLevel / $(this).width();
+			$("#jquery_jplayer_1").jPlayer("volume", volumePercentage);
+		});
 
-        // Mute and unmute controls
-        $('.jp-mute').click(function() {
-            $("#jquery_jplayer_1").jPlayer("mute");
-        });
+		// Mute and unmute controls
+		$('.jp-mute').click(function() {
+			$("#jquery_jplayer_1").jPlayer("mute");
+		});
 
-        $('.jp-unmute').click(function() {
-            $("#jquery_jplayer_1").jPlayer("unmute");
-        });
+		$('.jp-unmute').click(function() {
+			$("#jquery_jplayer_1").jPlayer("unmute");
+		});
 
-        // Responsive resize
-        $(window).resize(function() {
-            $("#jquery_jplayer_1").jPlayer("option", "size", {
-                width: "100%",
-                height: "auto"
-            });
-        });
-    }
+		// Responsive resize
+		$(window).resize(function() {
+			$("#jquery_jplayer_1").jPlayer("option", "size", {
+				width: "100%",
+				height: "auto"
+			});
+		});
+	}
+
 
     function selectTrack(index) {
         currentTrackIndex = index;
@@ -121,27 +118,33 @@ $(document).ready(function() {
         }
     }
 
-    function updateSeekBar(currentTime, duration) {
-        var percentage = (currentTime / duration) * 100;
-        $(".jp-play-bar").css("width", percentage + "%");
+	  function updateSeekBar(currentTime, duration) {
+		var percentage = (currentTime / duration) * 100;
+		$(".jp-play-bar").css("width", percentage + "%");
+		$(".current-time").text(formatTime(currentTime));
+		$(".duration").text(formatTime(duration - currentTime));
+	  }
 
-        // Display current time and duration
-        $(".current-time").text(formatTime(currentTime));
-        $(".duration").text(formatTime(duration - currentTime)); // Changed to display time left
-    }
+	  function updateSeekBarPosition(pageX) {
+		var progressContainer = $(".jp-progress");
+		var progressBarWidth = progressContainer.width();
+		var progressBarOffset = progressContainer.offset().left;
+		var position = pageX - progressBarOffset;
+		var percentage = (position / progressBarWidth) * 100;
+		// Ensure the percentage is between 0 and 100
+		percentage = Math.max(0, Math.min(percentage, 100));
+		$(".jp-play-bar").css("width", percentage + "%");
+		$("#jquery_jplayer_1").jPlayer("playHead", percentage);
+		// Synchronize the time display with the seek bar's position
+		syncSeekBarAndTime(percentage);
+	  }
 
-    function updateSeekBarPosition(pageX) {
-        var progressContainer = $(".jp-progress");
-        var progressBarOffset = progressContainer.offset().left;
-        var progressBarWidth = progressContainer.width();
-        var position = pageX - progressBarOffset;
-        var percentage = (position / progressBarWidth) * 100;
-        $(".jp-play-bar").css("width", percentage + "%");
-        $("#jquery_jplayer_1").jPlayer("playHead", percentage);
-        // Update the current time based on the new position
-        var currentTime = $("#jquery_jplayer_1").data("jPlayer").status.duration * (percentage / 100);
-        $(".current-time").text(formatTime(currentTime));
-    }
+	  // Synchronizes the seek bar and the displayed time
+	  function syncSeekBarAndTime(percentage) {
+		var duration = $("#jquery_jplayer_1").data("jPlayer").status.duration;
+		var currentTime = duration * (percentage / 100);
+		updateSeekBar(currentTime, duration);
+	  }
 
     function formatTime(seconds) {
         var minutes = Math.floor(seconds / 60);
