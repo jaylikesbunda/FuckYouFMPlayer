@@ -7,16 +7,36 @@ body {
     overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
+/* Now Playing Styles */
+.now-playing {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 /* Track selection style */
 #track-selection {
     margin-top: 20px;
+    border: 1px solid white;
+    padding: 10px;
+    background: #000;
 }
 
 /* Mute and unmute button styles */
-.jp-mute, .jp-unmute {
+.jp-mute, .jp-unmute, .jp-controls button {
     cursor: pointer;
     display: inline-block;
     margin: 0 10px;
+    background: #000;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
+    background-color: #222; /* Dark grey for hover state */
 }
 
 /* Loading indicator styles */
@@ -29,31 +49,16 @@ body {
     color: white;
 }
 
-/* Responsive video player styles */
-.jp-video-responsive {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Audio player hover styles for volume control */
-.jp-audio {
-    position: relative;
-}
-
-.jp-audio:hover .jp-volume-bar {
-    display: block; /* Show on hover */
-}
-
 /* Volume bar styles */
 .jp-volume-bar {
     width: 100px;
     height: 10px;
-    background-color: #888;
+    background-color: #333;
     cursor: pointer;
     display: none; /* Initially hidden */
     position: absolute;
-    bottom: 30px; /* Positioning */
-    left: 10px; /* Positioning */
+    bottom: 30px;
+    left: 10px;
 }
 
 .jp-volume-bar-value {
@@ -62,18 +67,36 @@ body {
     transition: width 0.2s ease; /* Smooth transition for volume changes */
 }
 
-/* Controls with larger touch targets */
-.jp-controls button {
-    padding: 15px; /* Increase hit area */
-    font-size: 16px; /* Adjust font size for readability */
-    border: none; /* Remove default border */
-    background: none; /* Remove default background */
-    color: inherit; /* Inherit color from parent */
+/* Responsive video player styles */
+.jp-video-responsive {
+    max-width: 100%;
+    height: auto;
 }
 
-/* Active state for controls */
-.jp-controls button:active {
-    opacity: 0.8; /* Visual feedback on interaction */
+/* Audio player hover styles for volume control */
+.jp-audio:hover .jp-volume-bar {
+    display: block; /* Show on hover */
+}
+
+/* Time bar styles */
+.jp-seek-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #333;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    margin: 10px 0;
+}
+
+.jp-play-bar {
+    width: 0;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.5s linear;
 }
 
 /* Track item styles */
@@ -86,11 +109,12 @@ body {
     margin-bottom: 5px;
     text-align: center;
     cursor: pointer;
+    background: #000;
     transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover and playing state */
 }
 
 .track-item.playing, .track-item:hover {
-    background-color: #444; /* Slightly lighter on hover and playing state */
+    background-color: #222; /* Slightly lighter on hover and playing state */
     border-color: #fff; /* Highlight border on hover and playing state */
 }
 
@@ -101,3 +125,59 @@ body {
     object-fit: cover;
     margin-bottom: 20px;
 }
+
+/* Button styles for play, pause, stop */
+.jp-controls button {
+    margin: 0 5px;
+}
+
+/* Make controls appear more like classic Mac buttons */
+.jp-controls button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #000;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 10px;
+    margin-right: 10px;
+    text-transform: uppercase;
+}
+
+.jp-controls button:active {
+    background-color: #222; /* Darken button when active/pressed */
+}
+
+/* Responsive Design Adjustments */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+    
+    .jp-controls button, .jp-mute, .jp-unmute {
+        padding: 10px 5px; /* Reduce button size on smaller screens */
+        font-size: 12px; /* Reduce font size on smaller screens */
+    }
+
+    .jp-volume-bar, .jp-seek-bar {
+        width: 80%; /* Adjust width for smaller screens */
+        margin: 0 auto; /* Centering the bar */
+    }
+
+    .track-item {
+        padding: 5px; /* Reduce padding on smaller screens */
+        font-size: 12px; /* Reduce font size on smaller screens */
+    }
+
+    #header-image {
+        max-height: 200px; /* Adjust header image height on smaller screens */
+    }
+}
+
+/* More specific media queries can be added for different breakpoints */
+@media screen and (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .jp-controls button, .jp-mute, .jp-unmute {
+        padding: 8px 4px; /* Even smaller buttons for mobile */
+        font-size: 10px; /* Even smaller font size for mobile */
+    }
