@@ -32,38 +32,41 @@ body {
 }
 
 /* Controls Styles */
+.jp-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
 .jp-controls button, .jp-mute, .jp-unmute {
-    /* Use 'Press Start 2P' font, apply consistent styling */
     font-family: 'Press Start 2P', cursive;
     cursor: pointer;
     background: #000;
     color: white;
     border: 1px solid white;
     padding: 10px 15px;
-    font-size: 0.75rem; /* Slightly smaller font size for better appearance */
+    font-size: 12px; /* Adjust font size for better UX */
     transition: background-color 0.2s, transform 0.1s;
-    display: inline-block;
-    margin: 0 5px;
-    text-transform: uppercase; /* Stylistic choice for uppercase letters */
+    text-transform: uppercase;
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
     background-color: #222;
 }
 
-/* Volume and Progress Bar */
-.jp-volume-bar, .jp-progress {
+/* Seek Bar and Time Styling */
+.jp-progress, .jp-seek-bar {
     background-color: #333;
     cursor: pointer;
     height: 20px;
     position: relative;
-    display: block;
     margin: 20px 0;
-    width: 90%; /* Adjusted to prevent edge bleeding */
-    max-width: 600px; /* Maximum width consistent with layout */
+    width: 90%;
+    max-width: 600px;
 }
 
-.jp-volume-bar-value, .jp-play-bar {
+.jp-play-bar, .jp-volume-bar-value {
     background-color: #fff;
     transition: width 0.2s ease;
     position: absolute;
@@ -74,149 +77,70 @@ body {
 
 /* Time Information */
 .time-info {
-    /* Time information is now placed to the sides of the seek bar */
     position: absolute;
-    width: calc(100% - 40px); /* Account for padding */
-    top: -30px; /* Adjusted to position correctly */
-}
-.current-time, .duration {
-    /* Individual time elements positioned on opposite sides */
-    position: absolute;
-}
-
-
-/* Track Item Styles */
-.track-item {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border: 1px solid white;
-    margin-bottom: 5px;
-    text-align: center;
-    cursor: pointer;
-    background: #000;
-}
-
-.track-item.playing, .track-item:hover {
-    background-color: #222;
-}
-
-/* Media Player Specific Styles */
-.jp-controls {
-    /* Controls are now placed under the seek bar */
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.jp-controls button {
-    /* Dynamic sizing for buttons, max width set */
-    max-width: 120px;
-    width: auto;
-    font-size: 1rem;
-}
-
-/* Seek Bar and Time Styling */
-.jp-progress, .jp-seek-bar {
-    /* Seek bar styles unchanged, ensure there's no overlap with time info */
-    margin-bottom: 50px; /* Increased space for time info */
-}
-
-.time-info {
-    margin-top: 10px; /* Space from the seek bar */
-    font-size: 1.25rem; /* Adjust font size for readability */
+    width: 100%;
+    top: -30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px; /* Smaller font size */
 }
 
 .current-time, .duration {
-    padding: 0 5px; /* Padding to prevent text from touching the edges */
+    padding: 0 10px; /* Padding for better visibility */
 }
+
 /* Volume Text and Bar Placement */
 .volume-text {
     text-align: center;
     width: 100%;
     position: fixed;
-    bottom: 80px; /* Positioned above the volume bar */
+    bottom: 90px; /* Position above the volume bar */
     left: 0;
-    font-size: 1rem;
+    font-size: 12px; /* Smaller font size */
 }
 
 .jp-volume-bar {
     position: fixed;
-    bottom: 20px; /* Positioned at the bottom of the screen */
+    bottom: 50px; /* Place at the bottom with some space */
     left: 50%;
-    transform: translateX(-50%); /* Center horizontally */
+    transform: translateX(-50%);
+    width: 80%; /* Full width for ease of interaction */
+    height: 20px;
 }
 
-
-/* Header Image Style */
-#header-image {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    margin-bottom: 20px;
-}
-
-/* Tablet and Small Desktops */
+/* Responsive Design Adjustments */
 @media screen and (max-width: 768px) {
-    body {
-        padding: 10px; /* Sufficient padding without taking too much screen real estate */
-    }
-
-    /* Increase touch targets for controls for better accessibility */
-    .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 10px; /* Increase padding for touch targets */
-        font-size: 3vw; /* Adjust font size for readability and aesthetic */
-        min-width: 50px; /* Minimum width for touch targets */
-        min-height: 50px; /* Minimum height for touch targets */
-    }
-
-    /* Seek and volume bars should be easy to interact with */
-    .jp-progress, .jp-volume-bar {
-        width: 80vw; /* Use viewport width for a consistent experience */
-        height: 6vh; /* Use viewport height for a larger touch area */
-    }
-
-    /* Ensure text is legible and not too crowded */
-    .track-item, .now-playing {
-        padding: 1em; /* Comfortable padding around text */
-        font-size: 3.5vw; /* Legible font size */
-        margin-bottom: 1em; /* Space between track items */
-    }
-
-    /* Header image should be proportional and not dominate the screen */
-    #header-image {
-        max-height: 25vh; /* Limit height to maintain content proportion */
-    }
-
-    /* Time information should be clear and easy to read */
     .time-info {
-        font-size: 3.5vw; /* Legible and clear font size */
-        margin: 1em 0; /* Space around for better separation of elements */
+        font-size: 3vw; /* Responsive font size for time info */
+    }
+
+    .volume-text {
+        font-size: 3vw; /* Responsive font size for volume text */
+    }
+
+    .jp-controls button {
+        font-size: 3vw; /* Responsive font size for buttons */
     }
 }
 
 @media screen and (max-width: 480px) {
-    /* Style adjustments for better UX on mobile phones */
-    .jp-controls button {
-        /* Adjust padding and font size for a compact and readable layout */
+    .jp-controls {
+        flex-direction: column;
+        width: 90%;
     }
 
-    /* Volume bar is hidden to avoid overlapping with device's own volume control */
+    .jp-controls button {
+        font-size: 4vw; /* Larger font size for readability */
+        padding: 10px; /* Comfortable padding for touch targets */
+        margin-bottom: 10px; /* Space between buttons */
+    }
+
+    .time-info, .volume-text {
+        font-size: 5vw; /* Larger font size for better visibility */
+    }
+
     .jp-volume-bar {
-        display: none;
+        bottom: 20px; /* Adjust for mobile */
+        height: 4vw; /* Larger touch target */
     }
-    
-    /* Adjust time info font size and margin for clarity and visibility */
-    .time-info {
-        font-size: 5vw;
-        margin: 0; /* Remove margin as it's now positioned absolutely */
-    }
-    
-    /* The seek bar takes almost full width for easier interaction */
-    .jp-progress, .jp-seek-bar {
-        width: 90vw;
-		height: 10vw;
-    }
-    
 }
