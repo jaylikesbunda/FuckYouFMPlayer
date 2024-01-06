@@ -1,15 +1,27 @@
+/* Base Styles */
 body {
     background-color: black;
     font-family: 'Press Start 2P', cursive;
     color: white;
     margin: 0;
     padding: 20px;
-    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center children horizontally */
-    justify-content: center; /* Center children vertically */
-    min-height: 100vh; /* Full viewport height */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Component Layout */
+.component-container {
+    max-width: 600px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid white;
+    background-color: #000;
+    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 /* Now Playing Styles */
@@ -19,116 +31,58 @@ body {
     text-align: center;
 }
 
-/* Track selection style */
-#track-selection {
-    margin-top: 20px;
-    border: 1px solid white;
-    padding: 10px;
-    background: #000;
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Padding included in width */
-    max-width: 600px; /* Max width */
-}
-
-/* Button styles - Play, Stop, Mute */
-.jp-mute, .jp-unmute, .jp-controls button {
+/* Controls Styles */
+.jp-controls button, .jp-mute, .jp-unmute {
     cursor: pointer;
-    display: inline-block;
-    margin: 0 10px;
     background: #000;
     color: white;
     border: 1px solid white;
-    padding: 10px 15px; /* Increased padding */
-    text-align: center;
-    font-size: 16px; /* Increased font size, same as other text */
-    transition: background-color 0.2s ease;
-    margin-bottom: 20px; /* Increased spacing below the buttons */
-	transition: background-color 0.2s, transform 0.1s;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: background-color 0.2s, transform 0.1s;
+    display: inline-block;
+    margin: 0 5px;
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
-    background-color: #222; /* Dark grey for hover state */
+    background-color: #222;
 }
 
-/* Loading indicator styles */
-.jp-loading {
-    display: none; /* Hide by default */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-}
-
-/* Volume bar brought back */
-.jp-volume-bar {
-    width: 100px;
-    height: 10px;
+/* Volume and Progress Bar */
+.jp-volume-bar, .jp-progress {
     background-color: #333;
     cursor: pointer;
-    display: block; /* Make it visible */
-    position: absolute;
-    bottom: 10%; /* Adjusted position */
-    left: 50%;
-    transform: translateX(-50%); /* Centering */
+    height: 20px;
+    position: relative;
+    display: block;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 600px;
 }
 
-.jp-volume-bar-value {
-    height: 100%;
+.jp-volume-bar-value, .jp-play-bar {
     background-color: #fff;
     transition: width 0.2s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
 }
 
-/* Responsive video player styles */
-.jp-video-responsive {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Time display next to the seek bar */
+/* Time Information */
 .time-info {
     display: flex;
     justify-content: space-between;
     width: 100%;
     font-size: 4vw;
-    padding: 0 5px; /* Padding to not overlap with the edge of the screen */
+    padding: 0 5px;
 }
 
 .current-time, .duration {
     color: white;
 }
 
-/* Additional styles for larger seek bar and positioning */
-.jp-progress {
-    height: 20px; /* Larger touch target for seek bar */
-    position: relative; /* Position relative to allow absolute positioning inside */
-    margin-bottom: 10px; /* Space for time info */
-}
-
-
-/* Time bar styles */
-.jp-seek-bar {
-    width: 100%;
-    height: 15px; /* Increased height for better visibility */
-    background-color: #333;
-    cursor: pointer;
-    position: relative;
-    display: block;
-    margin: 20px 0; /* Increased margin for better spacing */
-    max-width: 600px; /* Consistent with track selection */
-}
-
-.jp-play-bar {
-    width: 0;
-    height: 100%;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: width 0.5s linear;
-}
-
-/* Track item styles */
+/* Track Item Styles */
 .track-item {
     color: white;
     text-decoration: none;
@@ -139,141 +93,78 @@ body {
     text-align: center;
     cursor: pointer;
     background: #000;
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Padding included in width */
-    max-width: 600px; /* Consistent with track selection */
 }
 
 .track-item.playing, .track-item:hover {
     background-color: #222;
-    border-color: #fff;
 }
 
-/* Responsive header image */
+/* Header Image Style */
 #header-image {
     width: 100%;
-    max-height: 200px; /* Reduced height for better proportion */
+    max-height: 200px;
     object-fit: cover;
     margin-bottom: 20px;
-    max-width: 600px; /* Consistent with track selection */
 }
 
-/* Button styles for play, pause, stop */
-.jp-controls button {
-    margin: 0 5px;
-}
-
-/* Make controls appear more like classic Mac buttons */
-.jp-controls button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #000;
-    color: white;
-    border: 1px solid white;
-    padding: 5px 10px;
-    margin-right: 10px;
-    text-transform: uppercase;
-}
-
-/* Active state for buttons */
-.jp-controls button:active {
-    background-color: #222; /* Darken button when active/pressed */
-    transform: scale(0.9); /* Slightly decrease the size on active to simulate a press */
-}
-
-/* Responsive Design Adjustments */
+/* Responsive Design */
 @media screen and (max-width: 768px) {
     body {
-        padding: 10px; /* Reduce padding on smaller screens */
+        padding: 10px;
     }
-    
-    .jp-controls {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px; /* Ensures space between controls */
-    }
-
 
     .jp-controls button, .jp-mute, .jp-unmute {
-        font-size: 4vw; /* Use viewport width for responsive font size */
-        padding: 4vw; /* Use viewport width for responsive padding */
+        padding: 4vw;
+        font-size: 4vw;
     }
 
-    .jp-volume-bar, .jp-seek-bar {
-        width: 80vw; /* Use viewport width for seek bar and volume bar */
-        height: 5vh; /* Use viewport height for a larger touch area */
-    }
-
-    .jp-volume-bar-value, .jp-play-bar {
-        transition: width 0.2s ease; /* Smooth transition for volume and play bar changes */
+    .jp-volume-bar, .jp-progress {
+        width: 80vw;
+        height: 5vh;
     }
 
     .track-item {
-        padding: 10px; /* Increase padding for larger touch targets */
-        font-size: 14px; /* Increase font size for readability */
-        margin-bottom: 10px; /* Increase spacing between track items */
+        padding: 10px;
+        font-size: 14px;
+        margin-bottom: 10px;
     }
 
     #header-image {
-        max-height: 25vh; /* Use viewport height for a responsive image */
+        max-height: 25vh;
     }
 
     .now-playing {
-        margin-bottom: 15px; /* Increase space below the now playing text */
+        margin-bottom: 15px;
     }
 
-    /* Add time info styles for better visibility */
     .time-info {
-        display: flex;
-        justify-content: space-between;
-        width: 90%; /* Match the seek bar width */
         font-size: 12px;
-        margin: 0 auto 10px; /* Add space above for clarity */
     }
 }
 
-/* Adjustments for mobile screens */
 @media screen and (max-width: 480px) {
     .jp-controls button, .jp-mute, .jp-unmute {
-        /* Unchanged styles... */
+        padding: 10px;
+        font-size: 10px;
     }
 
     .jp-controls {
-        gap: 5px; /* Reduce space between buttons */
-    }
-
-    .jp-controls button {
-        flex: 1 0 45%; /* Allow buttons to take up equal space */
-    }
-
-    .jp-mute, .jp-unmute {
-        flex: 0 0 48%; /* Consistency in mute and unmute button sizing */
-    }
-
-
-    .jp-seek-bar {
-        width: 90vw; /* Increase width for better usability */
-    }
-
-    .jp-play-bar {
-        /* Unchanged styles... */
+        flex-wrap: wrap;
     }
 
     .jp-volume-bar {
-        display: none; /* Hide volume bar on mobile as it might not be practical */
+        display: none;
     }
 
     #header-image {
-        max-height: 150px; /* Reduce height for smaller screens */
+        max-height: 150px;
     }
 
     .now-playing, .track-item {
-        font-size: 10px; /* Smaller font size for track information */
+        font-size: 10px;
     }
 
     .time-info {
-        font-size: 4vw; /* Smaller font size for time information */
+        font-size: 4vw;
     }
 }
