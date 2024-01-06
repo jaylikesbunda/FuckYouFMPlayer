@@ -32,13 +32,6 @@ body {
 }
 
 /* Controls Styles */
-.jp-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
 .jp-controls button, .jp-mute, .jp-unmute {
     font-family: 'Press Start 2P', cursive;
     cursor: pointer;
@@ -46,101 +39,189 @@ body {
     color: white;
     border: 1px solid white;
     padding: 10px 15px;
-    font-size: 12px; /* Adjust font size for better UX */
+    font-size: 0.75rem;
     transition: background-color 0.2s, transform 0.1s;
+    display: inline-block;
+    margin: 0 5px;
     text-transform: uppercase;
 }
 
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
     background-color: #222;
 }
+.jp-controls button:active {
+    transform: translateY(4px);
+}
 
-/* Seek Bar and Time Styling */
-.jp-progress, .jp-seek-bar {
+/* Volume and Progress Bar */
+.jp-volume-bar, .jp-progress {
     background-color: #333;
     cursor: pointer;
-    height: 20px;
+    height: 10px; /* Adjusted for a thinner bar */
     position: relative;
+    display: block;
+	align-items: center;
     margin: 20px 0;
     width: 90%;
     max-width: 600px;
+    box-shadow: 0 0 4px #fff, 0 0 7px #fff, 0 0 10px #fff; /* Smooth white glow */
+    transition: box-shadow 0.3s ease-in-out; /* Transition for a smooth effect on hover */
+
 }
 
-.jp-play-bar, .jp-volume-bar-value {
+.jp-volume-bar-value, .jp-play-bar {
     background-color: #fff;
     transition: width 0.2s ease;
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
+	align-items: center;
+    height: 100%; /* Full height of the bar */
+}
+/* Hide volume bar and text on mobile by default */
+.jp-volume-controls, .jp-volume-bar, .volume-text {
+    display: none;
+}
+/* Track Item Styles */
+.track-item {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border: 1px solid white;
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+    background: #000;
 }
 
-/* Time Information */
+.track-item.playing, .track-item:hover {
+    background-color: #222;
+}
+/* Smoother and Whiter Glow on Hover for Track Items */
+.track-item:hover {
+    box-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 20px #fff; /* Smooth white glow on hover */
+}
+/* Media Player Controls Styling */
+.jp-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jp-controls button {
+    margin: 0 10px;
+}
+
+/* Time Information Styling Adjustments */
 .time-info {
     position: absolute;
-    width: 100%;
-    top: -30px;
+    top: 50%; /* Center vertically */
+    left: 10px; /* Adjusted for spacing from the edge */
+    right: 10px; /* Adjusted for spacing from the edge */
     display: flex;
     justify-content: space-between;
-    font-size: 12px; /* Smaller font size */
+    align-items: center;
+    width: calc(100% - 20px); /* Adjust width taking padding into account */
+    transform: translateY(-50%); /* Center vertically with respect to the bar */
 }
 
 .current-time, .duration {
-    padding: 0 10px; /* Padding for better visibility */
+    /* No need to set position to static; it will follow the flexbox rules by default */
+    font-size: 0.75rem;
+    background-color: black; /* Background color to cover the seek bar behind text */
+    padding: 2px 4px; /* Padding to provide spacing around the text */
 }
 
-/* Volume Text and Bar Placement */
-.volume-text {
-    text-align: center;
+
+/* Header Image Style */
+#header-image {
     width: 100%;
-    position: fixed;
-    bottom: 90px; /* Position above the volume bar */
-    left: 0;
-    font-size: 12px; /* Smaller font size */
+    max-height: 200px;
+    object-fit: cover;
+    margin-bottom: 20px;
 }
 
-.jp-volume-bar {
-    position: fixed;
-    bottom: 50px; /* Place at the bottom with some space */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%; /* Full width for ease of interaction */
-    height: 20px;
-}
-
-/* Responsive Design Adjustments */
+/* Tablet and Small Desktops */
 @media screen and (max-width: 768px) {
+    .jp-controls button, .jp-mute, .jp-unmute {
+        padding: 10px;
+        font-size: 3vw;
+        min-width: 50px;
+        min-height: 50px;
+    }
+
+    .jp-progress, .jp-volume-bar {
+        width: 80vw;
+        height: 6vh;
+    }
+
+    .track-item, .now-playing {
+        padding: 1em;
+        font-size: 3.5vw;
+        margin-bottom: 1em;
+    }
+
+    #header-image {
+        max-height: 25vh;
+    }
+
     .time-info {
-        font-size: 3vw; /* Responsive font size for time info */
-    }
-
-    .volume-text {
-        font-size: 3vw; /* Responsive font size for volume text */
-    }
-
-    .jp-controls button {
-        font-size: 3vw; /* Responsive font size for buttons */
+        font-size: 3.5vw;
+        margin: 1em 0;
     }
 }
 
+/* Mobile-specific adjustments */
 @media screen and (max-width: 480px) {
-    .jp-controls {
-        flex-direction: column;
-        width: 90%;
+    .jp-progress {
+        margin-top: 30px; /* Add space for the time info */
+        height: 5px; /* Thinner seek bar */
     }
 
-    .jp-controls button {
-        font-size: 4vw; /* Larger font size for readability */
-        padding: 10px; /* Comfortable padding for touch targets */
-        margin-bottom: 10px; /* Space between buttons */
+    .time-info {
+        top: -40px; /* Adjust to not overlap the seek bar */
+        font-size: 4vw; /* Slightly larger font size for mobile readability */
+        padding: 0; /* Remove padding */
+        width: 100%; /* Use full width of the parent */
+        transform: translateY(0); /* No vertical translation needed */
     }
 
-    .time-info, .volume-text {
-        font-size: 5vw; /* Larger font size for better visibility */
+    .current-time, .duration {
+        /* Ensure the time information does not overlap the seek bar */
+        position: absolute;
+        background-color: transparent; /* Remove background color on mobile */
+        padding: 0; /* Remove padding on mobile */
+    }
+
+    .current-time {
+        left: 0; /* Place the current time at the start of the seek bar */
+    }
+
+    .duration {
+        right: 0; /* Place the duration at the end of the seek bar */
+    }
+}
+
+@media screen and (min-width: 481px) {
+    .jp-volume-controls {
+        display: flex; /* Use flexbox for alignment */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        position: fixed; /* Fix position relative to viewport */
+        left: 0; /* Align to the left edge */
+        right: 0; /* Align to the right edge */
+        bottom: 10px; /* Distance from the bottom */
+        z-index: 10; /* Ensure it's above other elements */
+    }
+
+    .volume-label {
+        text-align: center; /* Center the text label */
+        margin-bottom: 5px; /* Space between label and volume bar */
     }
 
     .jp-volume-bar {
-        bottom: 20px; /* Adjust for mobile */
-        height: 4vw; /* Larger touch target */
+        width: 90%; /* Set the width of the volume bar */
+        margin: 0 auto; /* Center the volume bar */
     }
 }
