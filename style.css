@@ -99,6 +99,35 @@ body {
     background-color: #222;
 }
 
+/* Media Player Specific Styles */
+.jp-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Ensures space between controls */
+    flex-wrap: wrap; /* Allows controls to wrap on smaller screens */
+}
+
+.jp-controls button {
+    padding: 0.625em 1em; /* Responsive padding */
+    font-size: 1rem; /* Adjust font size */
+}
+
+/* Seek Bar and Time Styling */
+.jp-progress, .jp-seek-bar {
+    width: 90%; /* Set to the desired width relative to its container */
+    margin: 0 auto 10px; /* Center align and add margin for spacing */
+}
+
+.time-info {
+    margin-top: 10px; /* Space from the seek bar */
+    font-size: 1.25rem; /* Adjust font size for readability */
+}
+
+.current-time, .duration {
+    padding: 0 5px; /* Padding to prevent text from touching the edges */
+}
+
+
 /* Header Image Style */
 #header-image {
     width: 100%;
@@ -138,18 +167,19 @@ body {
     }
 
     .time-info {
-        font-size: 12px;
+        font-size: 5vw;
     }
 }
 
 @media screen and (max-width: 480px) {
     .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 10px;
-        font-size: 10px;
+        padding: 3vw;
+        font-size: 5vw;
     }
 
     .jp-controls {
         flex-wrap: wrap;
+		gap: 5vw;
     }
 
     .jp-volume-bar {
@@ -166,5 +196,8 @@ body {
 
     .time-info {
         font-size: 4vw;
+    }
+    .jp-progress, .jp-seek-bar {
+        width: 90vw; /* Full width for smaller screens */
     }
 }
