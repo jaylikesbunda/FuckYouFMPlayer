@@ -12,7 +12,11 @@ $(document).ready(function() {
       file: "https://audio.jukehost.co.uk/SmFrnGF37HsQntp8DW74RAG1LYJboFHy",
       image: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png"
     },
-    // Add more tracks with their respective images as needed
+    { 
+      name: "ALPHA BRAIN FORCE MAX PLUS",
+      file: "https://audio.jukehost.co.uk/k4Ua7EJEWpbm72dlhtDZAFizrPe997de",
+      image: "https://i.ibb.co/2M3nVrp/348368204-1030155491281535-6750310068sdfsdff33836061-n.jpg"
+    },
   ];
 
 	function populateTrackList() {
