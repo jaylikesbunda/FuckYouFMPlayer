@@ -53,20 +53,20 @@ body {
     transform: translateY(4px);
 }
 
-/* Volume and Progress Bar */
+/* Volume and Progress Bar Adjustments */
 .jp-volume-bar, .jp-progress {
     background-color: #333;
     cursor: pointer;
-    height: 10px; /* Adjusted for a thinner bar */
+    height: 10px; /* Maintain the thinner bar */
     position: relative;
-    display: block;
-	align-items: center;
+    display: flex; /* Changed to flex to center the children vertically */
+    justify-content: center; /* This centers the child elements horizontally */
+    align-items: center; /* This centers the child elements vertically */
     margin: 20px 0;
     width: 90%;
     max-width: 600px;
     box-shadow: 0 0 4px #fff, 0 0 7px #fff, 0 0 10px #fff; /* Smooth white glow */
-    transition: box-shadow 0.3s ease-in-out; /* Transition for a smooth effect on hover */
-
+    transition: box-shadow 0.3s ease-in-out; /* Smooth effect on hover */
 }
 
 .jp-volume-bar-value, .jp-play-bar {
@@ -82,32 +82,43 @@ body {
 .jp-volume-controls, .jp-volume-bar, .volume-text {
     display: none;
 }
-/* Track Item Styles */
 .track-item {
     color: white;
     text-decoration: none;
     display: block;
-    padding: 10px;
+    padding: 15px; /* Increased padding */
     border: 1px solid white;
-    margin-bottom: 5px;
+    margin-bottom: 10px; /* Increased margin-bottom to avoid overlap */
     text-align: center;
     cursor: pointer;
     background: #000;
+    box-sizing: border-box; /* Ensures padding doesn't affect overall width */
 }
-
 .track-item.playing, .track-item:hover {
     background-color: #222;
 }
+
 /* Smoother and Whiter Glow on Hover for Track Items */
 .track-item:hover {
     box-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 20px #fff; /* Smooth white glow on hover */
 }
+/* Adjusting track-selection container to add more space */
+#track-selection {
+    width: 90%; /* Adjust width if necessary */
+    max-width: 600px; /* Match other components */
+    margin-top: 30px; /* Increase top margin to move the track list down */
+    text-align: center; /* Center align the track list items if they are inline or inline-block */
+}
+
 /* Media Player Controls Styling */
 .jp-controls {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Adjust the margin to create more space between the controls and the time info */
+    margin-top: 20px; /* This negative margin pulls the controls up towards the header */
 }
+
 
 .jp-controls button {
     margin: 0 10px;
@@ -116,30 +127,27 @@ body {
 /* Time Information Styling Adjustments */
 .time-info {
     position: absolute;
-    top: 50%; /* Center vertically */
-    left: 10px; /* Adjusted for spacing from the edge */
-    right: 10px; /* Adjusted for spacing from the edge */
+    bottom: -33px; /* Adjusted to move it down from the seek bar */
+    left: 10px; /* Spacing from the left edge */
+    right: 10px; /* Spacing from the right edge */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(100% - 20px); /* Adjust width taking padding into account */
-    transform: translateY(-50%); /* Center vertically with respect to the bar */
+    width: calc(100% - 20px); /* Adjust width taking left and right padding into account */
 }
-
 .current-time, .duration {
-    /* No need to set position to static; it will follow the flexbox rules by default */
     font-size: 0.75rem;
-    background-color: black; /* Background color to cover the seek bar behind text */
+    background-color: black; /* To ensure text is readable over the progress bar */
     padding: 2px 4px; /* Padding to provide spacing around the text */
+    color: white; /* Ensuring text color is white for readability */
 }
-
 
 /* Header Image Style */
 #header-image {
     width: 100%;
     max-height: 200px;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 80px;
 }
 
 /* Tablet and Small Desktops */
@@ -164,11 +172,16 @@ body {
 
     #header-image {
         max-height: 25vh;
+		margin-bottom: 40px; /* Adjust this value as needed */
     }
-
+    .jp-controls {
+        /* Adjust the margin-top if necessary for smaller screens */
+        margin-top: 20px; /* Adjust this value as needed */
+    }
     .time-info {
         font-size: 3.5vw;
         margin: 1em 0;
+		bottom: 30px; /* Adjust this value as needed */
     }
 }
 
@@ -180,7 +193,7 @@ body {
     }
 
     .time-info {
-        top: -40px; /* Adjust to not overlap the seek bar */
+        top: -35px; /* Adjust to not overlap the seek bar */
         font-size: 4vw; /* Slightly larger font size for mobile readability */
         padding: 0; /* Remove padding */
         width: 100%; /* Use full width of the parent */

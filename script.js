@@ -32,6 +32,14 @@ $(document).ready(function() {
 	}
 
 	function initializePlayer() {
+		// Here is the throttled function
+		var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
+			var percentage = (currentTime / duration) * 100;
+			$(".jp-play-bar").css("width", percentage + "%");
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
+		}, 250); // Throttle updates to every 250 milliseconds
+
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
 				selectTrack(0);
@@ -47,31 +55,56 @@ $(document).ready(function() {
 			toggleDuration: true,
 			timeupdate: function(event) {
 				if (!isSeeking) {
-					updateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
+					var currentTime = event.jPlayer.status.currentTime;
+					var duration = event.jPlayer.status.duration;
+					var percentage = (currentTime / duration) * 100;
+
+					// Update the seek bar
+					$(".jp-play-bar").css("width", percentage + "%");
+
+					// Update the time display
+					$(".current-time").text(formatTime(currentTime));
+					$(".duration").text(formatTime(duration - currentTime));
 				}
 			}
 		});
 
-		// Consolidate progress bar event handlers
 		$('.jp-progress').on('mousedown touchstart', function(e) {
 			isSeeking = true;
-			// Determine the location of the event
 			var pageX = e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX;
 			updateSeekBarPosition(pageX);
-		}).on('mousemove touchmove', function(e) {
+			e.preventDefault(); // Prevent default text selection behavior
+		});
+
+
+		$(document).on('mousemove touchmove', function(e) {
 			if (isSeeking) {
-				var pageX = e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX;
+				var pageX = e.type === 'mousemove' ? e.pageX : (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX);
 				updateSeekBarPosition(pageX);
 			}
-		}).on('mouseup touchend', function(e) {
+		});
+
+
+		$(document).on('mouseup touchend', function(e) {
 			if (isSeeking) {
 				isSeeking = false;
-				// For mouseup, we update the position one last time
-				if (e.type === 'mouseup') {
-					updateSeekBarPosition(e.pageX);
-				}
+				var pageX = e.type === 'mouseup' ? e.pageX : (e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].pageX : e.pageX);
+				updateSeekBarPosition(pageX);
+
+				// Calculate final percentage and update playback position
+				var progressContainer = $(".jp-progress");
+				var progressBarWidth = progressContainer.width();
+				var progressBarOffset = progressContainer.offset().left;
+				var position = pageX - progressBarOffset;
+				var percentage = (position / progressBarWidth) * 100;
+				percentage = Math.max(0, Math.min(percentage, 100));
+
+				// Finalize the seek operation
+				$("#jquery_jplayer_1").jPlayer("playHead", percentage);
+				syncSeekBarAndTime(percentage, false);
 			}
 		});
+
 
 		// Volume control
 		$('.jp-volume-bar').on('click', function(e) {
@@ -118,33 +151,40 @@ $(document).ready(function() {
         }
     }
 
-	  function updateSeekBar(currentTime, duration) {
+	function updateSeekBar(currentTime, duration) {
 		var percentage = (currentTime / duration) * 100;
 		$(".jp-play-bar").css("width", percentage + "%");
 		$(".current-time").text(formatTime(currentTime));
 		$(".duration").text(formatTime(duration - currentTime));
-	  }
+	}
 
-	  function updateSeekBarPosition(pageX) {
+	function updateSeekBarPosition(pageX) {
 		var progressContainer = $(".jp-progress");
 		var progressBarWidth = progressContainer.width();
 		var progressBarOffset = progressContainer.offset().left;
 		var position = pageX - progressBarOffset;
 		var percentage = (position / progressBarWidth) * 100;
-		// Ensure the percentage is between 0 and 100
 		percentage = Math.max(0, Math.min(percentage, 100));
-		$(".jp-play-bar").css("width", percentage + "%");
-		$("#jquery_jplayer_1").jPlayer("playHead", percentage);
-		// Synchronize the time display with the seek bar's position
-		syncSeekBarAndTime(percentage);
-	  }
 
-	  // Synchronizes the seek bar and the displayed time
-	  function syncSeekBarAndTime(percentage) {
+		// Update the seek bar's width
+		$(".jp-play-bar").css("width", percentage + "%");
+
+		// Temporarily update the time display with the seek bar's position
+		syncSeekBarAndTime(percentage, true);
+	}
+	function syncSeekBarAndTime(percentage, isTemporary) {
 		var duration = $("#jquery_jplayer_1").data("jPlayer").status.duration;
 		var currentTime = duration * (percentage / 100);
-		updateSeekBar(currentTime, duration);
-	  }
+
+		// Update the time display only if it's a temporary change (user interaction)
+		if (isTemporary) {
+			updateSeekBar(currentTime, duration);
+		} else {
+			// Update the playback head only if the change is permanent (after user interaction ends)
+			$("#jquery_jplayer_1").jPlayer("playHead", percentage);
+		}
+	}
+
 
     function formatTime(seconds) {
         var minutes = Math.floor(seconds / 60);
