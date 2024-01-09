@@ -53,6 +53,20 @@ body {
     transform: translateY(4px);
 }
 
+/* Ad Section Styles */
+#ad-section {
+    width: 90%; /* Adjust width to fit the layout */
+    max-width: 600px; /* Match the width of other components */
+    margin: 20px auto; /* Vertical spacing and centered alignment */
+    text-align: center; /* Center the ad image */
+}
+
+#ad-section img {
+    max-width: 100%; /* Ensure the image fits in the container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Maximum height for ad images */
+}
+
 /* Volume and Progress Bar Adjustments */
 .jp-volume-bar, .jp-progress {
     background-color: #333;
@@ -63,7 +77,7 @@ body {
     justify-content: center; /* This centers the child elements horizontally */
     align-items: center; /* This centers the child elements vertically */
     margin: 20px 0;
-    width: 90%;
+    width: 100%;
     max-width: 600px;
     box-shadow: 0 0 4px #fff, 0 0 7px #fff, 0 0 10px #fff; /* Smooth white glow */
     transition: box-shadow 0.3s ease-in-out; /* Smooth effect on hover */
@@ -104,7 +118,7 @@ body {
 }
 /* Adjusting track-selection container to add more space */
 #track-selection {
-    width: 90%; /* Adjust width if necessary */
+    width: 100%;
     max-width: 600px; /* Match other components */
     margin-top: 30px; /* Increase top margin to move the track list down */
     text-align: center; /* Center align the track list items if they are inline or inline-block */
@@ -128,7 +142,7 @@ body {
 .time-info {
     position: absolute;
     bottom: -33px; /* Adjusted to move it down from the seek bar */
-    left: 10px; /* Spacing from the left edge */
+    left: 10px;
     right: 10px; /* Spacing from the right edge */
     display: flex;
     justify-content: space-between;
@@ -159,7 +173,7 @@ body {
         min-height: 50px;
     }
 
-    .jp-progress, .jp-volume-bar {
+    .jp-progress{
         width: 80vw;
         height: 6vh;
     }
@@ -236,5 +250,19 @@ body {
     .jp-volume-bar {
         width: 90%; /* Set the width of the volume bar */
         margin: 0 auto; /* Center the volume bar */
+		margin-bottom: 7px;
     }
+}
+/* Ad Section Styles */
+#ad-section {
+    width: 90%; /* Adjust width to fit the layout */
+    max-width: 600px; /* Match the width of other components */
+    margin: 20px auto; /* Vertical spacing and centered alignment */
+    text-align: center; /* Center the ad image */
+}
+
+#ad-section img {
+    max-width: 100%; /* Ensure the image fits in the container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Maximum height for ad images */
 }

@@ -5,20 +5,38 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/jdN2TbTn5tl8LDLklLVcpGjtPzkFfpRx",
-      image: "https://i.ibb.co/2M3nVrp/348368204-1030155491281535-6750310068sdfsdff33836061-n.jpg"
+      image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
     },
     { 
-      name: "FuckYouFM: UTOPIA",
+      name: "FuckYou FM: UTOPIA",
       file: "https://audio.jukehost.co.uk/SmFrnGF37HsQntp8DW74RAG1LYJboFHy",
       image: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png"
     },
     { 
-      name: "ALPHA BRAIN FORCE MAX PLUS",
-      file: "https://audio.jukehost.co.uk/k4Ua7EJEWpbm72dlhtDZAFizrPe997de",
-      image: "https://i.ibb.co/2M3nVrp/348368204-1030155491281535-6750310068sdfsdff33836061-n.jpg"
+      name: "FuckYou FM 2: DEMO",
+      file: "https://audio.jukehost.co.uk/0aOGCnDYVXy0tn9gANvDRCEoTlqKrlbB",
+      image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
     },
   ];
 
+  // Ad rotation functionality
+  var adImages = [
+    'https://i.ibb.co/7C8s77k/Untitled-2.png',
+    'https://i.ibb.co/vvPPWrH/Untitled-3.png',
+    // Add more ad image links as needed
+  ];
+
+  var currentAdIndex = 0;
+
+    function cycleAds() {
+        $('#ad-section').html(`<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;"/>`);
+        currentAdIndex = (currentAdIndex + 1) % adImages.length;
+        setTimeout(cycleAds, 5000); // Rotate ads every 5 seconds
+    }
+
+    // Initialize ad rotation
+    cycleAds();
+	
 	function populateTrackList() {
 	  const trackSelection = $('#track-selection');
 	  trackList.forEach((track, index) => {
