@@ -14,7 +14,7 @@ $(document).ready(function() {
     },
     { 
       name: "FuckYou FM 2: DEMO",
-      file: "https://audio.jukehost.co.uk/0aOGCnDYVXy0tn9gANvDRCEoTlqKrlbB",
+      file: "https://audio.jukehost.co.uk/IjxTCPVVoFcxZQ8QVVqnnLYXxOLOLQia",
       image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
     },
   ];
