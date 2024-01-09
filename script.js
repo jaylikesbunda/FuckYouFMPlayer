@@ -21,8 +21,7 @@ $(document).ready(function() {
 
   // Ad rotation functionality
   var adImages = [
-    'https://i.ibb.co/7C8s77k/Untitled-2.png',
-    'https://i.ibb.co/vvPPWrH/Untitled-3.png',
+    'https://i.ibb.co/6gV20KW/Untitled-3.gif',
     // Add more ad image links as needed
   ];
 

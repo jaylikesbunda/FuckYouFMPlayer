@@ -250,19 +250,22 @@ body {
     .jp-volume-bar {
         width: 90%; /* Set the width of the volume bar */
         margin: 0 auto; /* Center the volume bar */
-		margin-bottom: 7px;
+		margin-bottom: 10px;
     }
 }
 /* Ad Section Styles */
 #ad-section {
-    width: 90%; /* Adjust width to fit the layout */
-    max-width: 600px; /* Match the width of other components */
-    margin: 20px auto; /* Vertical spacing and centered alignment */
-    text-align: center; /* Center the ad image */
+    width: 100%; /* Adjust the width to take the full container width */
+    max-width: 200px; /* Set a maximum width to ensure it's not too large */
+    margin: 20px auto; /* Maintain vertical spacing and centered alignment */
+    text-align: center; /* Center the ad content */
+    padding: 20px; /* Add some padding for spacing */
+
+
 }
 
 #ad-section img {
-    max-width: 100%; /* Ensure the image fits in the container */
+    width: 100%; /* Make the image responsive to the container's width */
     height: auto; /* Maintain aspect ratio */
-    max-height: 200px; /* Maximum height for ad images */
+    max-height: 200px; /* Set a maximum height for the images */
 }
