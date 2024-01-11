@@ -13,8 +13,8 @@ $(document).ready(function() {
       image: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png"
     },
     { 
-      name: "FuckYou FM 2: DEMO",
-      file: "https://audio.jukehost.co.uk/IjxTCPVVoFcxZQ8QVVqnnLYXxOLOLQia",
+      name: "FuckYou FM 2",
+      file: "https://audio.jukehost.co.uk/NaTVy3NDoWsdTIra1p7YNVY5S6Q5EtlK",
       image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
     },
   ];
