@@ -166,6 +166,7 @@ body::-webkit-scrollbar {
     max-width: 600px;
     box-shadow: 0 0 4px #fff, 0 0 7px #fff, 0 0 10px #fff; /* Smooth white glow */
     transition: box-shadow 0.3s ease-in-out; /* Smooth effect on hover */
+    border-radius: 5px; /* Rounded corners for the bars */
 }
 
 .jp-volume-bar-value, .jp-play-bar {
@@ -174,20 +175,23 @@ body::-webkit-scrollbar {
     position: absolute;
     top: 0;
     left: 0;
-	align-items: center;
+    align-items: center;
     height: 100%; /* Full height of the bar */
+    border-radius: 5px; /* Rounded corners for the filled part */
 }
-/* Hide volume bar and text on mobile by default */
-.jp-volume-controls, .jp-volume-bar, .volume-text {
-    display: none;
+
+/* Hover effect to enhance visibility */
+.jp-volume-bar:hover, .jp-progress:hover {
+    box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
 }
+
 .track-item {
     color: white;
     text-decoration: none;
     display: block;
     padding: 15px; /* Increased padding */
     border: 1px solid white;
-    margin-bottom: 10px; /* Increased margin-bottom to avoid overlap */
+    margin-bottom: 10px;
     text-align: center;
     cursor: pointer;
     background: #000;
@@ -208,9 +212,7 @@ body::-webkit-scrollbar {
     max-width: 500px; /* Match other components */
     margin: 30px auto; /* Increase margin top and center the container */
     padding: 10px; /* Add some padding for spacing */
-    border: 1px solid #fff; /* White border for the retro feel */
     background-color: #000; /* Slightly lighter background for the container */
-    box-shadow: 0 0 10px #fff; /* Soft glow effect */
     overflow: hidden; /* Prevents elements from overflowing */
 }
 
@@ -290,6 +292,9 @@ body::-webkit-scrollbar {
     #disclaimer-box {
         max-width: 700px; /* Increase max width for larger screens */
     }
+    .jp-volume-controls, .jp-volume-bar, .volume-text {
+        display: none;
+    }
 }
 /* Mobile-specific adjustments */
 @media screen and (max-width: 480px) {
@@ -335,6 +340,15 @@ body::-webkit-scrollbar {
     .clickable-icon {
         bottom: 20px; /* Lower the icon on mobile. Adjust the value as needed. */
     }
+    .jp-volume-controls, .jp-volume-bar, .volume-text {
+        display: none;
+    }
+	/* Controls Styles with Retro Rounded Buttons and Enhanced Hover Effect */
+	.jp-controls button, .jp-mute, .jp-unmute {
+		border: 2px solid white; /* Slightly thicker border for better visibility */
+		border-radius: 10px;
+		padding: 2px 7px;
+	}
 }
 @media screen and (min-width: 481px) {
     .jp-volume-controls {

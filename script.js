@@ -5,7 +5,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/jdN2TbTn5tl8LDLklLVcpGjtPzkFfpRx",
-      image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
+      image: "https://i.ibb.co/j6KvpvF/fuckyoufmoptimised.gif"
     },
     { 
       name: "FuckYou FM: UTOPIA",
@@ -15,7 +15,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM 2",
       file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
-      image: "https://i.ibb.co/NntjkN1/moshed-01-09-15-1-39.gif"
+      image: "https://i.ibb.co/j6KvpvF/fuckyoufmoptimised.gif"
     },
   ];
 
