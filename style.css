@@ -1,16 +1,23 @@
-/* Base Styles */
 body {
-    background-color: black;
-    font-family: 'Press Start 2P', cursive;
-    color: white;
-    margin: 0;
-    padding: 20px;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+    background-color: black; /* Sets the background color to black */
+    color: white; /* Sets the text color to white */
+    font-family: 'Press Start 2P', cursive; /* Sets the primary font with a fallback to cursive */
+    margin: 0; /* Removes the default margin */
+    padding: 20px; /* Adds padding around the content */
+    overflow-x: hidden; /* Hides horizontal overflow */
+    overflow-y: scroll; /* Enables vertical scrolling */
+    -ms-overflow-style: none; /* Hides scrollbar for IE and Edge */
+    scrollbar-width: none; /* Hides scrollbar for Firefox */
+    display: flex; /* Enables flexbox layout */
+    flex-direction: column; /* Stacks child elements vertically */
+    align-items: center; /* Centers children horizontally in the flex container */
+    justify-content: center; /* Centers children vertically in the flex container */
+    min-height: 100vh; /* Ensures the body takes at least the height of the viewport */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+    display: none;
 }
 
 /* Component Layout */
@@ -79,6 +86,57 @@ body {
     transform: translateY(2px); /* Slight move down to simulate pressing */
     box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Less glow to simulate the button being pressed */
 }
+#disclaimer-box {
+    margin: 20px auto;
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #000;
+    transition: border 0.4s ease; /* Animate the border property */
+}
+
+
+#disclaimer-toggle {
+    font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
+    cursor: pointer;
+    background: #000;
+    color: white;
+    border: 2px solid white; /* Slightly thicker border for better visibility */
+    border-radius: 8px; /* Rounded corners for buttons */
+    padding: 10px 15px;
+    font-size: 0.75rem;
+    transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
+    display: inline-block;
+    margin: 0 5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Glowing effect for buttons */
+}
+
+#disclaimer-toggle:hover {
+    background-color: #222; /* Dark grey background on hover */
+    color: #0f0; /* Classic retro green text on hover */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); /* Intensify the glow effect on hover */
+}
+
+#disclaimer-toggle:active {
+    transform: translateY(2px); /* Slight move down to simulate pressing */
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Less glow to simulate the button being pressed */
+}
+
+#disclaimer-content {
+    color: white;
+    display: none; /* Hidden by default */
+    font-size: 0.65rem; /* Adjusted font size for readability */
+    line-height: 1.5; /* Increased line height for readability */
+    padding: 0 20px; /* Padding to keep text from touching the box edges */
+    text-align: center; /* Ensures the text within is centered */
+    width: auto; /* Let it naturally occupy the needed width */
+    max-width: 100%; /* Ensure it doesn't overflow the parent's width */
+}
+
+
 
 /* Ad Section Styles */
 #ad-section {
@@ -135,6 +193,7 @@ body {
     background: #000;
     box-sizing: border-box; /* Ensures padding doesn't affect overall width */
 }
+
 .track-item.playing, .track-item:hover {
     background-color: #555;
 }
@@ -143,6 +202,7 @@ body {
 .track-item:hover {
     box-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 20px #fff; /* Smooth white glow on hover */
 }
+
 #track-selection {
     width: 100%;
     max-width: 500px; /* Match other components */
@@ -151,7 +211,9 @@ body {
     border: 1px solid #fff; /* White border for the retro feel */
     background-color: #000; /* Slightly lighter background for the container */
     box-shadow: 0 0 10px #fff; /* Soft glow effect */
+    overflow: hidden; /* Prevents elements from overflowing */
 }
+
 /* Media Player Controls Styling */
 .jp-controls {
     display: flex;
@@ -225,8 +287,10 @@ body {
         margin: 1em 0;
 		bottom: 30px; /* Adjust this value as needed */
     }
+    #disclaimer-box {
+        max-width: 700px; /* Increase max width for larger screens */
+    }
 }
-
 /* Mobile-specific adjustments */
 @media screen and (max-width: 480px) {
     .jp-progress {
@@ -234,10 +298,17 @@ body {
         height: 5px; /* Thinner seek bar */
     }
 
-    .track-selection {
-		left: -50;
+    #track-selection {
+        margin: 20px auto; /* Adjusts margin for smaller screens */
+        padding: 5px;
+		
+		/* Reduces padding for smaller screens */
     }
-	
+
+    .track-item {
+        padding: 14px; /* Reduced padding for smaller screens */
+        font-size: 4vw; /* Adjusted font size for readability on smaller screens */
+    }
 
     .time-info {
         top: 15px; /* Adjust to not overlap the seek bar */
@@ -248,7 +319,6 @@ body {
     }
 
     .current-time, .duration {
-        /* Ensure the time information does not overlap the seek bar */
         position: absolute;
         background-color: transparent; /* Remove background color on mobile */
         padding: 0; /* Remove padding on mobile */
@@ -261,14 +331,11 @@ body {
     .duration {
         right: 0; /* Place the duration at the end of the seek bar */
     }
-	.track-item {
-		left: -50px;
-	}
+
     .clickable-icon {
         bottom: 20px; /* Lower the icon on mobile. Adjust the value as needed. */
     }
 }
-
 @media screen and (min-width: 481px) {
     .jp-volume-controls {
         display: flex; /* Use flexbox for alignment */
@@ -308,3 +375,8 @@ body {
     height: auto; /* Maintain aspect ratio */
     max-height: 200px; /* Set a maximum height for the images */
 }
+
+@media screen and (min-width: 1024px) {
+    #disclaimer-box {
+        max-width: 900px; /* Further increase max width for very large screens */
+    }

@@ -104,6 +104,11 @@ $(document).ready(function() {
 				updateSeekBarPosition(pageX);
 			}
 		});
+		$(document).ready(function() {
+			$('#disclaimer-toggle').click(function() {
+				$('#disclaimer-content').slideToggle('slow'); // 'fast' can be changed to 'slow' or specific milliseconds
+			});
+		});
 
 
 		$(document).on('mouseup touchend', function(e) {
@@ -128,10 +133,27 @@ $(document).ready(function() {
 
 
 		// Volume control
-		$('.jp-volume-bar').on('click', function(e) {
-			var volumeLevel = e.pageX - $(this).offset().left;
-			var volumePercentage = volumeLevel / $(this).width();
-			$("#jquery_jplayer_1").jPlayer("volume", volumePercentage);
+		$('.jp-volume-bar').on('mousedown', function(e) {
+			var volumeBar = $(this);
+			var updateVolume = function(e) {
+				var volumeBarOffset = volumeBar.offset();
+				var volumeBarWidth = volumeBar.width();
+				var clickPositionX = e.pageX - volumeBarOffset.left;
+				var volumeLevel = clickPositionX / volumeBarWidth;
+				volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
+				$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
+				$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
+			};
+
+			updateVolume(e);
+
+			$(document).on('mousemove.vol', function(e) {
+				updateVolume(e);
+			}).on('mouseup.vol', function() {
+				$(document).off('.vol');
+			});
+
+			e.preventDefault(); // Prevent default drag behavior
 		});
 
 		// Mute and unmute controls
