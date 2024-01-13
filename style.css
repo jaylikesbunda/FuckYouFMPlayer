@@ -31,26 +31,53 @@ body {
     text-align: center;
 }
 
-/* Controls Styles */
+
+
+.clickable-icon {
+    position: fixed; /* Use fixed if you want the icon to stay at the bottom even when scrolling */
+    bottom: 70px; /* Adjust the padding at the bottom */
+    left: 50%; /* Center the icon horizontally */
+    transform: translateX(-50%); /* Offset the icon by half its width to truly center it */
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 5px; /* Add padding around the icon */
+}
+
+.clickable-icon img {
+    cursor: pointer;
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    display: block; /* Ensures that the image takes the padding from its parent */
+}
+
+
+/* Controls Styles with Retro Rounded Buttons and Enhanced Hover Effect */
 .jp-controls button, .jp-mute, .jp-unmute {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
     cursor: pointer;
     background: #000;
     color: white;
-    border: 1px solid white;
+    border: 2px solid white; /* Slightly thicker border for better visibility */
+    border-radius: 8px; /* Rounded corners for buttons */
     padding: 10px 15px;
     font-size: 0.75rem;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
     display: inline-block;
     margin: 0 5px;
     text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Glowing effect for buttons */
 }
 
+/* Enhanced hover effect with color changes and a shadow glow */
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
-    background-color: #222;
+    background-color: #222; /* Dark grey background on hover */
+    color: #0f0; /* Classic retro green text on hover */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); /* Intensify the glow effect on hover */
 }
-.jp-controls button:active {
-    transform: translateY(4px);
+
+/* 'Pressed' effect when buttons are active */
+.jp-controls button:active, .jp-mute:active, .jp-unmute:active {
+    transform: translateY(2px); /* Slight move down to simulate pressing */
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Less glow to simulate the button being pressed */
 }
 
 /* Ad Section Styles */
@@ -109,21 +136,22 @@ body {
     box-sizing: border-box; /* Ensures padding doesn't affect overall width */
 }
 .track-item.playing, .track-item:hover {
-    background-color: #222;
+    background-color: #555;
 }
 
 /* Smoother and Whiter Glow on Hover for Track Items */
 .track-item:hover {
     box-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 20px #fff; /* Smooth white glow on hover */
 }
-/* Adjusting track-selection container to add more space */
 #track-selection {
     width: 100%;
-    max-width: 600px; /* Match other components */
-    margin-top: 30px; /* Increase top margin to move the track list down */
-    text-align: center; /* Center align the track list items if they are inline or inline-block */
+    max-width: 500px; /* Match other components */
+    margin: 30px auto; /* Increase margin top and center the container */
+    padding: 10px; /* Add some padding for spacing */
+    border: 1px solid #fff; /* White border for the retro feel */
+    background-color: #000; /* Slightly lighter background for the container */
+    box-shadow: 0 0 10px #fff; /* Soft glow effect */
 }
-
 /* Media Player Controls Styling */
 .jp-controls {
     display: flex;
@@ -206,8 +234,13 @@ body {
         height: 5px; /* Thinner seek bar */
     }
 
+    .track-selection {
+		left: -50;
+    }
+	
+
     .time-info {
-        top: -35px; /* Adjust to not overlap the seek bar */
+        top: 15px; /* Adjust to not overlap the seek bar */
         font-size: 4vw; /* Slightly larger font size for mobile readability */
         padding: 0; /* Remove padding */
         width: 100%; /* Use full width of the parent */
@@ -227,6 +260,12 @@ body {
 
     .duration {
         right: 0; /* Place the duration at the end of the seek bar */
+    }
+	.track-item {
+		left: -50px;
+	}
+    .clickable-icon {
+        bottom: 20px; /* Lower the icon on mobile. Adjust the value as needed. */
     }
 }
 
