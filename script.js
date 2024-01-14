@@ -3,9 +3,9 @@ $(document).ready(function() {
   var currentTrackIndex = 0;
   var trackList = [
     { 
-      name: "FuckYou FM",
-      file: "https://audio.jukehost.co.uk/jdN2TbTn5tl8LDLklLVcpGjtPzkFfpRx",
-      image: "https://i.ibb.co/j6KvpvF/fuckyoufmoptimised.gif"
+      name: "FuckYou FM: REMASTERED",
+      file: "https://audio.jukehost.co.uk/XxP4grpUn8HB5tHZBLMdqFEUCbRIyCW7",
+      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
     },
     { 
       name: "FuckYou FM: UTOPIA",
@@ -15,7 +15,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM 2",
       file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
-      image: "https://i.ibb.co/j6KvpvF/fuckyoufmoptimised.gif"
+      image: "https://i.ibb.co/cDG2Mcz/fuckyoufm-22.gif"
     },
   ];
 
