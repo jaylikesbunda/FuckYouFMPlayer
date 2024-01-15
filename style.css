@@ -38,6 +38,17 @@ body::-webkit-scrollbar {
     text-align: center;
 }
 
+/* Volume Label Styling */
+.volume-label {
+    background-color: black; /* Black background */
+    color: white; /* White text for contrast */
+    padding: 5px; /* Padding around the text */
+    border-radius: 5px; /* Optional: Rounded corners */
+    display: inline-block; /* To properly apply padding and background */
+    margin-bottom: 5px; /* Space between label and volume bar */
+}
+
+
 
 
 .clickable-icon {
@@ -139,14 +150,14 @@ body::-webkit-scrollbar {
 
 
 /* Ad Section Styles */
-#ad-section {
+#ddd-section {
     width: 90%; /* Adjust width to fit the layout */
     max-width: 600px; /* Match the width of other components */
     margin: 20px auto; /* Vertical spacing and centered alignment */
     text-align: center; /* Center the ad image */
 }
 
-#ad-section img {
+#ddd-section img {
     max-width: 100%; /* Ensure the image fits in the container */
     height: auto; /* Maintain aspect ratio */
     max-height: 200px; /* Maximum height for ad images */
@@ -374,7 +385,7 @@ body::-webkit-scrollbar {
     }
 }
 /* Ad Section Styles */
-#ad-section {
+#ddd-section {
     width: 100%; /* Adjust the width to take the full container width */
     max-width: 200px; /* Set a maximum width to ensure it's not too large */
     margin: 20px auto; /* Maintain vertical spacing and centered alignment */
@@ -384,7 +395,7 @@ body::-webkit-scrollbar {
 
 }
 
-#ad-section img {
+#ddd-section img {
     width: 100%; /* Make the image responsive to the container's width */
     height: auto; /* Maintain aspect ratio */
     max-height: 200px; /* Set a maximum height for the images */

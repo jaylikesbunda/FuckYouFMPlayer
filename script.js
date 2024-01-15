@@ -19,22 +19,27 @@ $(document).ready(function() {
     },
   ];
 
-  // Ad rotation functionality
-  var adImages = [
-    'https://i.ibb.co/6gV20KW/Untitled-3.gif',
-    // Add more ad image links as needed
-  ];
+	// Ad rotation functionality
+	var adImages = [
+		'https://i.ibb.co/6gV20KW/Untitled-3.gif',
+		// Add more ad image links as needed
+	];
 
-  var currentAdIndex = 0;
+	var currentAdIndex = 0;
 
-    function cycleAds() {
-        $('#ad-section').html(`<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;"/>`);
-        currentAdIndex = (currentAdIndex + 1) % adImages.length;
-        setTimeout(cycleAds, 5000); // Rotate ads every 5 seconds
-    }
+	function cycleAds() {
+		$('#ddd-section').html(`
+			<a href="https://www.fuckyoudeki.net" target="_blank">
+				<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;"/>
+			</a>
+		`);
+		currentAdIndex = (currentAdIndex + 1) % adImages.length;
+		setTimeout(cycleAds, 5000); // Rotate ads every 5 seconds
+	}
 
-    // Initialize ad rotation
-    cycleAds();
+	// Initialize ad rotation
+	cycleAds();
+
 	
 	function populateTrackList() {
 	  const trackSelection = $('#track-selection');
