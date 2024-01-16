@@ -22,19 +22,41 @@ $(document).ready(function() {
 	// Ad rotation functionality
 	var adImages = [
 		'https://i.ibb.co/6gV20KW/Untitled-3.gif',
+		'https://i.ibb.co/R49K61Q/Untitled-5.png',
+		'https://i.ibb.co/M2k4nh6/Untitled-6.png',
 		// Add more ad image links as needed
 	];
 
 	var currentAdIndex = 0;
 
 	function cycleAds() {
-		$('#ddd-section').html(`
-			<a href="https://www.fuckyoudeki.net" target="_blank">
-				<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;"/>
-			</a>
-		`);
-		currentAdIndex = (currentAdIndex + 1) % adImages.length;
-		setTimeout(cycleAds, 5000); // Rotate ads every 5 seconds
+		var adContainer = $('#ddd-section');
+		var currentImg = adContainer.find('img');
+
+		// If an image already exists, fade it out
+		if (currentImg.length) {
+			currentImg.addClass('fadeOut').on('animationend', function() {
+				// Once fade-out is complete, change the image source and fade it in
+				currentImg.off('animationend');
+				currentImg.attr('src', adImages[currentAdIndex]).removeClass('fadeOut').addClass('fadeIn');
+
+				// Update the index for the next ad
+				currentAdIndex = (currentAdIndex + 1) % adImages.length;
+			});
+		} else {
+			// If no image exists, insert the first ad image
+			adContainer.html(`
+				<a href="https://www.fuckyoudeki.net" target="_blank">
+					<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;" class="fadeIn"/>
+				</a>
+			`);
+
+			// Update the index for the next ad
+			currentAdIndex = (currentAdIndex + 1) % adImages.length;
+		}
+
+		// Set the timer for the next ad transition
+		setTimeout(cycleAds, 5000);
 	}
 
 	// Initialize ad rotation

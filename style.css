@@ -400,6 +400,24 @@ body::-webkit-scrollbar {
     height: auto; /* Maintain aspect ratio */
     max-height: 200px; /* Set a maximum height for the images */
 }
+/* Fade In and Fade Out Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+#ddd-section img.fadeIn {
+    animation: fadeIn 1s ease-in;
+}
+
+#ddd-section img.fadeOut {
+    animation: fadeOut 1s ease-out;
+}
 
 @media screen and (min-width: 1024px) {
     #disclaimer-box {
