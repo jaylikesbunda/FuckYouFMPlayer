@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var isLiveMode = false;
   var isSeeking = false;
   var currentTrackIndex = 0;
   var trackList = [
@@ -64,20 +65,65 @@ $(document).ready(function() {
 
 	
 	function populateTrackList() {
-	  const trackSelection = $('#track-selection');
-	  trackList.forEach((track, index) => {
+		const trackSelection = $('#track-selection');
+
+		// Prepend the LIVE button at the top of the track list
 		$('<a>', {
-		  'class': 'track-item',
-		  'href': '#',
-		  'data-src': track.file,
-		  'data-image': track.image,
-		  'text': track.name
+			'id': 'live-button',
+			'class': 'track-item live-track',
+			'href': '#',
+			'text': 'LIVE'
 		}).on('click', (e) => {
-		  e.preventDefault();
-		  selectTrack(index);
-		}).appendTo(trackSelection);
-	  });
+			e.preventDefault();
+			activateLiveMode();
+		}).prependTo(trackSelection);
+
+		// Add other tracks to the list
+		trackList.forEach((track, index) => {
+			$('<a>', {
+				'class': 'track-item',
+				'href': '#',
+				'data-src': track.file,
+				'data-image': track.image,
+				'text': track.name
+			}).on('click', (e) => {
+				e.preventDefault();
+				selectTrack(index);
+			}).appendTo(trackSelection);
+		});
 	}
+
+	function activateLiveMode() {
+		isLiveMode = true; // Set live mode to true
+		playRandomTrack(-1, true); // -1 indicates no track to exclude, true for isFirstTrack
+	}
+
+	function playRandomTrack(excludeIndex, isFirstTrack = false) {
+		var randomTrackIndex;
+		do {
+			randomTrackIndex = Math.floor(Math.random() * trackList.length);
+		} while (randomTrackIndex === excludeIndex); // Ensure the new track is not the same as the excludeIndex
+
+		selectTrack(randomTrackIndex, true, isFirstTrack);
+	}
+	
+	function playNextTrackInLiveMode() {
+		// Select the next track in the list, or a random one if we've reached the end
+		var nextIndex = (currentTrackIndex + 1) % trackList.length;
+		selectTrack(nextIndex, true);
+	}
+
+	function playAllTracksSequentially(index) {
+		if (index >= trackList.length) {
+			index = 0; // Loop back to the first track
+		}
+		selectTrack(index, true); // The second parameter indicates it's from LIVE mode
+
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.ended).bind($.jPlayer.event.ended, function() {
+			playAllTracksSequentially(index + 1); // Play the next track after the current one ends
+		});
+	}
+
 
 	function initializePlayer() {
 		// Here is the throttled function
@@ -202,16 +248,60 @@ $(document).ready(function() {
 	}
 
 
-    function selectTrack(index) {
-        currentTrackIndex = index;
-        var track = trackList[index];
-        $("#jquery_jplayer_1").jPlayer("setMedia", {
-            mp3: track.file
-        }).jPlayer("play");
-        $("#header-image").attr("src", track.image);
-        updateMediaSession(track.name);
-        $('.track-item').removeClass('playing').eq(index).addClass('playing');
-    }
+
+	function selectTrack(index, isLive = false, isFirstTrack = false) {
+		currentTrackIndex = index;
+		var track = trackList[index];
+
+		// Reset event bindings
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata).unbind($.jPlayer.event.ended).unbind($.jPlayer.event.timeupdate);
+
+		// Set the media
+		$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
+
+		if (isLive) {
+			// Highlight LIVE button and display 'LIVE' instead of time
+			$('.track-item').removeClass('playing');
+			$('#live-button').addClass('playing');
+			$('.current-time, .duration').text('LIVE');
+
+			// Wait for the media to be ready to play
+			$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
+				if (isFirstTrack) {
+					var duration = event.jPlayer.status.duration;
+					var randomStartPosition = Math.random() * duration;
+					$(this).jPlayer("play", randomStartPosition);
+				} else {
+					$(this).jPlayer("play"); // Play from the beginning for subsequent tracks
+				}
+
+				// Bind event for when the track ends
+				$(this).bind($.jPlayer.event.ended, function() {
+					playRandomTrack(currentTrackIndex); // Pass the current index to avoid repeating the same track
+				});
+			});
+		} else {
+			// Non-live mode: Start from the beginning
+			isLiveMode = false;
+			$('.track-item').removeClass('playing').eq(index).addClass('playing');
+
+			// Play the track normally
+			$("#jquery_jplayer_1").jPlayer("play");
+
+			// Update time displays on time update event
+			$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
+				var currentTime = event.jPlayer.status.currentTime;
+				var duration = event.jPlayer.status.duration;
+				$(".current-time").text(formatTime(currentTime));
+				$(".duration").text(formatTime(duration - currentTime));
+			});
+		}
+
+		$("#header-image").attr("src", track.image);
+		updateMediaSession(track.name);
+	}
+
+
 
     function updateMediaSession(trackName) {
         if ('mediaSession' in navigator) {
@@ -224,8 +314,15 @@ $(document).ready(function() {
 	function updateSeekBar(currentTime, duration) {
 		var percentage = (currentTime / duration) * 100;
 		$(".jp-play-bar").css("width", percentage + "%");
-		$(".current-time").text(formatTime(currentTime));
-		$(".duration").text(formatTime(duration - currentTime));
+		
+		// Check if it's LIVE mode
+		if (isLiveMode) {
+			$(".current-time").text('LIVE');
+			$(".duration").text('LIVE');
+		} else {
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
+		}
 	}
 
 	function updateSeekBarPosition(pageX) {
@@ -256,11 +353,12 @@ $(document).ready(function() {
 	}
 
 
-    function formatTime(seconds) {
-        var minutes = Math.floor(seconds / 60);
-        seconds = Math.floor(seconds % 60);
-        return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-    }
+	// Additional helper function for formatting time
+	function formatTime(seconds) {
+		var minutes = Math.floor(seconds / 60);
+		seconds = Math.floor(seconds % 60);
+		return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+	}
 
     populateTrackList();
     initializePlayer();

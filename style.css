@@ -48,6 +48,13 @@ body::-webkit-scrollbar {
     margin-bottom: 5px; /* Space between label and volume bar */
 }
 
+.live-track {
+    color: #FF6347; /* Lighter red color, e.g., Tomato red */
+}
+
+.live-track.playing, .live-track:hover {
+    color: #FF6347; /* Consistent color on hover and when playing */
+}
 
 
 
@@ -306,6 +313,13 @@ body::-webkit-scrollbar {
     .jp-volume-controls, .jp-volume-bar, .volume-text {
         display: none;
     }
+	.live-track {
+		color: #FF6347; /* Lighter red color, e.g., Tomato red */
+	}
+
+	.live-track.playing, .live-track:hover {
+		color: #FF6347; /* Consistent color on hover and when playing */
+	}
 }
 /* Mobile-specific adjustments */
 @media screen and (max-width: 480px) {
@@ -360,6 +374,15 @@ body::-webkit-scrollbar {
 		border-radius: 10px;
 		padding: 2px 7px;
 	}
+	.live-track {
+		color: #FF6347; /* Lighter red color, e.g., Tomato red */
+	}
+
+	.live-track.playing, .live-track:hover {
+		color: #FF6347; /* Consistent color on hover and when playing */
+	}
+
+
 }
 @media screen and (min-width: 481px) {
     .jp-volume-controls {
