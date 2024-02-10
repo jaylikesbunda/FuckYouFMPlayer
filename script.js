@@ -32,28 +32,42 @@ $(document).ready(function() {
 
 	function cycleAds() {
 		var adContainer = $('#ddd-section');
-		var currentImg = adContainer.find('img');
+		var adLink = adContainer.find('a');
 
-		// If an image already exists, fade it out
+		// Ensure there's an <a> tag inside adContainer; if not, create it
+		if (adLink.length === 0) {
+			adLink = $('<a>', {
+				href: "https://www.fuckyoudeki.net",
+				target: "_blank"
+			}).appendTo(adContainer);
+		}
+
+		var currentImg = adLink.find('img');
+
+		// Function to create and insert a new ad image
+		function insertNewAdImg(src) {
+			// Remove any existing image
+			currentImg.remove();
+
+			// Insert new image with fadeIn effect
+			$('<img>', {
+				src: src,
+				alt: 'Ad',
+				style: 'max-width: 100%; height: auto; display: none;', // Start with display:none
+			}).appendTo(adLink).fadeIn('slow');
+
+			// Update the index for the next ad, ensuring a cycle through the adImages array
+			currentAdIndex = (currentAdIndex + 1) % adImages.length;
+		}
+
+		// If an image already exists, fade it out before inserting a new one
 		if (currentImg.length) {
-			currentImg.addClass('fadeOut').on('animationend', function() {
-				// Once fade-out is complete, change the image source and fade it in
-				currentImg.off('animationend');
-				currentImg.attr('src', adImages[currentAdIndex]).removeClass('fadeOut').addClass('fadeIn');
-
-				// Update the index for the next ad
-				currentAdIndex = (currentAdIndex + 1) % adImages.length;
+			currentImg.fadeOut('slow', function() {
+				insertNewAdImg(adImages[currentAdIndex]);
 			});
 		} else {
-			// If no image exists, insert the first ad image
-			adContainer.html(`
-				<a href="https://www.fuckyoudeki.net" target="_blank">
-					<img src="${adImages[currentAdIndex]}" alt="Ad" style="max-width: 100%; height: auto;" class="fadeIn"/>
-				</a>
-			`);
-
-			// Update the index for the next ad
-			currentAdIndex = (currentAdIndex + 1) % adImages.length;
+			// Directly insert and show the first ad image without fading
+			insertNewAdImg(adImages[currentAdIndex]);
 		}
 
 		// Set the timer for the next ad transition
@@ -61,7 +75,14 @@ $(document).ready(function() {
 	}
 
 	// Initialize ad rotation
-	cycleAds();
+	$(document).ready(function() {
+		cycleAds();
+	});
+
+	function updateHeaderImage(trackImage) {
+		var defaultImage = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"; // Default GIF when no track is selected
+		$("#header-image").attr("src", trackImage || defaultImage);
+	}
 
 	
 	function populateTrackList() {
@@ -107,10 +128,22 @@ $(document).ready(function() {
 		selectTrack(randomTrackIndex, true, isFirstTrack);
 	}
 	
+	function preloadTrack(index) {
+		var nextTrack = trackList[index];
+		console.log("Preloading track:", nextTrack.name);
+		// This example assumes the player can preload by setting a 'preload' source
+		// Adjust based on your player's API
+		$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: nextTrack.file }).jPlayer("load");
+	}
+
 	function playNextTrackInLiveMode() {
-		// Select the next track in the list, or a random one if we've reached the end
 		var nextIndex = (currentTrackIndex + 1) % trackList.length;
-		selectTrack(nextIndex, true);
+		// Preload the next track
+		preloadTrack(nextIndex);
+		// Delay actual play to give time for preload - adjust based on actual needs
+		setTimeout(function() {
+			selectTrack(nextIndex, true);
+		}, 100); // 100ms delay for demonstration purposes
 	}
 
 	function playAllTracksSequentially(index) {
@@ -136,7 +169,7 @@ $(document).ready(function() {
 
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
-				selectTrack(0);
+			updateHeaderImage();
 			},
 			swfPath: "/js",
 			supplied: "mp3",
@@ -250,66 +283,86 @@ $(document).ready(function() {
 
 
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
-		currentTrackIndex = index;
-		var track = trackList[index];
+		// Check if a valid index is provided
+		if (index !== undefined && index >= 0 && index < trackList.length) {
+			currentTrackIndex = index;
+			var track = trackList[index];
 
-		// Reset event bindings
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata).unbind($.jPlayer.event.ended).unbind($.jPlayer.event.timeupdate);
+			// Reset event bindings
+			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata).unbind($.jPlayer.event.ended).unbind($.jPlayer.event.timeupdate);
 
-		// Set the media
-		$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
+			// Set the media
+			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
 
-		if (isLive) {
-			// Highlight LIVE button and display 'LIVE' instead of time
-			$('.track-item').removeClass('playing');
-			$('#live-button').addClass('playing');
-			$('.current-time, .duration').text('LIVE');
+			if (isLive) {
+				// Highlight LIVE button and display 'LIVE' instead of time
+				$('.track-item').removeClass('playing');
+				$('#live-button').addClass('playing');
+				$('.current-time, .duration').text('LIVE');
 
-			// Wait for the media to be ready to play
-			$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
-				if (isFirstTrack) {
+				$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
 					var duration = event.jPlayer.status.duration;
-					var randomStartPosition = Math.random() * duration;
+					var randomStartPosition = isFirstTrack ? Math.random() * duration : 0;
 					$(this).jPlayer("play", randomStartPosition);
-				} else {
-					$(this).jPlayer("play"); // Play from the beginning for subsequent tracks
-				}
 
-				// Bind event for when the track ends
-				$(this).bind($.jPlayer.event.ended, function() {
-					playRandomTrack(currentTrackIndex); // Pass the current index to avoid repeating the same track
+					$(this).bind($.jPlayer.event.ended, function() {
+						playRandomTrack(currentTrackIndex);
+					});
 				});
-			});
+			} else {
+				// Non-live mode: Start from the beginning
+				$('.track-item').removeClass('playing').eq(index).addClass('playing');
+				$("#jquery_jplayer_1").jPlayer("play");
+
+				$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
+					var currentTime = event.jPlayer.status.currentTime;
+					var duration = event.jPlayer.status.duration;
+					$(".current-time").text(formatTime(currentTime));
+					$(".duration").text(formatTime(duration - currentTime));
+				});
+			}
+
+			// Update cover art with track's image
+			$("#header-image").attr("src", track.image);
 		} else {
-			// Non-live mode: Start from the beginning
-			isLiveMode = false;
-			$('.track-item').removeClass('playing').eq(index).addClass('playing');
-
-			// Play the track normally
-			$("#jquery_jplayer_1").jPlayer("play");
-
-			// Update time displays on time update event
-			$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
-				var currentTime = event.jPlayer.status.currentTime;
-				var duration = event.jPlayer.status.duration;
-				$(".current-time").text(formatTime(currentTime));
-				$(".duration").text(formatTime(duration - currentTime));
-			});
+			// No track is selected, show default GIF
+			var defaultGIF = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif";
+			$("#header-image").attr("src", defaultGIF);
+			// Ensure no track is playing
+			$("#jquery_jplayer_1").jPlayer("clearMedia");
+			// Update UI to reflect no selection
+			$('.track-item').removeClass('playing');
+			$('.current-time, .duration').text('--:--');
 		}
 
-		$("#header-image").attr("src", track.image);
-		updateMediaSession(track.name);
+		// This function needs to be called regardless of whether a track is selected or not
+		updateMediaSession(index !== undefined ? trackList[index].name : '', "Jay Candel", index !== undefined ? trackList[index].image : defaultGIF);
+	}
+
+	function updateMediaSession(trackName, artistName, imageLink) {
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: trackName || "No track selected",
+				artist: artistName, 
+				artwork: [
+					{ src: imageLink, sizes: '96x96', type: 'image/png' },
+					{ src: imageLink, sizes: '128x128', type: 'image/png' },
+					{ src: imageLink, sizes: '192x192', type: 'image/png' },
+					{ src: imageLink, sizes: '256x256', type: 'image/png' },
+					{ src: imageLink, sizes: '384x384', type: 'image/png' },
+					{ src: imageLink, sizes: '512x512', type: 'image/png' },
+				]
+			});
+			
+			// Setup or reset action handlers
+			navigator.mediaSession.setActionHandler('play', function() { $("#jquery_jplayer_1").jPlayer("play"); });
+			navigator.mediaSession.setActionHandler('pause', function() { $("#jquery_jplayer_1").jPlayer("pause"); });
+			navigator.mediaSession.setActionHandler('previoustrack', function() { /* Implement previous track logic here */ });
+			navigator.mediaSession.setActionHandler('nexttrack', function() { playNextTrackInLiveMode(); });
+		}
 	}
 
 
-
-    function updateMediaSession(trackName) {
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: trackName
-            });
-        }
-    }
 
 	function updateSeekBar(currentTime, duration) {
 		var percentage = (currentTime / duration) * 100;
