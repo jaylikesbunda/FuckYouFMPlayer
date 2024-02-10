@@ -336,24 +336,24 @@ $(document).ready(function() {
 		}
 
 		// This function needs to be called regardless of whether a track is selected or not
-		updateMediaSession(index !== undefined ? trackList[index].name : '', "Jay Candel", index !== undefined ? trackList[index].image : defaultGIF);
+		updateMediaSession(index !== undefined ? trackList[index].name : '', "FY INDUSTRIES", index !== undefined ? trackList[index].image : defaultGIF);
 	}
 
-	function updateMediaSession(trackName, artistName, imageLink) {
+	function updateMediaSession(trackName, artistName) {
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: trackName || "No track selected",
-				artist: artistName, 
+				artist: artistName,
 				artwork: [
-					{ src: imageLink, sizes: '96x96', type: 'image/png' },
-					{ src: imageLink, sizes: '128x128', type: 'image/png' },
-					{ src: imageLink, sizes: '192x192', type: 'image/png' },
-					{ src: imageLink, sizes: '256x256', type: 'image/png' },
-					{ src: imageLink, sizes: '384x384', type: 'image/png' },
-					{ src: imageLink, sizes: '512x512', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '96x96', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '128x128', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '192x192', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '256x256', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '384x384', type: 'image/png' },
+					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '512x512', type: 'image/png' },
 				]
 			});
-			
+
 			// Setup or reset action handlers
 			navigator.mediaSession.setActionHandler('play', function() { $("#jquery_jplayer_1").jPlayer("play"); });
 			navigator.mediaSession.setActionHandler('pause', function() { $("#jquery_jplayer_1").jPlayer("pause"); });
