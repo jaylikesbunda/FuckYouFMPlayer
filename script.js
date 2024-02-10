@@ -1,4 +1,11 @@
 $(document).ready(function() {
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('Service Worker Registered'))
+          .catch(err => console.log('Service Worker Registration Failed', err));
+  }
+    
   var isLiveMode = false;
   var isSeeking = false;
   var currentTrackIndex = 0;
@@ -339,28 +346,37 @@ $(document).ready(function() {
 		updateMediaSession(index !== undefined ? trackList[index].name : '', "FY INDUSTRIES", index !== undefined ? trackList[index].image : defaultGIF);
 	}
 
-	function updateMediaSession(trackName, artistName) {
+	function updateMediaSession(trackName, artistName, imageLink) {
+		// Define default values for parameters
+		trackName = trackName || "No track selected";
+		artistName = artistName || "FY INDUSTRIES";
+		imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Default image link if none provided
+
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
-				title: trackName || "No track selected",
+				title: trackName,
 				artist: artistName,
 				artwork: [
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '96x96', type: 'image/png' },
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '128x128', type: 'image/png' },
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '192x192', type: 'image/png' },
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '256x256', type: 'image/png' },
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '384x384', type: 'image/png' },
-					{ src: "https://i.ibb.co/7KjTdQ9/Untitled-1.png", sizes: '512x512', type: 'image/png' },
+					{ src: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif", sizes: '96x96', type: 'image/png' },
+					{ src: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png", sizes: '128x128', type: 'image/png' },
+					{ src: "https://i.ibb.co/cDG2Mcz/fuckyoufm-22.gif", sizes: '192x192', type: 'image/png' },
+					// Adding the default image for consistency across all states
+					{ src: imageLink, sizes: '256x256', type: 'image/png' },
+					{ src: imageLink, sizes: '384x384', type: 'image/png' },
+					{ src: imageLink, sizes: '512x512', type: 'image/png' },
 				]
 			});
 
 			// Setup or reset action handlers
-			navigator.mediaSession.setActionHandler('play', function() { $("#jquery_jplayer_1").jPlayer("play"); });
-			navigator.mediaSession.setActionHandler('pause', function() { $("#jquery_jplayer_1").jPlayer("pause"); });
-			navigator.mediaSession.setActionHandler('previoustrack', function() { /* Implement previous track logic here */ });
-			navigator.mediaSession.setActionHandler('nexttrack', function() { playNextTrackInLiveMode(); });
+			navigator.mediaSession.setActionHandler('play', () => $("#jquery_jplayer_1").jPlayer("play"));
+			navigator.mediaSession.setActionHandler('pause', () => $("#jquery_jplayer_1").jPlayer("pause"));
+			navigator.mediaSession.setActionHandler('previoustrack', () => {
+				// Implement previous track logic here
+			});
+			navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrackInLiveMode());
 		}
 	}
+
 
 
 
