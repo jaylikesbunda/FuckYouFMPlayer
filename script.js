@@ -346,18 +346,17 @@ $(document).ready(function() {
 		updateMediaSession(index !== undefined ? trackList[index].name : '', "FY INDUSTRIES", index !== undefined ? trackList[index].image : defaultGIF);
 	}
 
-	function updateMediaSession(trackName, artistName, imageLink) {
-		// Adjust parameters for live mode
+	function updateMediaSession(trackName, artistName) {
+		// Common image link for live and standard modes
+		const imageLink = "https://i.ibb.co/7KjTdQ9/Untitled-1.png";
+
 		if (isLiveMode) {
-			// Check if live mode is already initialized to avoid resetting metadata unnecessarily
+			// Prevent resetting metadata for each track change in live mode
 			if (!window.liveModeInitialized) {
-				// Mark live mode as initialized to prevent further updates
 				window.liveModeInitialized = true;
 
-				// Set live-specific metadata
 				trackName = "Live Broadcast";
-				artistName = "FY INDUSTRIES Live";
-				imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Fallback to a default live image if none provided
+				artistName = "FY INDUSTRIES";
 
 				navigator.mediaSession.metadata = new MediaMetadata({
 					title: trackName,
@@ -372,15 +371,12 @@ $(document).ready(function() {
 					]
 				});
 			}
-			// No else block here to avoid resetting metadata every time a new track starts in live mode
 		} else {
-			// Reset the live mode initialization flag when not in live mode
+			// Reset the flag when not in live mode
 			window.liveModeInitialized = false;
 
-			// Define default values for parameters if not in live mode
 			trackName = trackName || "No track selected";
 			artistName = artistName || "FY INDUSTRIES";
-			imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Default image link if none provided
 
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: trackName,
