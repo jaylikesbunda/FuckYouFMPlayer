@@ -23,7 +23,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM 2",
       file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
-      image: "https://i.ibb.co/cDG2Mcz/fuckyoufm-22.gif"
+      image: "https://i.ibb.co/7NDmYcg/Sequence01-ezgif-com-optimize.gif"
     },
   ];
 
@@ -136,33 +136,68 @@ $(document).ready(function() {
 	}
 	
 	function preloadTrack(index) {
-		var nextTrack = trackList[index];
+		// Calculate the next index, ensuring it wraps around to the start of the playlist if needed
+		var nextIndex = (index + 1) % trackList.length;
+		var nextTrack = trackList[nextIndex];
+		
+		// Log the track being preloaded for debugging purposes
 		console.log("Preloading track:", nextTrack.name);
-		// This example assumes the player can preload by setting a 'preload' source
-		// Adjust based on your player's API
-		$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: nextTrack.file }).jPlayer("load");
+		
+		// Preload the next track. In this context, we're preparing the next track's information.
+		// Actual preloading in browsers can vary in behavior.
+		$("#jquery_jplayer_1").jPlayer("setMedia", {
+			mp3: nextTrack.file // Adjust according to the audio format
+		});
+		// Note: This does not start playback. It just prepares the next track.
 	}
 
-	function playNextTrackInLiveMode() {
-		var nextIndex = (currentTrackIndex + 1) % trackList.length;
-		// Preload the next track
-		preloadTrack(nextIndex);
-		// Delay actual play to give time for preload - adjust based on actual needs
-		setTimeout(function() {
-			selectTrack(nextIndex, true);
-		}, 100); // 100ms delay for demonstration purposes
-	}
-
-	function playAllTracksSequentially(index) {
-		if (index >= trackList.length) {
-			index = 0; // Loop back to the first track
+	function playTrack(index, isImmediate = false) {
+		var track = trackList[index];
+		currentTrackIndex = index;
+		
+		// Log the track being played
+		console.log("Playing track:", track.name);
+		
+		// Load and play the specified track
+		$("#jquery_jplayer_1").jPlayer("setMedia", {
+			mp3: track.file
+		}).jPlayer("play");
+		
+		// Preload the next track unless immediate playback is specified (e.g., for a manual track selection scenario)
+		if (!isImmediate) {
+			preloadTrack(index);
 		}
-		selectTrack(index, true); // The second parameter indicates it's from LIVE mode
-
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.ended).bind($.jPlayer.event.ended, function() {
-			playAllTracksSequentially(index + 1); // Play the next track after the current one ends
+		
+		// Bind to the timeupdate event to prepare for the next track
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.timeupdate).bind($.jPlayer.event.timeupdate, function(event) {
+			var remainingTime = event.jPlayer.status.duration - event.jPlayer.status.currentTime;
+			if (remainingTime < 10) { // 10 seconds before the track ends, transition to the next
+				playNextTrackInLiveMode();
+			}
 		});
 	}
+
+
+	function playNextTrackInLiveMode() {
+		// Advance to the next track index, wrapping around if at the end of the track list
+		var nextIndex = (currentTrackIndex + 1) % trackList.length;
+		
+		// Immediately play the next track to maintain the illusion of a continuous live stream
+		playTrack(nextIndex, true); // Pass true to indicate immediate play, skipping additional preload
+	}
+
+
+	function playAllTracksSequentially(index = 0) {
+		if (index >= trackList.length) {
+			index = 0; // Loop back to the first track for a continuous experience
+		}
+		selectTrack(index); // Auto-selecting tracks simulates a live playlist
+		
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.ended).bind($.jPlayer.event.ended, function() {
+			playAllTracksSequentially(index + 1);
+		});
+	}
+
 
 
 	function initializePlayer() {
@@ -188,18 +223,21 @@ $(document).ready(function() {
 			remainingDuration: true,
 			toggleDuration: true,
 			timeupdate: function(event) {
+			  if (isLiveMode) {
+				// Live mode: Update UI to reflect live broadcast without showing seek bar
+				$(".current-time, .duration").text('LIVE');
+				$(".jp-seek-bar, .jp-play-bar").hide(); // Hide seek bar elements
+			  } else {
+				// Regular playback: Update seek bar and time info
 				if (!isSeeking) {
-					var currentTime = event.jPlayer.status.currentTime;
-					var duration = event.jPlayer.status.duration;
-					var percentage = (currentTime / duration) * 100;
-
-					// Update the seek bar
-					$(".jp-play-bar").css("width", percentage + "%");
-
-					// Update the time display
-					$(".current-time").text(formatTime(currentTime));
-					$(".duration").text(formatTime(duration - currentTime));
+				  var currentTime = event.jPlayer.status.currentTime;
+				  var duration = event.jPlayer.status.duration;
+				  var percentage = (currentTime / duration) * 100;
+				  $(".jp-play-bar").css("width", percentage + "%");
+				  $(".current-time").text(formatTime(currentTime));
+				  $(".duration").text(formatTime(duration - currentTime));
 				}
+			  }
 			}
 		});
 
@@ -408,47 +446,65 @@ $(document).ready(function() {
 
 	function updateSeekBar(currentTime, duration) {
 		if (isLiveMode) {
-			// Hide seek bar and time indicators in live mode
-			$(".jp-seek-bar").hide(); // Assuming you have a seek bar class to hide
-			$(".jp-play-bar").css("width", "100%"); // You might choose to keep this full or hide it too
-			$(".current-time, .duration").text('LIVE').hide(); // Optionally hide these if you prefer
+			// In live mode, indicate the live status and ensure the seek bar is full but not interactive.
+			$(".jp-seek-bar, .jp-play-bar").css("width", "100%");
+			$(".current-time, .duration").text('LIVE').show();
 		} else {
-			// Show and update seek bar in non-live mode
-			$(".jp-seek-bar").show(); // Show the seek bar again when not in live mode
+			// In non-live mode, update the seek bar and time displays based on the current playback position.
+			let percentage = (currentTime / duration) * 100;
+			$(".jp-seek-bar").show();
 			$(".jp-play-bar").css("width", percentage + "%");
-			$(".current-time").text(formatTime(currentTime)).show();
-			$(".duration").text(formatTime(duration - currentTime)).show();
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
 		}
 	}
-
-
 
 	function updateSeekBarPosition(pageX) {
-		var progressContainer = $(".jp-progress");
-		var progressBarWidth = progressContainer.width();
-		var progressBarOffset = progressContainer.offset().left;
-		var position = pageX - progressBarOffset;
-		var percentage = (position / progressBarWidth) * 100;
-		percentage = Math.max(0, Math.min(percentage, 100));
-
-		// Update the seek bar's width
-		$(".jp-play-bar").css("width", percentage + "%");
-
-		// Temporarily update the time display with the seek bar's position
-		syncSeekBarAndTime(percentage, true);
-	}
-	function syncSeekBarAndTime(percentage, isTemporary) {
-		var duration = $("#jquery_jplayer_1").data("jPlayer").status.duration;
-		var currentTime = duration * (percentage / 100);
-
-		// Update the time display only if it's a temporary change (user interaction)
-		if (isTemporary) {
-			updateSeekBar(currentTime, duration);
-		} else {
-			// Update the playback head only if the change is permanent (after user interaction ends)
-			$("#jquery_jplayer_1").jPlayer("playHead", percentage);
+		if (!isLiveMode) { // Only allow seek bar updates in non-live mode.
+			var progressContainer = $(".jp-progress");
+			var progressBarWidth = progressContainer.width();
+			var progressBarOffset = progressContainer.offset().left;
+			var clickPosition = pageX - progressBarOffset;
+			var percentage = (clickPosition / progressBarWidth) * 100;
+			percentage = Math.max(0, Math.min(percentage, 100));
+			
+			$(".jp-play-bar").css("width", percentage + "%");
+			syncSeekBarAndTime(percentage);
 		}
 	}
+
+	function syncSeekBarAndTime(percentage) {
+		if (!isLiveMode) {
+			var duration = $("#jquery_jplayer_1").data("jPlayer").status.duration;
+			var seekPosition = (percentage / 100) * duration;
+			$("#jquery_jplayer_1").jPlayer("playHead", percentage); // Seek to the new position.
+			// The time update will be handled by the jPlayer's "timeupdate" event.
+		}
+	}
+
+	$(document).on('mouseup touchend', function(e) {
+		if (isSeeking && !isLiveMode) { // Finalize seeking only in non-live mode.
+			isSeeking = false;
+			var pageX = e.type === 'mouseup' ? e.pageX : (e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].pageX : e.pageX);
+			updateSeekBarPosition(pageX);
+		}
+	});
+
+	$('.jp-progress').on('mousedown touchstart', function(e) {
+		if (!isLiveMode) { // Start seeking only in non-live mode.
+			isSeeking = true;
+			updateSeekBarPosition(e.pageX);
+			e.preventDefault();
+		}
+	});
+
+	$(document).on('mousemove touchmove', function(e) {
+		if (isSeeking && !isLiveMode) {
+			var pageX = e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX;
+			updateSeekBarPosition(pageX);
+		}
+	});
+
 
 
 	// Additional helper function for formatting time
