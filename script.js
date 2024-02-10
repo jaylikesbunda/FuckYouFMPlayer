@@ -347,52 +347,85 @@ $(document).ready(function() {
 	}
 
 	function updateMediaSession(trackName, artistName, imageLink) {
-		// Define default values for parameters
-		trackName = trackName || "No track selected";
-		artistName = artistName || "FY INDUSTRIES";
-		imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Default image link if none provided
+		// Adjust parameters for live mode
+		if (isLiveMode) {
+			// Check if live mode is already initialized to avoid resetting metadata unnecessarily
+			if (!window.liveModeInitialized) {
+				// Mark live mode as initialized to prevent further updates
+				window.liveModeInitialized = true;
 
-		if ('mediaSession' in navigator) {
+				// Set live-specific metadata
+				trackName = "Live Broadcast";
+				artistName = "FY INDUSTRIES Live";
+				imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Fallback to a default live image if none provided
+
+				navigator.mediaSession.metadata = new MediaMetadata({
+					title: trackName,
+					artist: artistName,
+					artwork: [
+						{ src: imageLink, sizes: '96x96', type: 'image/png' },
+						{ src: imageLink, sizes: '128x128', type: 'image/png' },
+						{ src: imageLink, sizes: '192x192', type: 'image/png' },
+						{ src: imageLink, sizes: '256x256', type: 'image/png' },
+						{ src: imageLink, sizes: '384x384', type: 'image/png' },
+						{ src: imageLink, sizes: '512x512', type: 'image/png' },
+					]
+				});
+			}
+			// No else block here to avoid resetting metadata every time a new track starts in live mode
+		} else {
+			// Reset the live mode initialization flag when not in live mode
+			window.liveModeInitialized = false;
+
+			// Define default values for parameters if not in live mode
+			trackName = trackName || "No track selected";
+			artistName = artistName || "FY INDUSTRIES";
+			imageLink = imageLink || "https://i.ibb.co/7KjTdQ9/Untitled-1.png"; // Default image link if none provided
+
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: trackName,
 				artist: artistName,
 				artwork: [
-					{ src: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif", sizes: '96x96', type: 'image/png' },
-					{ src: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png", sizes: '128x128', type: 'image/png' },
-					{ src: "https://i.ibb.co/cDG2Mcz/fuckyoufm-22.gif", sizes: '192x192', type: 'image/png' },
-					// Adding the default image for consistency across all states
+					{ src: imageLink, sizes: '96x96', type: 'image/png' },
+					{ src: imageLink, sizes: '128x128', type: 'image/png' },
+					{ src: imageLink, sizes: '192x192', type: 'image/png' },
 					{ src: imageLink, sizes: '256x256', type: 'image/png' },
 					{ src: imageLink, sizes: '384x384', type: 'image/png' },
 					{ src: imageLink, sizes: '512x512', type: 'image/png' },
 				]
 			});
-
-			// Setup or reset action handlers
-			navigator.mediaSession.setActionHandler('play', () => $("#jquery_jplayer_1").jPlayer("play"));
-			navigator.mediaSession.setActionHandler('pause', () => $("#jquery_jplayer_1").jPlayer("pause"));
-			navigator.mediaSession.setActionHandler('previoustrack', () => {
-				// Implement previous track logic here
-			});
-			navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrackInLiveMode());
 		}
+
+		// Setup or reset action handlers
+		navigator.mediaSession.setActionHandler('play', () => $("#jquery_jplayer_1").jPlayer("play"));
+		navigator.mediaSession.setActionHandler('pause', () => $("#jquery_jplayer_1").jPlayer("pause"));
+		navigator.mediaSession.setActionHandler('previoustrack', () => {
+			// Implement previous track logic here for live mode if applicable
+		});
+		navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrackInLiveMode());
 	}
+
+
 
 
 
 
 	function updateSeekBar(currentTime, duration) {
-		var percentage = (currentTime / duration) * 100;
-		$(".jp-play-bar").css("width", percentage + "%");
-		
-		// Check if it's LIVE mode
 		if (isLiveMode) {
-			$(".current-time").text('LIVE');
-			$(".duration").text('LIVE');
+			// Hide seek bar and time indicators in live mode
+			$(".jp-seek-bar").hide(); // Assuming you have a seek bar class to hide
+			$(".jp-play-bar").css("width", "100%"); // You might choose to keep this full or hide it too
+			$(".current-time, .duration").text('LIVE').hide(); // Optionally hide these if you prefer
 		} else {
-			$(".current-time").text(formatTime(currentTime));
-			$(".duration").text(formatTime(duration - currentTime));
+			// Show and update seek bar in non-live mode
+			$(".jp-seek-bar").show(); // Show the seek bar again when not in live mode
+			$(".jp-play-bar").css("width", percentage + "%");
+			$(".current-time").text(formatTime(currentTime)).show();
+			$(".duration").text(formatTime(duration - currentTime)).show();
 		}
 	}
+
+
 
 	function updateSeekBarPosition(pageX) {
 		var progressContainer = $(".jp-progress");
