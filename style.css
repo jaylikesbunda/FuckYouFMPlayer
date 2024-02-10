@@ -13,12 +13,52 @@ body {
     align-items: center; /* Centers children horizontally in the flex container */
     justify-content: center; /* Centers children vertically in the flex container */
     min-height: 100vh; /* Ensures the body takes at least the height of the viewport */
+    cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), auto; /* Sets custom cursor */
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari, and Opera */
 body::-webkit-scrollbar {
     display: none;
 }
+/* Targeting dynamically generated controls for a consistent cursor */
+.jp-seek-bar, .jp-volume-bar, .jp-seek-bar *, .jp-volume-bar *, button, .volume-label, .current-time, .duration {
+    cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), pointer !important;
+}
+
+/* Ensuring custom cursor consistency */
+a, button {
+    cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), pointer !important;
+}
+
+
+
+a:hover {
+    text-shadow: 0 0 1px #ffffff, 0 0 4px #ffffff;
+}
+
+
+
+
+
+button:hover {
+    background-color: #ff00ff; /* Change to your preferred hover color */
+    color: black;
+}
+
+/* Adding a custom style for input fields to match the theme */
+input, textarea {
+    background-color: #222;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 10px;
+}
+
+input:focus, textarea:focus {
+    border-color: #ff00ff;
+    outline: none;
+}
+
+
 
 /* Component Layout */
 .component-container {
@@ -27,7 +67,7 @@ body::-webkit-scrollbar {
     padding: 10px;
     border: 1px solid white;
     background-color: #000;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     box-sizing: border-box;
 }
 
@@ -83,14 +123,14 @@ body::-webkit-scrollbar {
     display: inline-block;
     margin: 0 5px;
     text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Glowing effect for buttons */
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.6); /* Glowing effect for buttons */
 }
 
 /* Enhanced hover effect with color changes and a shadow glow */
 .jp-controls button:hover, .jp-mute:hover, .jp-unmute:hover {
     background-color: #222; /* Dark grey background on hover */
     color: #0f0; /* Classic retro green text on hover */
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); /* Intensify the glow effect on hover */
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Intensify the glow effect on hover */
 }
 
 /* 'Pressed' effect when buttons are active */
@@ -107,6 +147,7 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     background-color: #000;
     transition: border 0.4s ease; /* Animate the border property */
+	margin-bottom: 20px;
 }
 
 
@@ -201,9 +242,9 @@ body::-webkit-scrollbar {
     color: white;
     text-decoration: none;
     display: block;
-    padding: 15px; /* Increased padding */
+    padding: 10px; /* Increased padding */
     border: 1px solid white;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
     text-align: center;
     cursor: pointer;
     background: #000;
@@ -216,7 +257,7 @@ body::-webkit-scrollbar {
 
 /* Smoother and Whiter Glow on Hover for Track Items */
 .track-item:hover {
-    box-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 20px #fff; /* Smooth white glow on hover */
+    box-shadow: 0 0 5px #fff, 0 0 6px #fff, 0 0 6px #fff; /* Smooth white glow on hover */
 }
 
 
@@ -239,6 +280,7 @@ body::-webkit-scrollbar {
     background-color: rgba(255, 99, 71, 0.2); /* Slightly darker transparent red on hover/active for a subtle effect */
     color: white; /* Change text color to white for contrast */
     border-color: #FF6347; /* Maintain the red border color */
+	box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
 }
 
 
@@ -261,9 +303,7 @@ body::-webkit-scrollbar {
 }
 
 
-.jp-controls button {
-    margin: 0 10px;
-}
+
 
 /* Time Information Styling Adjustments */
 .time-info {
@@ -288,7 +328,7 @@ body::-webkit-scrollbar {
     width: 100%;
     max-height: 200px;
     object-fit: cover;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 /* Tablet and Small Desktops */
@@ -389,15 +429,9 @@ body::-webkit-scrollbar {
 	.jp-controls button, .jp-mute, .jp-unmute {
 		border: 2px solid white; /* Slightly thicker border for better visibility */
 		border-radius: 10px;
-		padding: 2px 7px;
-	}
-	.live-track {
-		color: #FF6347; /* Lighter red color, e.g., Tomato red */
+		padding: 4px 6px;
 	}
 
-	.live-track.playing, .live-track:hover {
-		color: #FF6347; /* Consistent color on hover and when playing */
-	}
 
 
 }
