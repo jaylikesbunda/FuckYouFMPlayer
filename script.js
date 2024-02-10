@@ -8,7 +8,7 @@ $(document).ready(function() {
     
   var isLiveMode = false;
   var isSeeking = false;
-  var currentTrackIndex = 0;
+  var currentTrackIndex = null;
   var trackList = [
     { 
       name: "FuckYou FM: REMASTERED",
@@ -85,6 +85,21 @@ $(document).ready(function() {
 	$(document).ready(function() {
 		cycleAds();
 	});
+
+  // Adjusting the event handler for the play button
+    $(document).on('click', '.jp-play', function(e) {
+      // Check if a track is selected by looking for a 'null' or 'undefined' currentTrackIndex
+      if (currentTrackIndex === null || typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
+        e.preventDefault(); // Prevent the default play action
+        // Show the popup
+        $('#track-select-popup').stop().fadeIn(500).delay(1500).fadeOut(500);
+        console.log("Play button clicked without a track selected. currentTrackIndex:", currentTrackIndex);
+      } else {
+      // A track is selected, let the jPlayer handle the play action
+        console.log("Playing track with index:", currentTrackIndex);
+      }
+    });
+
 
 	function updateHeaderImage(trackImage) {
 		var defaultImage = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"; // Default GIF when no track is selected
@@ -516,4 +531,6 @@ $(document).ready(function() {
 
     populateTrackList();
     initializePlayer();
+
+
 });

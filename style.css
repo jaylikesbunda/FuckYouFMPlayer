@@ -302,6 +302,26 @@ input:focus, textarea:focus {
     margin-top: 20px; /* This negative margin pulls the controls up towards the header */
 }
 
+#track-select-popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place on scroll */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Center the div on the page */
+    width: 80%; /* Width of the popup */
+    max-width: 400px; /* Maximum width of the popup */
+    padding: 20px;
+    background-color: black; /* Background color */
+    color: white; /* Text color */
+    font-family: 'Press Start 2P', cursive; /* Font family */
+    border: 2px solid white; /* Border color */
+    z-index: 1050; /* Ensure it's on top of other elements */
+    text-align: center; /* Center the text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Optional: Add some shadow for better visibility */
+    border-radius: 10px; /* Optional: Rounded corners */
+	opacity: 95%;
+}
+
 
 
 
