@@ -116,9 +116,11 @@ $(document).ready(function() {
 			'class': 'track-item live-track',
 			'href': '#',
 			'text': 'LIVE'
-		}).on('click', (e) => {
+		}).on('click', function(e) {
 			e.preventDefault();
 			activateLiveMode();
+			$('.track-item').removeClass('playing'); // Remove playing class from all tracks
+			$(this).addClass('playing'); // Highlight the LIVE button
 		}).prependTo(trackSelection);
 
 		// Add other tracks to the list
@@ -128,13 +130,16 @@ $(document).ready(function() {
 				'href': '#',
 				'data-src': track.file,
 				'data-image': track.image,
-				'text': track.name
-			}).on('click', (e) => {
+				'text': track.name,
+				'data-index': index // Add a data attribute to identify the track
+			}).on('click', function(e) {
 				e.preventDefault();
+				const index = $(this).data('index'); // Retrieve the index of the clicked track
 				selectTrack(index);
 			}).appendTo(trackSelection);
 		});
 	}
+
 
 	function activateLiveMode() {
 		isLiveMode = true; // Set live mode to true
@@ -343,61 +348,94 @@ $(document).ready(function() {
 
 
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
+		// Clear previous highlights
+		$('.track-item').removeClass('playing');
+
 		// Check if a valid index is provided
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 			var track = trackList[index];
 
 			// Reset event bindings
-			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata).unbind($.jPlayer.event.ended).unbind($.jPlayer.event.timeupdate);
+			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata)
+								  .unbind($.jPlayer.event.ended)
+								  .unbind($.jPlayer.event.timeupdate);
 
 			// Set the media
 			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
 
 			if (isLive) {
-				// Highlight LIVE button and display 'LIVE' instead of time
-				$('.track-item').removeClass('playing');
+				// Directly highlight the LIVE button since it's treated as part of the track list in the UI
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
-
-				$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
-					var duration = event.jPlayer.status.duration;
-					var randomStartPosition = isFirstTrack ? Math.random() * duration : 0;
-					$(this).jPlayer("play", randomStartPosition);
-
-					$(this).bind($.jPlayer.event.ended, function() {
-						playRandomTrack(currentTrackIndex);
-					});
-				});
+				bindLiveEvents(isFirstTrack);
 			} else {
-				// Non-live mode: Start from the beginning
-				$('.track-item').removeClass('playing').eq(index).addClass('playing');
-				$("#jquery_jplayer_1").jPlayer("play");
+				// For non-live tracks, adjust the index to account for the LIVE button being the first item
+				let uiIndex = index + 1; // Adjust for LIVE button at the top
 
-				$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
-					var currentTime = event.jPlayer.status.currentTime;
-					var duration = event.jPlayer.status.duration;
-					$(".current-time").text(formatTime(currentTime));
-					$(".duration").text(formatTime(duration - currentTime));
-				});
+				// Highlight the track item taking into account the LIVE button
+				$('.track-item').eq(uiIndex).addClass('playing');
+				bindStandardEvents();
 			}
 
 			// Update cover art with track's image
 			$("#header-image").attr("src", track.image);
+		} else if (isLive) {
+			// If no track is selected but isLive is true, handle the LIVE button specifically
+			$('#live-button').addClass('playing');
+			$('.current-time, .duration').text('LIVE');
+			bindLiveEvents(isFirstTrack);
 		} else {
-			// No track is selected, show default GIF
-			var defaultGIF = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif";
-			$("#header-image").attr("src", defaultGIF);
-			// Ensure no track is playing
-			$("#jquery_jplayer_1").jPlayer("clearMedia");
-			// Update UI to reflect no selection
-			$('.track-item').removeClass('playing');
-			$('.current-time, .duration').text('--:--');
+			handleNoTrackSelected();
 		}
 
-		// This function needs to be called regardless of whether a track is selected or not
-		updateMediaSession(index !== undefined ? trackList[index].name : '', "FY INDUSTRIES", index !== undefined ? trackList[index].image : defaultGIF);
+		// Only update media session if a track is selected
+		if (!isLive || index !== undefined) {
+			updateMediaSessionWithTrackInfo(index, trackList, defaultGIF);
+		}
 	}
+
+
+
+
+	function bindLiveEvents(isFirstTrack) {
+		$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
+			var duration = event.jPlayer.status.duration;
+			var randomStartPosition = isFirstTrack ? Math.random() * duration : 0;
+			$(this).jPlayer("play", randomStartPosition);
+
+			$(this).bind($.jPlayer.event.ended, function() {
+				playRandomTrack(currentTrackIndex);
+			});
+		});
+	}
+
+	function bindStandardEvents() {
+		$("#jquery_jplayer_1").jPlayer("play");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
+			var currentTime = event.jPlayer.status.currentTime;
+			var duration = event.jPlayer.status.duration;
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
+		});
+	}
+
+	// Refactored code for when no track is selected
+	function handleNoTrackSelected() {
+		var defaultGIF = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif";
+		$("#header-image").attr("src", defaultGIF);
+		$("#jquery_jplayer_1").jPlayer("clearMedia");
+		$('.track-item').removeClass('playing');
+		$('.current-time, .duration').text('--:--');
+	}
+
+	// Refactored code to update media session
+	function updateMediaSessionWithTrackInfo(index, trackList, defaultGIF) {
+		var trackName = index !== undefined ? trackList[index].name : '';
+		var trackImage = index !== undefined ? trackList[index].image : defaultGIF;
+		updateMediaSession(trackName, "FY INDUSTRIES", trackImage);
+	}
+
 
 	function updateMediaSession(trackName, artistName) {
 		// Common image link for live and standard modes

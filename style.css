@@ -21,7 +21,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 /* Targeting dynamically generated controls for a consistent cursor */
-.jp-seek-bar, .jp-volume-bar, .jp-seek-bar *, .jp-volume-bar *, button, .volume-label, .current-time, .duration {
+.jp-seek-bar, .jp-volume-bar, .jp-seek-bar *, .jp-volume-bar *, button, .volume-label, .current-time, .duration, .jp-play-bar, .jp-progress {
     cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), pointer !important;
 }
 
@@ -251,8 +251,10 @@ input:focus, textarea:focus {
     box-sizing: border-box; /* Ensures padding doesn't affect overall width */
 }
 
-.track-item.playing, .track-item:hover {
+.track-item.playing {
     background-color: #555;
+    box-shadow: 0 0 5px #fff, 0 0 6px #fff, 0 0 6px #fff; /* Smooth white glow on hover */
+    text-shadow: 0 0 1px #ffffff, 0 0 4px #ffffff; /* Add glow effect to text */
 }
 
 /* Smoother and Whiter Glow on Hover for Track Items */
