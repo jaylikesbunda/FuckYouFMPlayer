@@ -352,13 +352,14 @@ $(document).ready(function() {
 		// Clear previous highlights
 		$('.track-item').removeClass('playing');
 
-		// Define a default artist name or use a relevant identifier if applicable
-		let artistName = "FY INDUSTRIES";
+		let trackName, artistName = "FY INDUSTRIES"; // Assuming "FY INDUSTRIES" as a generic artist name for all tracks
 
-		// Check if a valid index is provided and handle track selection
+		// Check if a valid index is provided
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
-			var track = trackList[index];
+			var track = trackList[index]; // Get the track object from the trackList
+
+			trackName = track.name; // Get the track name from the track object
 
 			// Reset event bindings
 			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata)
@@ -369,24 +370,27 @@ $(document).ready(function() {
 			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
 
 			if (isLive) {
-				// Highlight the LIVE button for live mode
+				// Live mode specific logic
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
 				bindLiveEvents(isFirstTrack);
+
+				// Update media session for live broadcast
+				updateMediaSession("Live Broadcast", artistName);
 			} else {
-				// Highlight the selected track for standard mode
+				// Standard mode specific logic
 				let uiIndex = index + 1; // Adjust for LIVE button at the top
 				$('.track-item').eq(uiIndex).addClass('playing');
 				bindStandardEvents();
+
+				// Update media session with the selected track's information
+				updateMediaSession(trackName, artistName);
 			}
 
 			// Update cover art with track's image
 			$("#header-image").attr("src", track.image);
-
-			// Call updateMediaSession with the selected track's name and a common image link
-			updateMediaSession(track.name, artistName);
 		} else if (isLive) {
-			// Handle live mode specifically if no track is selected
+			// If no track is selected but isLive is true, handle the LIVE button specifically
 			$('#live-button').addClass('playing');
 			$('.current-time, .duration').text('LIVE');
 			bindLiveEvents(isFirstTrack);
@@ -398,6 +402,7 @@ $(document).ready(function() {
 			handleNoTrackSelected();
 		}
 	}
+
 
 
 
