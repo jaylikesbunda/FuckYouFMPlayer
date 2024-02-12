@@ -32,6 +32,7 @@ $(document).ready(function() {
 		'https://i.ibb.co/6gV20KW/Untitled-3.gif',
 		'https://i.ibb.co/R49K61Q/Untitled-5.png',
 		'https://i.ibb.co/M2k4nh6/Untitled-6.png',
+		'https://i.ibb.co/WvHDtR8/untitled8-min.gif',
 		// Add more ad image links as needed
 	];
 
@@ -351,7 +352,10 @@ $(document).ready(function() {
 		// Clear previous highlights
 		$('.track-item').removeClass('playing');
 
-		// Check if a valid index is provided
+		// Define a default artist name or use a relevant identifier if applicable
+		let artistName = "FY INDUSTRIES";
+
+		// Check if a valid index is provided and handle track selection
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 			var track = trackList[index];
@@ -365,35 +369,36 @@ $(document).ready(function() {
 			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
 
 			if (isLive) {
-				// Directly highlight the LIVE button since it's treated as part of the track list in the UI
+				// Highlight the LIVE button for live mode
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
 				bindLiveEvents(isFirstTrack);
 			} else {
-				// For non-live tracks, adjust the index to account for the LIVE button being the first item
+				// Highlight the selected track for standard mode
 				let uiIndex = index + 1; // Adjust for LIVE button at the top
-
-				// Highlight the track item taking into account the LIVE button
 				$('.track-item').eq(uiIndex).addClass('playing');
 				bindStandardEvents();
 			}
 
 			// Update cover art with track's image
 			$("#header-image").attr("src", track.image);
+
+			// Call updateMediaSession with the selected track's name and a common image link
+			updateMediaSession(track.name, artistName);
 		} else if (isLive) {
-			// If no track is selected but isLive is true, handle the LIVE button specifically
+			// Handle live mode specifically if no track is selected
 			$('#live-button').addClass('playing');
 			$('.current-time, .duration').text('LIVE');
 			bindLiveEvents(isFirstTrack);
+
+			// Update media session for live broadcast without a specific track
+			updateMediaSession("Live Broadcast", artistName);
 		} else {
+			// Handle case where no track is selected and not in live mode
 			handleNoTrackSelected();
 		}
-
-		// Only update media session if a track is selected
-		if (!isLive || index !== undefined) {
-			updateMediaSessionWithTrackInfo(index, trackList, defaultGIF);
-		}
 	}
+
 
 
 
