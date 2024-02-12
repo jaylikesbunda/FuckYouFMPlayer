@@ -2,10 +2,33 @@ $(document).ready(function() {
   // Register Service Worker
   if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
-          .then(reg => console.log('Service Worker Registered'))
-          .catch(err => console.log('Service Worker Registration Failed', err));
+          .then(function(reg) {
+              console.log('Service Worker Registered', reg);
+
+              // After Service Worker registration, request notification permission
+              requestNotificationPermission();
+          })
+          .catch(function(err) {
+              console.log('Service Worker Registration Failed', err);
+          });
   }
-    
+
+  function requestNotificationPermission() {
+      // Check if the Notifications API is supported
+      if ("Notification" in window) {
+          // Request permission from the user
+          Notification.requestPermission().then(function(permission) {
+              console.log("Notification permission status:", permission);
+              if (permission === "granted") {
+                  console.log("Notifications granted");
+                  // You can now send notifications
+              }
+          });
+      } else {
+          console.log("This browser does not support notifications.");
+      }
+  }
+ 
   var isLiveMode = false;
   var isSeeking = false;
   var currentTrackIndex = null;
@@ -176,36 +199,72 @@ $(document).ready(function() {
 		var track = trackList[index];
 		currentTrackIndex = index;
 		
-		// Log the track being played
 		console.log("Playing track:", track.name);
 		
-		// Load and play the specified track
 		$("#jquery_jplayer_1").jPlayer("setMedia", {
 			mp3: track.file
 		}).jPlayer("play");
 		
-		// Preload the next track unless immediate playback is specified (e.g., for a manual track selection scenario)
 		if (!isImmediate) {
 			preloadTrack(index);
 		}
 		
-		// Bind to the timeupdate event to prepare for the next track
 		$("#jquery_jplayer_1").unbind($.jPlayer.event.timeupdate).bind($.jPlayer.event.timeupdate, function(event) {
 			var remainingTime = event.jPlayer.status.duration - event.jPlayer.status.currentTime;
-			if (remainingTime < 10) { // 10 seconds before the track ends, transition to the next
+			// If there's less than 10 seconds remaining, prepare to transition
+			if (remainingTime < 10) {
 				playNextTrackInLiveMode();
 			}
 		});
 	}
 
 
+
 	function playNextTrackInLiveMode() {
-		// Advance to the next track index, wrapping around if at the end of the track list
 		var nextIndex = (currentTrackIndex + 1) % trackList.length;
 		
-		// Immediately play the next track to maintain the illusion of a continuous live stream
-		playTrack(nextIndex, true); // Pass true to indicate immediate play, skipping additional preload
+		// Determine if the notification should be sent (e.g., app is in the background)
+		if (document.hidden) {
+			sendNotificationForLiveMode();
+		}
+		
+		playTrack(nextIndex, true); // Play the next track immediately, skipping preload
 	}
+
+
+
+	function sendNotification() {
+		// Check if Notification API is supported and permissions are granted
+		if ("Notification" in window && Notification.permission === "granted") {
+			const notification = new Notification("Continue Listening?", {
+				body: "Click here to keep enjoying our music stream!",
+				icon: "/path/to/your/icon.png", // Optional: Path to an icon
+				tag: "continue-listening" // Optional: A tag to prevent multiple instances of the same notification
+			});
+
+			// Optional: Handle the click event on the notification
+			notification.onclick = function () {
+				window.focus(); // Focus the window on click if applicable
+				// You can also navigate to a specific URL or perform other actions here
+			};
+		}
+	}
+
+	function sendNotificationForLiveMode() {
+		if ("Notification" in window && Notification.permission === "granted") {
+			const notification = new Notification("Live Mode is On!", {
+				body: "Tap to keep listening to the next track.",
+				icon: "/path/to/icon.png",
+				tag: "live-mode-notification"
+			});
+
+			notification.onclick = function() {
+				window.focus(); // Attempt to bring the web app back to focus
+				// Direct playback control might not work if the page is not in focus
+			};
+		}
+	}
+
 
 
 	function playAllTracksSequentially(index = 0) {
