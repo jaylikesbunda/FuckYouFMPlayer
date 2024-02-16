@@ -156,47 +156,48 @@ input:focus, textarea:focus {
     padding: 10px;
     box-sizing: border-box;
     background-color: #000;
-    transition: border 0.4s ease; /* Animate the border property */
-	margin-bottom: 20px;
+    transition: border 0.4s ease;
+    margin-bottom: 20px;
 }
 
 
-#disclaimer-toggle {
-    font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
+
+#other-places-toggle, #disclaimer-toggle {
+    font-family: 'Press Start 2P', cursive;
     cursor: pointer;
     background: #000;
     color: white;
-    border: 2px solid white; /* Slightly thicker border for better visibility */
-    border-radius: 8px; /* Rounded corners for buttons */
+    border: 2px solid white;
+    border-radius: 8px;
     padding: 10px 15px;
     font-size: 0.75rem;
-    transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
+    transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s;
     display: inline-block;
     margin: 0 5px;
     text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Glowing effect for buttons */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
-#disclaimer-toggle:hover {
-    background-color: #222; /* Dark grey background on hover */
-    color: #0f0; /* Classic retro green text on hover */
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); /* Intensify the glow effect on hover */
+#other-places-toggle:hover, #disclaimer-toggle:hover {
+    background-color: #222;
+    color: #0f0;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
 
-#disclaimer-toggle:active {
-    transform: translateY(2px); /* Slight move down to simulate pressing */
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Less glow to simulate the button being pressed */
+#other-places-toggle:active, #disclaimer-toggle:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
 }
 
 #disclaimer-content {
     color: white;
-    display: none; /* Hidden by default */
-    font-size: 0.65rem; /* Adjusted font size for readability */
-    line-height: 1.5; /* Increased line height for readability */
-    padding: 0 20px; /* Padding to keep text from touching the box edges */
-    text-align: center; /* Ensures the text within is centered */
-    width: auto; /* Let it naturally occupy the needed width */
-    max-width: 100%; /* Ensure it doesn't overflow the parent's width */
+    display: none;
+    font-size: 0.65rem;
+    line-height: 1.5;
+    padding: 0 20px;
+    text-align: center;
+    width: auto;
+    max-width: 100%;
 }
 
 
@@ -447,12 +448,8 @@ input:focus, textarea:focus {
         left: 0; /* Place the current time at the start of the seek bar */
     }
 
-    .duration {
-        right: 0; /* Place the duration at the end of the seek bar */
-    }
-
     .clickable-icon {
-        bottom: 20px; /* Lower the icon on mobile. Adjust the value as needed. */
+        bottom: 10px; /* Lower the icon on mobile. Adjust the value as needed. */
     }
     .jp-volume-controls, .jp-volume-bar, .volume-text {
         display: none;
@@ -496,6 +493,49 @@ input:focus, textarea:focus {
 		color: white; /* Change text color to white for contrast */
 		border-color: #FF6347; /* Maintain the red border color */
 		box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
+	}
+    #other-places-toggle {
+        font-family: 'Press Start 2P', cursive;
+        cursor: pointer;
+        background: #000;
+        color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 20px; /* Adjust this value as needed to increase spacing */
+    }
+
+    #disclaimer-toggle {
+        font-family: 'Press Start 2P', cursive;
+        cursor: pointer;
+        background: #000;
+        color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        padding: 15px 20px;
+        /* Ensure there is no margin-top that might reduce spacing */
+    }
+
+	#disclaimer-box {
+		margin: 20px auto;
+		text-align: center;
+		width: 100%;
+		max-width: 800px;
+		padding: 10px;
+		box-sizing: border-box;
+		background-color: #000;
+		transition: border 0.4s ease;
+		margin-bottom: 30px;
+	}
+	#disclaimer-content {
+		color: white;
+		display: none;
+		font-size: 0.65rem;
+		line-height: 1.5;
+		padding: 10px 10px;
+		text-align: center;
+		width: auto;
+		max-width: 100%;
 	}
 
 }

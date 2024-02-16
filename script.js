@@ -335,9 +335,22 @@ $(document).ready(function() {
 				updateSeekBarPosition(pageX);
 			}
 		});
+		
+		
 		$(document).ready(function() {
 			$('#disclaimer-toggle').click(function() {
-				$('#disclaimer-content').slideToggle('slow'); // 'fast' can be changed to 'slow' or specific milliseconds
+				// Toggle visibility with slide animation
+				$('#disclaimer-content').slideToggle('slow', function() {
+					// This callback function executes after the sliding is complete
+					// Check if the disclaimer content is now visible
+					if ($('#disclaimer-content').is(":visible")) {
+						// Scroll to the disclaimer content smoothly
+						$('#disclaimer-content').get(0).scrollIntoView({
+							behavior: 'smooth',
+							block: 'start'
+						});
+					}
+				});
 			});
 		});
 
@@ -359,6 +372,37 @@ $(document).ready(function() {
 				// Finalize the seek operation
 				$("#jquery_jplayer_1").jPlayer("playHead", percentage);
 				syncSeekBarAndTime(percentage, false);
+			}
+		});
+
+
+		document.getElementById('other-places-toggle').addEventListener('click', function() {
+			var otherPlacesBox = document.getElementById('other-places-box');
+			// Toggle visibility
+			if (otherPlacesBox.style.display === 'none' || !otherPlacesBox.style.display) {
+				otherPlacesBox.style.display = 'block';
+				
+				// Check if the box is empty before adding content
+				if (otherPlacesBox.innerHTML.trim() === '') {
+					// Define your links and images
+					var places = [
+						{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
+						// Add more sites and logos as needed
+					];
+
+					// Generate HTML content for links and images
+					var content = places.map(function(place) {
+						return '<a href="' + place.url + '" target="_blank"><img src="' + place.img + '" alt="' + place.alt + '" style="width: 100px; height: auto; margin: 10px;"></a>';
+					}).join('');
+
+					// Insert content into the box
+					otherPlacesBox.innerHTML = content;
+				}
+
+				// Scroll into view after content is added
+				otherPlacesBox.scrollIntoView({ behavior: 'smooth' });
+			} else {
+				otherPlacesBox.style.display = 'none';
 			}
 		});
 
