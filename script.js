@@ -387,6 +387,7 @@ $(document).ready(function() {
 					// Define your links and images
 					var places = [
 						{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
+						{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/j5fs585/6297981ce01809629f11358d.png', alt: 'Deezer' },
 						// Add more sites and logos as needed
 					];
 
@@ -410,23 +411,35 @@ $(document).ready(function() {
 		// Volume control
 		$('.jp-volume-bar').on('mousedown', function(e) {
 			var volumeBar = $(this);
+			var isDragging = false;
+			var volumeBarOffset = volumeBar.offset();
+			var volumeBarWidth = volumeBar.width();
+
 			var updateVolume = function(e) {
-				var volumeBarOffset = volumeBar.offset();
-				var volumeBarWidth = volumeBar.width();
-				var clickPositionX = e.pageX - volumeBarOffset.left;
-				var volumeLevel = clickPositionX / volumeBarWidth;
-				volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
-				$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
-				$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
+				if (!isDragging) return;
+				requestAnimationFrame(function() { // Smooth animation
+					var clickPositionX = e.pageX - volumeBarOffset.left;
+					var volumeLevel = clickPositionX / volumeBarWidth;
+					volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
+					$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
+					$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
+				});
 			};
 
-			updateVolume(e);
-
-			$(document).on('mousemove.vol', function(e) {
+			var startDragging = function(e) {
+				isDragging = true;
 				updateVolume(e);
-			}).on('mouseup.vol', function() {
-				$(document).off('.vol');
-			});
+			};
+
+			var stopDragging = function() {
+				if (isDragging) {
+					$(document).off('.vol');
+					isDragging = false;
+				}
+			};
+
+			$(document).on('mousemove.vol', updateVolume).on('mouseup.vol', stopDragging);
+			startDragging(e);
 
 			e.preventDefault(); // Prevent default drag behavior
 		});
