@@ -427,6 +427,7 @@ $(document).ready(function() {
 					var places = [
 						{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
 						{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/j5fs585/6297981ce01809629f11358d.png', alt: 'Deezer' },
+						{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/RHgcdxG/6297981ce01809629fasdasda11358d.png', alt: 'Spotify' },
 						// Add more sites and logos as needed
 					];
 
