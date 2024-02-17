@@ -61,6 +61,14 @@ $(document).ready(function() {
 
 	var currentAdIndex = 0;
 
+	// Preload images
+	function preloadAdImages(images) {
+		images.forEach(function(imageUrl) {
+			var img = new Image();
+			img.src = imageUrl;
+		});
+	}
+
 	function cycleAds() {
 		var adContainer = $('#ddd-section');
 		var adLink = adContainer.find('a');
@@ -68,7 +76,7 @@ $(document).ready(function() {
 		// Ensure there's an <a> tag inside adContainer; if not, create it
 		if (adLink.length === 0) {
 			adLink = $('<a>', {
-				href: "https://www.fuckyoudeki.net",
+				href: "https://www.fuckyoudeki.net", // Note: Please replace the placeholder URL with your desired link
 				target: "_blank"
 			}).appendTo(adContainer);
 		}
@@ -105,24 +113,62 @@ $(document).ready(function() {
 		setTimeout(cycleAds, 5000);
 	}
 
-	// Initialize ad rotation
+	// Initialize ad rotation and preload images
 	$(document).ready(function() {
+		preloadAdImages(adImages); // Preload all ad images
 		cycleAds();
 	});
 
-  // Adjusting the event handler for the play button
-    $(document).on('click', '.jp-play', function(e) {
-      // Check if a track is selected by looking for a 'null' or 'undefined' currentTrackIndex
-      if (currentTrackIndex === null || typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
-        e.preventDefault(); // Prevent the default play action
-        // Show the popup
-        $('#track-select-popup').stop().fadeIn(500).delay(1500).fadeOut(500);
-        console.log("Play button clicked without a track selected. currentTrackIndex:", currentTrackIndex);
-      } else {
-      // A track is selected, let the jPlayer handle the play action
-        console.log("Playing track with index:", currentTrackIndex);
-      }
-    });
+	function getUserOS() {
+	  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+	  if (/android/i.test(userAgent)) {
+		return "Android";
+	  }
+
+	  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+		return "iOS";
+	  }
+
+	  return "other";
+	}
+
+	$(document).on('click', '.jp-play', function(e) {
+	  // Check if a track is selected
+	  if (currentTrackIndex === null || typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
+		e.preventDefault(); // Prevent the default play action
+		
+		// Original popup content when no track is selected
+		var popupContent = "no track selected.";
+		
+		// Display the popup with the original message
+		$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(1500).fadeOut(500);
+		
+		console.log("Play button clicked without a track selected. currentTrackIndex:", currentTrackIndex);
+	  } else {
+		// A track is selected, check the user's OS for PWA installation prompt
+		var os = getUserOS(); // Assume getUserOS function is defined elsewhere as previously described
+		
+		// Decide on the popup content based on the user's OS
+		if (os === 'Android' || os === 'iOS') {
+		  e.preventDefault(); // Optionally prevent the default play action
+		  
+		  var imageSrc = os === 'Android' ? 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png' : 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png';
+		  var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
+
+		  // Show the PWA installation prompt
+		  $('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(3000).fadeOut(500); // Adjusted delay for user to read instructions
+		  
+		  console.log("PWA installation prompt for ", os);
+		} else {
+		  // Let the jPlayer handle the play action normally
+		  console.log("Playing track with index:", currentTrackIndex);
+		}
+	  }
+	});
+
+
+
 
 
 	function updateHeaderImage(trackImage) {

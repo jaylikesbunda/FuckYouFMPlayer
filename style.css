@@ -14,6 +14,8 @@ body {
     justify-content: center; /* Centers children vertically in the flex container */
     min-height: 100vh; /* Ensures the body takes at least the height of the viewport */
     cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), auto; /* Sets custom cursor */
+	-webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+    overflow: scroll; /* Enables scrollable content even with the scrollbar hidden */
 }
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
@@ -29,7 +31,10 @@ body::-webkit-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
+/* This targets all webkit-based browsers, including Safari on iOS */
+::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
 /* Targeting dynamically generated controls for a consistent cursor */
 .jp-seek-bar, .jp-volume-bar, .jp-seek-bar *, .jp-volume-bar *, button, .volume-label, .current-time, .duration, .jp-play-bar, .jp-progress {
     cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), pointer !important;
@@ -414,10 +419,9 @@ input:focus, textarea:focus {
 /* Mobile-specific adjustments */
 @media screen and (max-width: 480px) {
     .jp-progress {
-        margin-top: 30px; /* Add space for the time info */
-        height: 5px; /* Thinner seek bar */
+        margin-top: 40px; /* Increased space for the time info */
+        height: 10px; /* Adjust if needed */
     }
-
     #track-selection {
         margin: 20px auto; /* Adjusts margin for smaller screens */
         padding: 5px;
@@ -430,18 +434,21 @@ input:focus, textarea:focus {
         font-size: 4vw; /* Adjusted font size for readability on smaller screens */
     }
 
+    /* Adjust the container for the time indicators */
     .time-info {
-        top: 15px; /* Adjust to not overlap the seek bar */
-        font-size: 4vw; /* Slightly larger font size for mobile readability */
-        padding: 0; /* Remove padding */
-        width: 100%; /* Use full width of the parent */
-        transform: translateY(0); /* No vertical translation needed */
+        display: flex;
+        justify-content: space-between; /* This will space out the children (current time and duration) */
+        position: absolute; /* Position absolute to place it relative to jp-progress */
+        width: 100%; /* Full width to allow justify-content to space children properly */
+        top: -35px; /*st this value so that time-info sits above the progress bar */
+        left: 0;
+        padding: 0 10px; /* Padding to ensure content doesn't touch the edges */
     }
-
     .current-time, .duration {
-        position: absolute;
-        background-color: transparent; /* Remove background color on mobile */
-        padding: 0; /* Remove padding on mobile */
+        position: relative;
+        background-color: transparent;
+        padding: 2px 10px;/*Adjust padding to ensure they don't touch each other or the progress bar */
+        margin-top: 5px; /* Ensures vertical spacing from the progress bar */
     }
 
     .current-time {
