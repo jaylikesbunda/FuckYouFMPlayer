@@ -120,6 +120,11 @@ $(document).ready(function() {
 	});
 
 	$(document).ready(function() {
+	  // Function to detect if the app is running in standalone mode
+	  function isInStandaloneMode() {
+		return ('standalone' in window.navigator && window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches;
+	  }
+
 	  // Function to detect the user's operating system
 	  function getUserOS() {
 		var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -132,17 +137,22 @@ $(document).ready(function() {
 		return "other";
 	  }
 
-	  // Delay the PWA installation prompt slightly after the site loads
-	  setTimeout(function() {
-		var os = getUserOS(); // Get the user's OS
-		// Decide on the popup content based on the user's OS
-		if (os === 'Android' || os === 'iOS') {
-		  var imageSrc = os === 'Android' ? 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png' : 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png';
-		  var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
-		  // Show the PWA installation prompt
-		  $('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(5000).fadeOut(500);
-		}
-	  }, 2000); // 2 seconds delay
+	  // Only run the following code if the app is not in standalone mode
+	  if (!isInStandaloneMode()) {
+		// Delay the PWA installation prompt slightly after the site loads
+		setTimeout(function() {
+		  var os = getUserOS(); // Get the user's OS
+		  // Decide on the popup content based on the user's OS
+		  if (os === 'Android' || os === 'iOS') {
+			var imageSrc = os === 'Android' ? 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png' : 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png';
+			var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
+			// Show the PWA installation prompt
+			$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(5000).fadeOut(500);
+		  }
+		}, 2000); // 2 seconds delay
+	  }
+	});
+
 
 	  // Event handler for playing a track
 	  $(document).on('click', '.jp-play', function(e) {
@@ -580,76 +590,55 @@ $(document).ready(function() {
 	}
 
 	function updateMediaSessionWithTrackInfo(index) {
+		// This check ensures that we have a valid track index and that the trackList is defined
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			var track = trackList[index];
-			updateMediaSession(track.name, "FY INDUSTRIES"); // Correctly pass track name and artist
+			// Update media session with track details
+			updateMediaSession(track.name, "FY INDUSTRIES");
 		} else {
-			// Handle default or no track selected scenario
+			// Default message when no track is selected or available
 			updateMediaSession("No track selected", "FY INDUSTRIES");
 		}
 	}
 
-
-
 	function updateMediaSession(trackName, artistName) {
-		// Common image link for live and standard modes
 		const imageLink = "https://i.ibb.co/7KjTdQ9/Untitled-1.png";
+		const artwork = [
+			{ src: imageLink, sizes: '96x96', type: 'image/png' },
+			{ src: imageLink, sizes: '128x128', type: 'image/png' },
+			{ src: imageLink, sizes: '192x192', type: 'image/png' },
+			{ src: imageLink, sizes: '256x256', type: 'image/png' },
+			{ src: imageLink, sizes: '384x384', type: 'image/png' },
+			{ src: imageLink, sizes: '512x512', type: 'image/png' },
+		];
 
-		if (isLiveMode) {
-			// Prevent resetting metadata for each track change in live mode
-			if (!window.liveModeInitialized) {
-				window.liveModeInitialized = true;
-
-				trackName = "Live Broadcast";
-				artistName = "FY INDUSTRIES";
-
-				navigator.mediaSession.metadata = new MediaMetadata({
-					title: trackName,
-					artist: artistName,
-					artwork: [
-						{ src: imageLink, sizes: '96x96', type: 'image/png' },
-						{ src: imageLink, sizes: '128x128', type: 'image/png' },
-						{ src: imageLink, sizes: '192x192', type: 'image/png' },
-						{ src: imageLink, sizes: '256x256', type: 'image/png' },
-						{ src: imageLink, sizes: '384x384', type: 'image/png' },
-						{ src: imageLink, sizes: '512x512', type: 'image/png' },
-					]
-				});
-			}
-		} else {
-			// Reset the flag when not in live mode
+		if (isLiveMode && !window.liveModeInitialized) {
+			window.liveModeInitialized = true;
+			trackName = "Live Broadcast";
+		} else if (!isLiveMode) {
 			window.liveModeInitialized = false;
-
-			trackName = trackName || "No track selected";
-			artistName = artistName || "FY INDUSTRIES";
-
-			navigator.mediaSession.metadata = new MediaMetadata({
-				title: trackName,
-				artist: artistName,
-				artwork: [
-					{ src: imageLink, sizes: '96x96', type: 'image/png' },
-					{ src: imageLink, sizes: '128x128', type: 'image/png' },
-					{ src: imageLink, sizes: '192x192', type: 'image/png' },
-					{ src: imageLink, sizes: '256x256', type: 'image/png' },
-					{ src: imageLink, sizes: '384x384', type: 'image/png' },
-					{ src: imageLink, sizes: '512x512', type: 'image/png' },
-				]
-			});
 		}
 
-		// Setup or reset action handlers
-		navigator.mediaSession.setActionHandler('play', () => $("#jquery_jplayer_1").jPlayer("play"));
-		navigator.mediaSession.setActionHandler('pause', () => $("#jquery_jplayer_1").jPlayer("pause"));
-		navigator.mediaSession.setActionHandler('previoustrack', () => {
-			// Implement previous track logic here for live mode if applicable
-		});
-		navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrackInLiveMode());
+		// Update or initialize media session metadata
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: trackName || "No track selected",
+				artist: artistName || "FY INDUSTRIES",
+				artwork: artwork
+			});
+
+			// Define action handlers
+			navigator.mediaSession.setActionHandler('play', () => $("#jquery_jplayer_1").jPlayer("play"));
+			navigator.mediaSession.setActionHandler('pause', () => $("#jquery_jplayer_1").jPlayer("pause"));
+			navigator.mediaSession.setActionHandler('previoustrack', () => {
+				// Implement or adjust previous track logic for live mode if needed
+			});
+			navigator.mediaSession.setActionHandler('nexttrack', () => {
+				// Implement or adjust next track logic for live mode
+				playNextTrackInLiveMode();
+			});
+		}
 	}
-
-
-
-
-
 
 	function updateSeekBar(currentTime, duration) {
 		if (isLiveMode) {
