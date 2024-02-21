@@ -120,9 +120,9 @@ $(document).ready(function() {
 	});
 
 	$(document).ready(function() {
-	  // Function to detect if the app is running in standalone mode
-	  function isInStandaloneMode() {
-		return ('standalone' in window.navigator && window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches;
+	  // Function to detect if the app is running as a PWA
+	  function isRunningAsPWA() {
+		return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone === true);
 	  }
 
 	  // Function to detect the user's operating system
@@ -137,8 +137,8 @@ $(document).ready(function() {
 		return "other";
 	  }
 
-	  // Only run the following code if the app is not in standalone mode
-	  if (!isInStandaloneMode()) {
+	  // Only show the PWA installation prompt if not running as a PWA
+	  if (!isRunningAsPWA()) {
 		// Delay the PWA installation prompt slightly after the site loads
 		setTimeout(function() {
 		  var os = getUserOS(); // Get the user's OS
@@ -151,17 +151,15 @@ $(document).ready(function() {
 		  }
 		}, 2000); // 2 seconds delay
 	  }
-	});
-
 
 	  // Event handler for playing a track
 	  $(document).on('click', '.jp-play', function(e) {
-		// Check if a track is selected
-		if (currentTrackIndex === null || typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
+		// Assuming `currentTrackIndex` is defined elsewhere in your script
+		if (typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
 		  e.preventDefault(); // Prevent the default play action
-		  // Original popup content when no track is selected
-		  var popupContent = "no track selected.";
-		  // Display the popup with the original message
+		  // Popup content when no track is selected
+		  var popupContent = "No track selected.";
+		  // Display the popup
 		  $('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(1500).fadeOut(500);
 		} else {
 		  // A track is selected, let the jPlayer handle the play action normally
@@ -639,6 +637,10 @@ $(document).ready(function() {
 			});
 		}
 	}
+
+
+
+
 
 	function updateSeekBar(currentTime, duration) {
 		if (isLiveMode) {
