@@ -119,6 +119,8 @@ $(document).ready(function() {
 		cycleAds();
 	});
 
+
+
 	$(document).ready(function() {
 	  // Function to detect if the app is running as a PWA
 	  function isRunningAsPWA() {
