@@ -119,13 +119,13 @@ input:focus, textarea:focus {
 
 .loading-bar-container {
     width: 300px; /* Set the width of the progress bar */
-    padding: 10px;
+    padding: 7px;
     background-color: #000;
-    border-radius: 10px;
+    border-radius: 7px;
 }
 
 .loading-bar {
-    height: 20px;
+    height: 10px;
     width: 0%;
     background-color: #fff; /* Retro white progress bar */
     border-radius: 5px;
