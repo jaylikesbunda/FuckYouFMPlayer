@@ -149,7 +149,7 @@ $(document).ready(function() {
 			var imageSrc = os === 'Android' ? 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png' : 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png';
 			var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
 			// Show the PWA installation prompt
-			$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(5000).fadeOut(500);
+			$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(9000).fadeOut(500);
 		  }
 		}, 2000); // 2 seconds delay
 	  }
