@@ -34,14 +34,14 @@ $(document).ready(function() {
   var currentTrackIndex = null;
   var trackList = [
     { 
-      name: "FuckYou FM: REMASTERED",
+      name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/XxP4grpUn8HB5tHZBLMdqFEUCbRIyCW7",
       image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
     },
     { 
-      name: "FuckYou FM: UTOPIA",
-      file: "https://audio.jukehost.co.uk/SmFrnGF37HsQntp8DW74RAG1LYJboFHy",
-      image: "https://i.ibb.co/ssCCtXy/Untitlesaddasdasdcasfd-2.png"
+      name: "FuckYou FM 3",
+      file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
+      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
     },
     { 
       name: "FuckYou FM 2",
@@ -53,9 +53,9 @@ $(document).ready(function() {
 	// Ad rotation functionality
 	var adImages = [
 		'https://i.ibb.co/6gV20KW/Untitled-3.gif',
-		'https://i.ibb.co/R49K61Q/Untitled-5.png',
+		'https://i.ibb.co/drwys9P/luckyliners.png',
 		'https://i.ibb.co/M2k4nh6/Untitled-6.png',
-		'https://i.ibb.co/WvHDtR8/untitled8-min.gif',
+		'https://i.ibb.co/nnJ9qYD/kinder-dark.png',
 		// Add more ad image links as needed
 	];
 
