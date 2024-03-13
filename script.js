@@ -39,14 +39,14 @@ $(document).ready(function() {
       image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
     },
     { 
-      name: "FuckYou FM 3",
-      file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
-      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
-    },
-    { 
       name: "FuckYou FM 2",
       file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
       image: "https://i.ibb.co/7NDmYcg/Sequence01-ezgif-com-optimize.gif"
+    },
+    { 
+      name: "FuckYou FM 3",
+      file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
+      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
     },
   ];
 
@@ -146,7 +146,7 @@ $(document).ready(function() {
 		  var os = getUserOS(); // Get the user's OS
 		  // Decide on the popup content based on the user's OS
 		  if (os === 'Android' || os === 'iOS') {
-			var imageSrc = os === 'Android' ? 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png' : 'https://i.ibb.co/rGmMKYT/Screenshot-2024-02-17-080801.png';
+			var imageSrc = os === 'Android' ? 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png' : 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png';
 			var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
 			// Show the PWA installation prompt
 			$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(12000).fadeOut(500);
@@ -330,187 +330,172 @@ $(document).ready(function() {
 
 
 	function initializePlayer() {
-		// Here is the throttled function
+		// Throttled function to efficiently update the seek bar and time display
 		var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
 			var percentage = (currentTime / duration) * 100;
 			$(".jp-play-bar").css("width", percentage + "%");
 			$(".current-time").text(formatTime(currentTime));
 			$(".duration").text(formatTime(duration - currentTime));
-		}, 250); // Throttle updates to every 250 milliseconds
+		}, 250); // Updates are throttled to every 250 milliseconds
 
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
-			updateHeaderImage();
+				updateHeaderImage(); // Initial header image update
 			},
-			swfPath: "/js",
-			supplied: "mp3",
-			cssSelectorAncestor: "#jp_container_1",
-			useStateClassSkin: true,
-			autoBlur: false,
-			smoothPlayBar: true,
-			keyEnabled: true,
-			remainingDuration: true,
-			toggleDuration: true,
+			swfPath: "/js", // Path to the JPlayer Swf file for fallback
+			supplied: "mp3", // Specifies the supplied media format
+			cssSelectorAncestor: "#jp_container_1", // The CSS selector for the JPlayer ancestor
+			useStateClassSkin: true, // Enables JPlayer's state class skin
+			autoBlur: false, // Prevents focus blur
+			smoothPlayBar: true, // Smooth transitions in the play bar
+			keyEnabled: true, // Enables keyboard control
+			remainingDuration: true, // Shows the remaining duration
+			toggleDuration: true, // Allows toggling the duration display
 			timeupdate: function(event) {
-			  if (isLiveMode) {
-				// Live mode: Update UI to reflect live broadcast without showing seek bar
-				$(".current-time, .duration").text('LIVE');
-				$(".jp-seek-bar, .jp-play-bar").hide(); // Hide seek bar elements
-			  } else {
-				// Regular playback: Update seek bar and time info
-				if (!isSeeking) {
-				  var currentTime = event.jPlayer.status.currentTime;
-				  var duration = event.jPlayer.status.duration;
-				  var percentage = (currentTime / duration) * 100;
-				  $(".jp-play-bar").css("width", percentage + "%");
-				  $(".current-time").text(formatTime(currentTime));
-				  $(".duration").text(formatTime(duration - currentTime));
-				}
-			  }
-			}
-		});
-
-		$('.jp-progress').on('mousedown touchstart', function(e) {
-			isSeeking = true;
-			var pageX = e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX;
-			updateSeekBarPosition(pageX);
-			e.preventDefault(); // Prevent default text selection behavior
-		});
-
-
-		$(document).on('mousemove touchmove', function(e) {
-			if (isSeeking) {
-				var pageX = e.type === 'mousemove' ? e.pageX : (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX);
-				updateSeekBarPosition(pageX);
-			}
-		});
-		
-		
-		$(document).ready(function() {
-			$('#disclaimer-toggle').click(function() {
-				// Toggle visibility with slide animation
-				$('#disclaimer-content').slideToggle('slow', function() {
-					// This callback function executes after the sliding is complete
-					// Check if the disclaimer content is now visible
-					if ($('#disclaimer-content').is(":visible")) {
-						// Scroll to the disclaimer content smoothly
-						$('#disclaimer-content').get(0).scrollIntoView({
-							behavior: 'smooth',
-							block: 'start'
-						});
+				if (isLiveMode) {
+					$(".current-time, .duration").text('LIVE').show();
+					$(".jp-seek-bar, .jp-play-bar").hide(); // Hide seek bar elements
+				} else {
+					if (!isSeeking) {
+						throttledUpdateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
 					}
-				});
-			});
-		});
-
-
-		$(document).on('mouseup touchend', function(e) {
-			if (isSeeking) {
-				isSeeking = false;
-				var pageX = e.type === 'mouseup' ? e.pageX : (e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].pageX : e.pageX);
-				updateSeekBarPosition(pageX);
-
-				// Calculate final percentage and update playback position
-				var progressContainer = $(".jp-progress");
-				var progressBarWidth = progressContainer.width();
-				var progressBarOffset = progressContainer.offset().left;
-				var position = pageX - progressBarOffset;
-				var percentage = (position / progressBarWidth) * 100;
-				percentage = Math.max(0, Math.min(percentage, 100));
-
-				// Finalize the seek operation
-				$("#jquery_jplayer_1").jPlayer("playHead", percentage);
-				syncSeekBarAndTime(percentage, false);
-			}
-		});
-
-
-		document.getElementById('other-places-toggle').addEventListener('click', function() {
-			var otherPlacesBox = document.getElementById('other-places-box');
-			// Toggle visibility
-			if (otherPlacesBox.style.display === 'none' || !otherPlacesBox.style.display) {
-				otherPlacesBox.style.display = 'block';
-				
-				// Check if the box is empty before adding content
-				if (otherPlacesBox.innerHTML.trim() === '') {
-					// Define your links and images
-					var places = [
-						{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
-						{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/j5fs585/6297981ce01809629f11358d.png', alt: 'Deezer' },
-						{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/RHgcdxG/6297981ce01809629fasdasda11358d.png', alt: 'Spotify' },
-						// Add more sites and logos as needed
-					];
-
-					// Generate HTML content for links and images
-					var content = places.map(function(place) {
-						return '<a href="' + place.url + '" target="_blank"><img src="' + place.img + '" alt="' + place.alt + '" style="width: 100px; height: auto; margin: 10px;"></a>';
-					}).join('');
-
-					// Insert content into the box
-					otherPlacesBox.innerHTML = content;
 				}
-
-				// Scroll into view after content is added
-				otherPlacesBox.scrollIntoView({ behavior: 'smooth' });
-			} else {
-				otherPlacesBox.style.display = 'none';
+			},
+			loadstart: function(event) {
+				$('.jp-play').text('Loading...').addClass('loading');
+			},
+			canplay: function(event) {
+				$('.jp-play').text('Play').removeClass('loading');
 			}
-		});
-
-
-		// Volume control
-		$('.jp-volume-bar').on('mousedown', function(e) {
-			var volumeBar = $(this);
-			var isDragging = false;
-			var volumeBarOffset = volumeBar.offset();
-			var volumeBarWidth = volumeBar.width();
-
-			var updateVolume = function(e) {
-				if (!isDragging) return;
-				requestAnimationFrame(function() { // Smooth animation
-					var clickPositionX = e.pageX - volumeBarOffset.left;
-					var volumeLevel = clickPositionX / volumeBarWidth;
-					volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
-					$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
-					$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
-				});
-			};
-
-			var startDragging = function(e) {
-				isDragging = true;
-				updateVolume(e);
-			};
-
-			var stopDragging = function() {
-				if (isDragging) {
-					$(document).off('.vol');
-					isDragging = false;
-				}
-			};
-
-			$(document).on('mousemove.vol', updateVolume).on('mouseup.vol', stopDragging);
-			startDragging(e);
-
-			e.preventDefault(); // Prevent default drag behavior
-		});
-
-		// Mute and unmute controls
-		$('.jp-mute').click(function() {
-			$("#jquery_jplayer_1").jPlayer("mute");
-		});
-
-		$('.jp-unmute').click(function() {
-			$("#jquery_jplayer_1").jPlayer("unmute");
-		});
-
-		// Responsive resize
-		$(window).resize(function() {
-			$("#jquery_jplayer_1").jPlayer("option", "size", {
-				width: "100%",
-				height: "auto"
-			});
 		});
 	}
+
+	$('.jp-progress').on('mousedown touchstart', function(e) {
+		isSeeking = true;
+		var pageX = e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX;
+		updateSeekBarPosition(pageX);
+		e.preventDefault(); // Prevent default text selection behavior
+	});
+
+	$(document).on('mousemove touchmove', function(e) {
+		if (isSeeking) {
+			var pageX = e.type === 'mousemove' ? e.pageX : (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX);
+			updateSeekBarPosition(pageX);
+		}
+	});
+
+	$(document).ready(function() {
+		$('#disclaimer-toggle').click(function() {
+			$('#disclaimer-content').slideToggle('slow', function() {
+				if ($('#disclaimer-content').is(":visible")) {
+					$('#disclaimer-content').get(0).scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}
+			});
+		});
+	});
+
+	$(document).on('mouseup touchend', function(e) {
+		if (isSeeking) {
+			isSeeking = false;
+			var pageX = e.type === 'mouseup' ? e.pageX : (e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].pageX : e.pageX);
+			updateSeekBarPosition(pageX);
+			
+			var progressContainer = $(".jp-progress");
+			var progressBarWidth = progressContainer.width();
+			var progressBarOffset = progressContainer.offset().left;
+			var position = pageX - progressBarOffset;
+			var percentage = (position / progressBarWidth) * 100;
+			percentage = Math.max(0, Math.min(percentage, 100));
+
+			$("#jquery_jplayer_1").jPlayer("playHead", percentage);
+		}
+	});
+
+	document.getElementById('other-places-toggle').addEventListener('click', function() {
+		var otherPlacesBox = document.getElementById('other-places-box');
+		if (otherPlacesBox.style.display === 'none' || !otherPlacesBox.style.display) {
+			otherPlacesBox.style.display = 'block';
+			
+			if (otherPlacesBox.innerHTML.trim() === '') {
+				var places = [
+					{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
+					{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/j5fs585/6297981ce01809629f11358d.png', alt: 'Deezer' },
+					{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/RHgcdxG/6297981ce01809629fasdasda11358d.png', alt: 'Spotify' },
+				];
+
+				var content = places.map(function(place) {
+					return `<a href="${place.url}" target="_blank"><img src="${place.img}" alt="${place.alt}" style="width: 100px; height: auto; margin: 10px;"></a>`;
+				}).join('');
+
+				otherPlacesBox.innerHTML = content;
+			}
+
+			otherPlacesBox.scrollIntoView({ behavior: 'smooth' });
+		} else {
+			otherPlacesBox.style.display = 'none';
+		}
+	});
+
+	// Volume control
+	$('.jp-volume-bar').on('mousedown', function(e) {
+		var volumeBar = $(this);
+		var isDragging = true; // Directly set to true as we're starting the drag action here
+		var volumeBarOffset = volumeBar.offset().left;
+		var volumeBarWidth = volumeBar.width();
+
+		$(document).on('mousemove.vol', function(e) {
+			if (!isDragging) return;
+			var clickPositionX = e.pageX - volumeBarOffset;
+			var volumeLevel = clickPositionX / volumeBarWidth;
+			volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
+			$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
+			$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
+			if(volumeLevel > 0) {
+				$("#jquery_jplayer_1").jPlayer("unmute");
+				$('.jp-unmute').hide();
+				$('.jp-mute').show();
+			}
+		}).on('mouseup.vol', function() {
+			$(document).off('.vol');
+			isDragging = false;
+		});
+
+		e.preventDefault(); // Prevent default action (text selection, etc.)
+	});
+
+	// Adjusted mute toggle function without debounce
+	function toggleMute() {
+		if ($("#jquery_jplayer_1").data().jPlayer.status.muted) {
+			$("#jquery_jplayer_1").jPlayer("unmute");
+			$('.jp-unmute').hide();
+			$('.jp-mute').show();
+		} else {
+			$("#jquery_jplayer_1").jPlayer("mute");
+			$('.jp-mute').hide();
+			$('.jp-unmute').show();
+		}
+	}
+
+	$('.jp-mute').click(function() {
+		toggleMute();
+	});
+
+	$('.jp-unmute').click(function() {
+		toggleMute();
+	});
+
+
+
+	$(window).resize(function() {
+		$("#jquery_jplayer_1").jPlayer("option", "size", {
+			width: "100%",
+			height: "auto"
+		});
+	});
+
 
 
 
@@ -523,6 +508,9 @@ $(document).ready(function() {
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 			var track = trackList[index];
+
+			// Update play button to indicate loading
+			$('.jp-play').text('Loading...').addClass('loading');
 
 			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata)
 								  .unbind($.jPlayer.event.ended)
