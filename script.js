@@ -12,6 +12,88 @@ $(document).ready(function() {
               console.log('Service Worker Registration Failed', err);
           });
   }
+  
+	(function() {
+		// Enhanced Volume and Mute Control Functionality with Smooth Interaction
+		var volumeBar = $('.jp-volume-bar');
+		var jPlayer = $("#jquery_jplayer_1");
+
+		// Function to check if the device is mobile
+		function isMobileDevice() {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		}
+
+		// Initialize isMuted based on the player's current muted state or a default value
+		var isMuted = jPlayer.data().jPlayer && jPlayer.data().jPlayer.status.muted;
+
+		function setVolume(volumeLevel, updateMuteState = true) {
+			$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
+			jPlayer.jPlayer("volume", volumeLevel);
+			
+			// Update mute state if necessary
+			if (updateMuteState) {
+				isMuted = volumeLevel === 0;
+			}
+			updateVolumeUI(volumeLevel);
+		}
+
+		function updateVolumeUI(volumeLevel) {
+			// Hide volume controls on mobile devices
+			if (isMobileDevice()) {
+				$('.jp-volume-controls').hide();
+			} else {
+				$('.jp-mute').toggle(isMuted || volumeLevel === 0);
+				$('.jp-unmute').toggle(!isMuted && volumeLevel > 0);
+			}
+		}
+
+		var dragging = false;
+		function handleVolumeChange(e) {
+			if (!dragging) return;
+			requestAnimationFrame(function() {
+				var volumeBarOffset = volumeBar.offset().left;
+				var volumeBarWidth = volumeBar.width();
+				var pageX = e.pageX || (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : 0);
+				var clickPositionX = pageX - volumeBarOffset;
+				var volumeLevel = Math.max(0, Math.min(clickPositionX / volumeBarWidth, 1));
+				setVolume(volumeLevel, false);
+			});
+		}
+
+		volumeBar.on('mousedown touchstart', function(e) {
+			if (isMobileDevice()) return; // Prevent interaction on mobile devices
+			e.preventDefault();
+			dragging = true;
+			handleVolumeChange(e);
+
+			$(document).on('mousemove.vol touchmove.vol', handleVolumeChange)
+					   .one('mouseup touchend', function() {
+						   dragging = false;
+						   $(document).off('.vol');
+					   });
+		});
+
+		function toggleMute() {
+			isMuted = !isMuted;
+			jPlayer.jPlayer(isMuted ? "mute" : "unmute");
+			// Directly reflect mute state change without waiting for player update
+			updateVolumeUI(isMuted ? 0 : jPlayer.data().jPlayer.options.volume);
+		}
+
+		// Ensure volume and mute state are accurately initialized
+		$(document).ready(function() {
+			var initialVolume = jPlayer.data().jPlayer ? jPlayer.data().jPlayer.options.volume : 0.8;
+			// Correctly initialize the state for mobile devices
+			if (isMobileDevice()) {
+				$('.jp-volume-controls').hide();
+			} else {
+				setVolume(isMuted ? 0 : initialVolume, !isMuted);
+			}
+		});
+
+		$('.jp-mute, .jp-unmute').click(toggleMute);
+	})();
+
 
   function requestNotificationPermission() {
       // Check if the Notifications API is supported
@@ -122,53 +204,37 @@ $(document).ready(function() {
 
 
 	$(document).ready(function() {
-	  // Function to detect if the app is running as a PWA
-	  function isRunningAsPWA() {
-		return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone === true);
-	  }
-
-	  // Function to detect the user's operating system
-	  function getUserOS() {
-		var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-		if (/android/i.test(userAgent)) {
-		  return "Android";
+		// Checks if the app is running in a standalone mode and if the device is mobile
+		function isMobileDevice() {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 		}
-		if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-		  return "iOS";
-		}
-		return "other";
-	  }
 
-	  // Only show the PWA installation prompt if not running as a PWA
-	  if (!isRunningAsPWA()) {
-		// Delay the PWA installation prompt slightly after the site loads
-		setTimeout(function() {
-		  var os = getUserOS(); // Get the user's OS
-		  // Decide on the popup content based on the user's OS
-		  if (os === 'Android' || os === 'iOS') {
-			var imageSrc = os === 'Android' ? 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png' : 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png';
-			var popupContent = "<img src='" + imageSrc + "' alt='Install App' style='max-width:100%;height:auto;'>";
-			// Show the PWA installation prompt
-			$('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(12000).fadeOut(500);
-		  }
-		}, 2000); // 2 seconds delay
-	  }
-
-	  // Event handler for playing a track
-	  $(document).on('click', '.jp-play', function(e) {
-		// Assuming `currentTrackIndex` is defined elsewhere in your script
-		if (typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
-		  e.preventDefault(); // Prevent the default play action
-		  // Popup content when no track is selected
-		  var popupContent = "No track selected.";
-		  // Display the popup
-		  $('#track-select-popup').html(popupContent).stop().fadeIn(500).delay(1500).fadeOut(500);
-		} else {
-		  // A track is selected, let the jPlayer handle the play action normally
-		  console.log("Playing track with index:", currentTrackIndex);
+		function isRunningAsPWA() {
+			return ('matchMedia' in window && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
 		}
-	  });
+
+		// Displays a PWA installation prompt only if on a mobile device and not running as a PWA
+		function showPWAInstallationPrompt() {
+			if (!isMobileDevice() || isRunningAsPWA()) return; // Exit if not a mobile device or already a PWA
+
+			let imageSrc = 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png'; // Default image source for the prompt
+			let popupContent = `<div style="position: relative; background-color: #fff; border-radius: 0px; overflow: hidden;"><img src='${imageSrc}' alt='Install App' style='max-width:100%;height:auto; display: block;'><button style="position: absolute; top: 5px; right: 5px; font-size: 18px; color: #fff; background: none; border: none; padding: 0; cursor: pointer;" id="closePopup">&#10005;</button></div>`;
+			$('#track-select-popup').html(popupContent).fadeIn(500);
+
+			// Event handler to close the popup
+			$('#closePopup').click(function() {
+				$('#track-select-popup').fadeOut(500);
+			});
+		}
+
+		// Show the installation prompt with a delay
+		setTimeout(showPWAInstallationPrompt, 5000);
 	});
+
+
+
+
+
 
 
 
@@ -439,62 +505,6 @@ $(document).ready(function() {
 		}
 	});
 
-	// Volume control
-	$('.jp-volume-bar').on('mousedown', function(e) {
-		var volumeBar = $(this);
-		var isDragging = true; // Directly set to true as we're starting the drag action here
-		var volumeBarOffset = volumeBar.offset().left;
-		var volumeBarWidth = volumeBar.width();
-
-		$(document).on('mousemove.vol', function(e) {
-			if (!isDragging) return;
-			var clickPositionX = e.pageX - volumeBarOffset;
-			var volumeLevel = clickPositionX / volumeBarWidth;
-			volumeLevel = Math.max(0, Math.min(volumeLevel, 1)); // Ensure within 0-1 range
-			$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
-			$("#jquery_jplayer_1").jPlayer("volume", volumeLevel);
-			if(volumeLevel > 0) {
-				$("#jquery_jplayer_1").jPlayer("unmute");
-				$('.jp-unmute').hide();
-				$('.jp-mute').show();
-			}
-		}).on('mouseup.vol', function() {
-			$(document).off('.vol');
-			isDragging = false;
-		});
-
-		e.preventDefault(); // Prevent default action (text selection, etc.)
-	});
-
-	// Adjusted mute toggle function without debounce
-	function toggleMute() {
-		if ($("#jquery_jplayer_1").data().jPlayer.status.muted) {
-			$("#jquery_jplayer_1").jPlayer("unmute");
-			$('.jp-unmute').hide();
-			$('.jp-mute').show();
-		} else {
-			$("#jquery_jplayer_1").jPlayer("mute");
-			$('.jp-mute').hide();
-			$('.jp-unmute').show();
-		}
-	}
-
-	$('.jp-mute').click(function() {
-		toggleMute();
-	});
-
-	$('.jp-unmute').click(function() {
-		toggleMute();
-	});
-
-
-
-	$(window).resize(function() {
-		$("#jquery_jplayer_1").jPlayer("option", "size", {
-			width: "100%",
-			height: "auto"
-		});
-	});
 
 
 
@@ -691,6 +701,28 @@ $(document).ready(function() {
 			var pageX = e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX;
 			updateSeekBarPosition(pageX);
 		}
+	});
+
+
+	$(document).ready(function() {
+		$('.jp-play').on('click', function(e) {
+			// Check if a track has been selected by also checking for null
+			if (currentTrackIndex === null || typeof currentTrackIndex === 'undefined' || currentTrackIndex < 0) {
+				e.preventDefault(); // Prevent the default action of playing
+				
+				// Define the popup content with updated styles for black background, white text, and white border
+				var popupContent = "<div style='color: #fff; background-color: #000; padding: 5px; border-radius: 8px; text-align: center; max-width: 300px; margin: 20px auto;'>no track selected.</div>";
+
+				// Display the popup message
+				$('#track-select-popup').html(popupContent).fadeIn(500).delay(3000).fadeOut(500);
+			} else {
+				// A track has been selected, proceed with playing
+				console.log("Playing track with index:", currentTrackIndex);
+				// Additional logic to play the selected track can go here
+			}
+		});
+
+		// Other initialization code as needed
 	});
 
 
