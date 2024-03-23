@@ -1,21 +1,30 @@
 {
-  "short_name": "FY FM",
+  "short_name": "FuckYou FM",
   "name": "FuckYou FM",
   "icons": [
     {
       "src": "https://i.ibb.co/dtHjvBB/Untit33333led-1.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "https://i.ibb.co/dtHjvBB/Untit33333led-1.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
   "background_color": "#000000",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#000000"
+  "theme_color": "#000000",
+  "description": "The station of revenge.",
+  "orientation": "portrait-primary",
+  "display_override": ["fullscreen", "standalone"]
+  "id": "/",
+  "categories": ["music", "entertainment", "streaming"],
+  "language": "en",
+  "dir": "ltr"
 }
