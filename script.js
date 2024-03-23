@@ -355,7 +355,14 @@ $(document).ready(function() {
 		});
 	}
 
-
+	// Refactored code for when no track is selected
+	function handleNoTrackSelected() {
+		var defaultGIF = "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp";
+		$("#header-image").attr("src", defaultGIF);
+		$("#jquery_jplayer_1").jPlayer("clearMedia");
+		$('.track-item').removeClass('playing');
+		$('.current-time, .duration').text('--:--');
+	}
 
 	function playNextTrackInLiveMode() {
 		var nextIndex = (currentTrackIndex + 1) % trackList.length;
@@ -509,9 +516,9 @@ $(document).ready(function() {
 			
 			if (otherPlacesBox.innerHTML.trim() === '') {
 				var places = [
-					{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/CQYBsCK/Apple-Music-4.png', alt: 'Apple Music' },
-					{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/j5fs585/6297981ce01809629f11358d.png', alt: 'Deezer' },
-					{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/RHgcdxG/6297981ce01809629fasdasda11358d.png', alt: 'Spotify' },
+					{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/nCqtTsq/Apple-Music-4.webp', alt: 'Apple Music' },
+					{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/PF1VCYb/6297981ce01809629f11358d.webp', alt: 'Deezer' },
+					{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/pwJMn08/6297981ce01809629fasdasda11358d.webp', alt: 'Spotify' },
 				];
 
 				var content = places.map(function(place) {
@@ -600,14 +607,7 @@ $(document).ready(function() {
 		});
 	}
 
-	// Refactored code for when no track is selected
-	function handleNoTrackSelected() {
-		var defaultGIF = "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp";
-		$("#header-image").attr("src", defaultGIF);
-		$("#jquery_jplayer_1").jPlayer("clearMedia");
-		$('.track-item').removeClass('playing');
-		$('.current-time, .duration').text('--:--');
-	}
+
 
 	function updateMediaSessionWithTrackInfo(index) {
 		// This check ensures that we have a valid track index and that the trackList is defined
