@@ -34,7 +34,7 @@
   "theme_color": "#000000",
   "description": "The station of revenge.",
   "orientation": "portrait-primary",
-  "display_override": ["fullscreen", "standalone"],
+  "display_override": ["window-controls-overlay", "fullscreen", "standalone"],
   "id": "/",
   "categories": ["music", "entertainment", "streaming"],
   "language": "en",
