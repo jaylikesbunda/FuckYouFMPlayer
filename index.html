@@ -123,16 +123,35 @@
     </div>
 
 
-	<!-- Defer jQuery to reduce main-thread blocking -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
-	<!-- Defer jQuery UI -->
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" defer></script>
-	<!-- Defer jPlayer -->
-	<script src="https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js" defer></script>
-	<!-- Defer Underscore.js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js" defer></script>
-	<!-- Defer your custom script -->
-	<script src="script.js" defer></script>
+	<script>
+	// Dynamically load scripts with dependency management
+	function loadScript(src, callback) {
+	  var script = document.createElement('script');
+	  script.src = src;
+	  script.onload = () => callback();
+	  document.head.appendChild(script);
+	}
+
+	window.addEventListener('DOMContentLoaded', (event) => {
+	  loadScript('https://code.jquery.com/jquery-3.6.0.min.js', function() {
+		console.log('jQuery loaded');
+		loadScript('https://code.jquery.com/ui/1.13.2/jquery-ui.min.js', function() {
+		  console.log('jQuery UI loaded');
+		  loadScript('https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js', function() {
+			console.log('jPlayer loaded');
+			loadScript('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js', function() {
+			  console.log('Underscore.js loaded');
+			  loadScript('script.js', function() {
+				console.log('Custom script loaded');
+				// Initialize anything that needs jQuery, jQuery UI, jPlayer, and Underscore.js here
+			  });
+			});
+		  });
+		});
+	  });
+	});
+	</script>
+
 
 <script defer>
     // Check if jQuery is loaded
