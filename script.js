@@ -220,7 +220,7 @@ $(document).ready(function() {
 		function showInstallButtonPopup() {
 			let popupHTML = `
 			<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;">
-				<div style="padding: 20px; max-width: 500px; background: #000; border: 2px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; font-family: 'Press Start 2P', cursive;">
+				<div style="position: relative; padding: 20px; max-width: 500px; background: #000; border: 2px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; font-family: 'Press Start 2P', cursive;">
 					 <p style="color: #fff; text-align: center; margin-bottom: 20px;">This feature is required for LIVE mode.</p>
 					 <button id="installButton" style="padding: 10px 20px; background: #000; color: #fff; border: 2px solid #fff; border-radius: 10px; cursor: pointer; font-family: 'Press Start 2P', cursive;">Install App</button>
 					 <button class="closePopup" style="margin-top: 0px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 10px; font-size: 24px; padding: 10px;">&#10005;</button>
@@ -241,7 +241,7 @@ $(document).ready(function() {
 
 		function showImageBasedPWAInstallationPrompt() {
 			if (isIOSDevice()) {
-				let imageSrc = 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png';
+				let imageSrc = 'https://i.ibb.co/QKWKWWC/pwa-incentive-2-high-res.webp';
 				let popupHTML = `
 			<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
 				<div style="position: relative; padding: 12px; max-width: 500px; background: #000; border: 1px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;">
