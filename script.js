@@ -202,38 +202,74 @@ $(document).ready(function() {
 	});
 
 
+	$(document).ready(function () {
+		let deferredPrompt;
 
-	$(document).ready(function() {
-		// Checks if the app is running in a standalone mode and if the device is mobile
-		function isMobileDevice() {
-			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		function isAndroidDevice() {
+			return /Android/i.test(navigator.userAgent);
+		}
+
+		function isIOSDevice() {
+			return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 		}
 
 		function isRunningAsPWA() {
 			return ('matchMedia' in window && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
 		}
 
-		// Displays a PWA installation prompt only if on a mobile device and not running as a PWA
-		function showPWAInstallationPrompt() {
-			if (!isMobileDevice() || isRunningAsPWA()) return; // Exit if not a mobile device or already a PWA
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault(); // Prevent the mini-infobar from appearing on mobile
+			if (isAndroidDevice() && !isRunningAsPWA()) {
+				deferredPrompt = e; // Stash the event so it can be triggered later.
+				showInstallButtonPopup(); // Show the install button popup for Android
+			}
+		});
 
-			let imageSrc = 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png'; // Default image source for the prompt
-			let popupContent = `<div style="position: relative; background-color: #fff; border-radius: 0px; overflow: hidden;"><img src='${imageSrc}' alt='Install App' style='max-width:100%;height:auto; display: block;'><button style="position: absolute; top: 5px; right: 5px; font-size: 18px; color: #fff; background: none; border: none; padding: 0; cursor: pointer;" id="closePopup">&#10005;</button></div>`;
-			$('#track-select-popup').html(popupContent).fadeIn(500);
-
-			// Event handler to close the popup
-			$('#closePopup').click(function() {
-				$('#track-select-popup').fadeOut(500);
+		function showPopup(popupHTML) {
+			$('body').append(popupHTML);
+			$('.closePopup').on('click', () => {
+				$('.popupContainer').remove();
 			});
 		}
 
-		// Show the installation prompt with a delay
-		setTimeout(showPWAInstallationPrompt, 5000);
+		function showInstallButtonPopup() {
+			let popupHTML = `
+        <div class="popupContainer" style="position: fixed; top: 10; left: 10; right: 10; bottom: 10; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+            <div style="padding: 12px; background: #000; border: 1px solid #fff; border-radius: 20px; display: flex; flex-direction: column; align-items: center;">
+                <button id="installButton" style="padding: 10px 20px;">Install App</button>
+                <button class="closePopup" style="margin-top: 5px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 5px;">&#10005;</button>
+            </div>
+        </div>`;
+			showPopup(popupHTML);
+
+			$('#installButton').on('click', async () => {
+				if (deferredPrompt) {
+					deferredPrompt.prompt();
+					const { outcome } = await deferredPrompt.userChoice;
+					deferredPrompt = null;
+					console.log(outcome === 'accepted' ? 'User accepted the install prompt' : 'User dismissed the install prompt');
+					$('.popupContainer').remove();
+				}
+			});
+		}
+
+		function showImageBasedPWAInstallationPrompt() {
+			if (isIOSDevice()) {
+				let imageSrc = 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png';
+				let popupHTML = `
+            <div class="popupContainer" style="position: fixed; top: 10; left: 10; right: 10; bottom: 10; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+                <div style="position: relative; padding: 12px; background: #000; border: 1px solid #fff; border-radius: 20px; display: flex; flex-direction: column; align-items: center;">
+                    <img src="${imageSrc}" alt="Install App" style="max-width:100%;height:auto;">
+                    <button class="closePopup" style="margin-top: 5px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 5px;">&#10005;</button>
+                </div>
+            </div>`;
+				showPopup(popupHTML);
+			}
+		}
+
+		// Delay for simulating similar behavior as Android for consistency
+		setTimeout(showImageBasedPWAInstallationPrompt, 2000);
 	});
-
-
-
-
 
 
 
