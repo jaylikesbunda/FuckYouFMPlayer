@@ -95,21 +95,6 @@ $(document).ready(function() {
 	})();
 
 
-  function requestNotificationPermission() {
-      // Check if the Notifications API is supported
-      if ("Notification" in window) {
-          // Request permission from the user
-          Notification.requestPermission().then(function(permission) {
-              console.log("Notification permission status:", permission);
-              if (permission === "granted") {
-                  console.log("Notifications granted");
-                  // You can now send notifications
-              }
-          });
-      } else {
-          console.log("This browser does not support notifications.");
-      }
-  }
  
   var isLiveMode = false;
   var isSeeking = false;
