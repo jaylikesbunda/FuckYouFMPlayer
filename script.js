@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 	// Ad rotation functionality
 	var adImages = [
-		'https://i.ibb.co/CWMqQTS/ezgif-4-36b2a36b8dminimum.gif',
+		'https://i.ibb.co/N65mPsN/ezgif-com-resize.webp',
 		'https://i.ibb.co/2Pm9DdV/luckyliners.webp',
 		'https://i.ibb.co/FwMBKHK/Untitled-6.webp',
 		'https://i.ibb.co/B2M8PXk/kinder-dark.webp',
