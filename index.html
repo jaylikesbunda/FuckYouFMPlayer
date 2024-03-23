@@ -51,6 +51,7 @@
     <!-- Preloading and preconnecting to external resources to improve loading times -->
     <link rel="manifest" href="/manifest.json">
 	<link rel="preload" href="https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp" as="image" />
+	<script src="/jquery-ui.min.js"></script>
 
 </head>
 
@@ -133,31 +134,38 @@
 
 
 	<script>
-	// Dynamically load scripts with dependency management
-	function loadScript(src, callback) {
-	  var script = document.createElement('script');
-	  script.src = src;
-	  script.onload = () => callback();
-	  document.head.appendChild(script);
+	// Dynamically load scripts with dependency management using Promises
+	function loadScript(src) {
+	  return new Promise((resolve, reject) => {
+		const script = document.createElement('script');
+		script.src = src;
+		script.onload = resolve;
+		script.onerror = reject;
+		document.head.appendChild(script);
+	  });
 	}
 
 	window.addEventListener('DOMContentLoaded', (event) => {
-	  loadScript('https://code.jquery.com/jquery-3.6.0.min.js', function() {
-		console.log('jQuery loaded');
-		loadScript('https://code.jquery.com/ui/1.13.2/jquery-ui.min.js', function() {
-		  console.log('jQuery UI loaded');
-		  loadScript('https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js', function() {
-			console.log('jPlayer loaded');
-			loadScript('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js', function() {
-			  console.log('Underscore.js loaded');
-			  loadScript('script.js', function() {
-				console.log('Custom script loaded');
-				// Initialize anything that needs jQuery, jQuery UI, jPlayer, and Underscore.js here
-			  });
-			});
-		  });
+	  loadScript('https://code.jquery.com/jquery-3.6.0.min.js')
+		.then(() => {
+		  console.log('jQuery loaded');
+		  return loadScript('https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js');
+		})
+		.then(() => {
+		  console.log('jPlayer loaded');
+		  return loadScript('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js');
+		})
+		.then(() => {
+		  console.log('Underscore.js loaded');
+		  return loadScript('script.js');
+		})
+		.then(() => {
+		  console.log('Custom script loaded');
+		  // Initialize anything that needs jQuery, jPlayer, and Underscore.js here
+		})
+		.catch((error) => {
+		  console.error('Script loading failed:', error);
 		});
-	  });
 	});
 	</script>
 
