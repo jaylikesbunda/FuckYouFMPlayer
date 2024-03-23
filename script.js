@@ -103,7 +103,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/XxP4grpUn8HB5tHZBLMdqFEUCbRIyCW7",
-      image: "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"
+      image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
     },
     { 
       name: "FuckYou FM 2",
@@ -263,7 +263,7 @@ $(document).ready(function() {
 
 
 	function updateHeaderImage(trackImage) {
-		var defaultImage = "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"; // Default GIF when no track is selected
+		var defaultImage = "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"; // Default GIF when no track is selected
 		$("#header-image").attr("src", trackImage || defaultImage);
 	}
 
@@ -602,7 +602,7 @@ $(document).ready(function() {
 
 	// Refactored code for when no track is selected
 	function handleNoTrackSelected() {
-		var defaultGIF = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif";
+		var defaultGIF = "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp";
 		$("#header-image").attr("src", defaultGIF);
 		$("#jquery_jplayer_1").jPlayer("clearMedia");
 		$('.track-item').removeClass('playing');
