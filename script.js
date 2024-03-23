@@ -108,12 +108,12 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM 2",
       file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
-      image: "https://i.ibb.co/7NDmYcg/Sequence01-ezgif-com-optimize.gif"
+      image: "https://i.ibb.co/s35zvp3/ezgif-com-webp-maker.webp"
     },
     { 
       name: "FuckYou FM 3",
       file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
-      image: "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"
+      image: "https://i.ibb.co/0MkWY9n/ezgif-com-webp-maker-1.webp"
     },
   ];
 
