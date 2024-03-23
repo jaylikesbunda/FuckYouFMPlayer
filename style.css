@@ -423,10 +423,12 @@ input:focus, textarea:focus {
 /* Header Image Style */
 #header-image {
     width: 100%;
-    max-height: 200px;
+    height: auto;
+    aspect-ratio: 3.21 / 1;
     object-fit: cover;
     margin-bottom: 40px;
 }
+
 
 /* Tablet and Small Desktops */
 @media screen and (max-width: 768px) {

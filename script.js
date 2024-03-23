@@ -159,7 +159,7 @@ $(document).ready(function() {
 			$('<img>', {
 				src: src,
 				alt: 'Ad',
-				style: 'max-width: 100%; height: auto; display: none;', // Start with display:none
+				style: 'max-width: 100%; height: auto; display: none; aspect-ratio: 2.625 / 1;', // Start with display:none
 			}).appendTo(adLink).fadeIn('slow');
 
 			// Update the index for the next ad, ensuring a cycle through the adImages array
