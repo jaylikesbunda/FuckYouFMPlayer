@@ -1,93 +1,99 @@
 $(document).ready(function() {
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(function(reg) {
-                console.log('Service Worker Registered', reg);
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+          .then(function(reg) {
+              console.log('Service Worker Registered', reg);
 
-                // After Service Worker registration, request notification permission
-                requestNotificationPermission();
-            })
-            .catch(function(err) {
-                console.log('Service Worker Registration Failed', err);
-            });
-    }
+              // After Service Worker registration, request notification permission
+              requestNotificationPermission();
+          })
+          .catch(function(err) {
+              console.log('Service Worker Registration Failed', err);
+          });
+  }
   
-    (function() {
-        var volumeBar = $('.jp-volume-bar');
-        var volumeBarValue = $('.jp-volume-bar-value');
-        var jPlayer = $("#jquery_jplayer_1");
-        var muteButton = $('.jp-mute');
-        var unmuteButton = $('.jp-unmute');
-        var isDragging = false;
-        var isMuted = jPlayer.jPlayer("option", "muted");
+	(function() {
+		// Enhanced Volume and Mute Control Functionality with Smooth Interaction
+		var volumeBar = $('.jp-volume-bar');
+		var jPlayer = $("#jquery_jplayer_1");
 
-        // Check if the device is mobile
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
+		// Function to check if the device is mobile
+		function isMobileDevice() {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		}
 
-        // Initialize volume UI based on the current state or default
-        function initVolume() {
-            if (isMobileDevice()) {
-                $('.jp-volume-controls').hide();
-                return;
-            }
+		// Initialize isMuted based on the player's current muted state or a default value
+		var isMuted = jPlayer.data().jPlayer && jPlayer.data().jPlayer.status.muted;
 
-            var initialVolume = jPlayer.jPlayer("option", "volume");
-            setVolume(isMuted ? 0 : initialVolume);
-        }
+		function setVolume(volumeLevel, updateMuteState = true) {
+			$('.jp-volume-bar-value').width(volumeLevel * 100 + '%');
+			jPlayer.jPlayer("volume", volumeLevel);
+			
+			// Update mute state if necessary
+			if (updateMuteState) {
+				isMuted = volumeLevel === 0;
+			}
+			updateVolumeUI(volumeLevel);
+		}
 
-        // Set volume and update UI
-        function setVolume(volumeLevel) {
-            volumeBarValue.width(volumeLevel * 100 + '%');
-            jPlayer.jPlayer("volume", volumeLevel);
-            isMuted = volumeLevel === 0;
-            updateVolumeUI();
-        }
+		function updateVolumeUI(volumeLevel) {
+			// Hide volume controls on mobile devices
+			if (isMobileDevice()) {
+				$('.jp-volume-controls').hide();
+			} else {
+				$('.jp-mute').toggle(isMuted || volumeLevel === 0);
+				$('.jp-unmute').toggle(!isMuted && volumeLevel > 0);
+			}
+		}
 
-        // Update the UI elements based on mute and volume state
-        function updateVolumeUI() {
-            var currentVolume = jPlayer.jPlayer("option", "volume");
-            muteButton.toggle(!isMuted && currentVolume > 0);
-            unmuteButton.toggle(isMuted || currentVolume === 0);
-        }
+		var dragging = false;
+		function handleVolumeChange(e) {
+			if (!dragging) return;
+			requestAnimationFrame(function() {
+				var volumeBarOffset = volumeBar.offset().left;
+				var volumeBarWidth = volumeBar.width();
+				var pageX = e.pageX || (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : 0);
+				var clickPositionX = pageX - volumeBarOffset;
+				var volumeLevel = Math.max(0, Math.min(clickPositionX / volumeBarWidth, 1));
+				setVolume(volumeLevel, false);
+			});
+		}
 
-        // Toggle mute state
-        function toggleMute() {
-            isMuted = !isMuted;
-            jPlayer.jPlayer(isMuted ? "mute" : "unmute");
-            updateVolumeUI();
-        }
+		volumeBar.on('mousedown touchstart', function(e) {
+			if (isMobileDevice()) return; // Prevent interaction on mobile devices
+			e.preventDefault();
+			dragging = true;
+			handleVolumeChange(e);
 
-        muteButton.add(unmuteButton).click(toggleMute);
+			$(document).on('mousemove.vol touchmove.vol', handleVolumeChange)
+					   .one('mouseup touchend', function() {
+						   dragging = false;
+						   $(document).off('.vol');
+					   });
+		});
 
-        volumeBar.on('mousedown touchstart', function(e) {
-            if (isMobileDevice()) return;
-            e.preventDefault();
-            isDragging = true;
-            updateVolumeFromEvent(e);
-        });
+		function toggleMute() {
+			isMuted = !isMuted;
+			jPlayer.jPlayer(isMuted ? "mute" : "unmute");
+			// Directly reflect mute state change without waiting for player update
+			updateVolumeUI(isMuted ? 0 : jPlayer.data().jPlayer.options.volume);
+		}
 
-        $(document).on('mousemove touchmove', function(e) {
-            if (!isDragging) return;
-            updateVolumeFromEvent(e);
-        }).on('mouseup touchend', function() {
-            isDragging = false;
-        });
+		// Ensure volume and mute state are accurately initialized
+		$(document).ready(function() {
+			var initialVolume = jPlayer.data().jPlayer ? jPlayer.data().jPlayer.options.volume : 0.8;
+			// Correctly initialize the state for mobile devices
+			if (isMobileDevice()) {
+				$('.jp-volume-controls').hide();
+			} else {
+				setVolume(isMuted ? 0 : initialVolume, !isMuted);
+			}
+		});
 
-        // Update volume based on event position
-        function updateVolumeFromEvent(e) {
-            var eventPageX = e.pageX || (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : 0);
-            var volumeBarOffset = volumeBar.offset().left;
-            var volumeBarWidth = volumeBar.width();
-            var volumeLevel = Math.max(0, Math.min((eventPageX - volumeBarOffset) / volumeBarWidth, 1));
-            setVolume(volumeLevel);
-        }
+		$('.jp-mute, .jp-unmute').click(toggleMute);
+	})();
 
-        // Initialize volume and UI state
-        initVolume();
-    })();
 
  
   var isLiveMode = false;
@@ -213,7 +219,7 @@ $(document).ready(function() {
 
 		function showInstallButtonPopup() {
 			let popupHTML = `
-			<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.7); z-index: 100000;">
+			<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;">
 				<div style="padding: 20px; max-width: 500px; background: #000; border: 2px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; font-family: 'Press Start 2P', cursive;">
 					 <p style="color: #fff; text-align: center; margin-bottom: 20px;">This feature is required for LIVE mode.</p>
 					 <button id="installButton" style="padding: 10px 20px; background: #000; color: #fff; border: 2px solid #fff; border-radius: 10px; cursor: pointer; font-family: 'Press Start 2P', cursive;">Install App</button>
@@ -412,8 +418,13 @@ $(document).ready(function() {
 
 
 	function initializePlayer() {
-		var lastUpdateTime = 0; // Tracks the last update time
-		var updateInterval = 250; // Minimum interval between updates in milliseconds
+		// Throttled function to efficiently update the seek bar and time display
+		var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
+			var percentage = (currentTime / duration) * 100;
+			$(".jp-play-bar").css("width", percentage + "%");
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
+		}, 250); // Updates are throttled to every 250 milliseconds
 
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
@@ -429,16 +440,13 @@ $(document).ready(function() {
 			remainingDuration: true, // Shows the remaining duration
 			toggleDuration: true, // Allows toggling the duration display
 			timeupdate: function(event) {
-				var currentTime = Date.now(); // Get the current time
-
-				// Check if it's live mode or enough time has passed since the last update
 				if (isLiveMode) {
 					$(".current-time, .duration").text('LIVE').show();
 					$(".jp-seek-bar, .jp-play-bar").hide(); // Hide seek bar elements
-				} else if (!isSeeking && currentTime - lastUpdateTime >= updateInterval) {
-					lastUpdateTime = currentTime; // Update the last update time
-					// Now call the function to update the seek bar based on the current playback position
-					updateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
+				} else {
+					if (!isSeeking) {
+						throttledUpdateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
+					}
 				}
 			},
 			loadstart: function(event) {
@@ -449,6 +457,7 @@ $(document).ready(function() {
 			}
 		});
 	}
+
 	$('.jp-progress').on('mousedown touchstart', function(e) {
 		isSeeking = true;
 		var pageX = e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX;
@@ -568,30 +577,22 @@ $(document).ready(function() {
 
 
 
-	function bindLiveEvents(isFirstTrack) {
-		var jPlayerSelector = $("#jquery_jplayer_1");
 
-		// Clear previous bindings to avoid duplicative calls
-		jPlayerSelector.off($.jPlayer.event.loadeddata).on($.jPlayer.event.loadeddata, function(event) {
+	function bindLiveEvents(isFirstTrack) {
+		$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
 			var duration = event.jPlayer.status.duration;
 			var randomStartPosition = isFirstTrack ? Math.random() * duration : 0;
-			jPlayerSelector.jPlayer("play", randomStartPosition);
+			$(this).jPlayer("play", randomStartPosition);
 
-			// Ensure that only one 'ended' event handler is attached at any time
-			jPlayerSelector.off($.jPlayer.event.ended).on($.jPlayer.event.ended, function() {
+			$(this).bind($.jPlayer.event.ended, function() {
 				playRandomTrack(currentTrackIndex);
 			});
 		});
 	}
 
 	function bindStandardEvents() {
-		var jPlayerSelector = $("#jquery_jplayer_1");
-		
-		// Directly call play to start playback, consider checking state if needed
-		jPlayerSelector.jPlayer("play");
-		
-		// Update current time and duration on time update, clearing previous bindings
-		jPlayerSelector.off($.jPlayer.event.timeupdate).on($.jPlayer.event.timeupdate, function(event) {
+		$("#jquery_jplayer_1").jPlayer("play");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) {
 			var currentTime = event.jPlayer.status.currentTime;
 			var duration = event.jPlayer.status.duration;
 			$(".current-time").text(formatTime(currentTime));
@@ -663,26 +664,32 @@ $(document).ready(function() {
 
 
 
-	// Define updateSeekBar separately to handle the actual UI updates
 	function updateSeekBar(currentTime, duration) {
-		let percentage = (currentTime / duration) * 100;
-		$(".jp-play-bar").css("width", percentage + "%");
-		$(".current-time").text(formatTime(currentTime));
-		$(".duration").text(formatTime(duration - currentTime));
+		if (isLiveMode) {
+			// In live mode, indicate the live status and ensure the seek bar is full but not interactive.
+			$(".jp-seek-bar, .jp-play-bar").css("width", "100%");
+			$(".current-time, .duration").text('LIVE').show();
+		} else {
+			// In non-live mode, update the seek bar and time displays based on the current playback position.
+			let percentage = (currentTime / duration) * 100;
+			$(".jp-seek-bar").show();
+			$(".jp-play-bar").css("width", percentage + "%");
+			$(".current-time").text(formatTime(currentTime));
+			$(".duration").text(formatTime(duration - currentTime));
+		}
 	}
 
 	function updateSeekBarPosition(pageX) {
-		if (!isLiveMode) {
-			var progressContainerOffset = $(".jp-progress").offset().left;
-			var progressBarWidth = $(".jp-progress").width();
-			var clickPositionX = pageX - progressContainerOffset;
-			var percentage = Math.max(0, Math.min((clickPositionX / progressBarWidth) * 100, 100));
+		if (!isLiveMode) { // Only allow seek bar updates in non-live mode.
+			var progressContainer = $(".jp-progress");
+			var progressBarWidth = progressContainer.width();
+			var progressBarOffset = progressContainer.offset().left;
+			var clickPosition = pageX - progressBarOffset;
+			var percentage = (clickPosition / progressBarWidth) * 100;
+			percentage = Math.max(0, Math.min(percentage, 100));
 			
-			// Directly update the UI without calling syncSeekBarAndTime to avoid redundancy
 			$(".jp-play-bar").css("width", percentage + "%");
-			// Calculate and set the new playback position based on the percentage
-			var newTime = ($("#jquery_jplayer_1").data("jPlayer").status.duration * percentage) / 100;
-			$("#jquery_jplayer_1").jPlayer("play", newTime);
+			syncSeekBarAndTime(percentage);
 		}
 	}
 
@@ -742,12 +749,12 @@ $(document).ready(function() {
 
 
 
-    // Utility function for formatting time, ensure this exists in your code
-    function formatTime(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let remainingSeconds = Math.floor(seconds % 60);
-        return minutes + ":" + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
-    }
+	// Additional helper function for formatting time
+	function formatTime(seconds) {
+		var minutes = Math.floor(seconds / 60);
+		seconds = Math.floor(seconds % 60);
+		return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+	}
 
     populateTrackList();
     initializePlayer();
