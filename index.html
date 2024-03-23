@@ -171,6 +171,15 @@
 
     // Start checking for jQuery
     checkJQuery();
+	// Google Tag Manager and Google Analytics initialization
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+
+	// Replace 'G-0HSL39RQ7S' with your actual Google Analytics ID or Google Tag Manager ID
+	gtag('js', new Date());
+	gtag('config', 'G-0HSL39RQ7S');
 </script>
 </body>
 </html>
