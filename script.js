@@ -119,10 +119,10 @@ $(document).ready(function() {
 
 	// Ad rotation functionality
 	var adImages = [
-		'https://i.ibb.co/6gV20KW/Untitled-3.gif',
-		'https://i.ibb.co/drwys9P/luckyliners.png',
-		'https://i.ibb.co/M2k4nh6/Untitled-6.png',
-		'https://i.ibb.co/nnJ9qYD/kinder-dark.png',
+		'https://i.ibb.co/CWMqQTS/ezgif-4-36b2a36b8dminimum.gif',
+		'https://i.ibb.co/2Pm9DdV/luckyliners.webp',
+		'https://i.ibb.co/FwMBKHK/Untitled-6.webp',
+		'https://i.ibb.co/B2M8PXk/kinder-dark.webp',
 		// Add more ad image links as needed
 	];
 
