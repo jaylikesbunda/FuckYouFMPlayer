@@ -51,7 +51,6 @@
     <!-- Preloading and preconnecting to external resources to improve loading times -->
     <link rel="manifest" href="/manifest.json">
 	<link rel="preload" href="https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp" as="image" />
-	<script src="/jquery-ui.min.js"></script>
 
 </head>
 
@@ -114,9 +113,13 @@
         <!-- Ad content will be populated here -->
     </div>
 
-    <section id="track-selection" aria-label="Track List">
-        <!-- Track list will be populated by JavaScript -->
-    </section>
+	<div id="track-selection">
+		<div class="skeleton live-skeleton"></div>
+		<div class="skeleton track-skeleton"></div>
+		<div class="skeleton track-skeleton"></div>
+		<div class="skeleton track-skeleton"></div>
+	</div>
+
 
     <div id="disclaimer-box">
         <button id="other-places-toggle">Other Places to Listen</button>
