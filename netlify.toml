@@ -1,0 +1,51 @@
+# Custom Headers for Security and Performance
+[[headers]]
+for = "/*"
+[headers.values]
+X-Robots-Tag = "index, follow"
+Content-Security-Policy = "default-src 'self'; script-src 'self' https://trusted-source.com; img-src 'self' https://trusted-images-source.com;"
+Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "no-referrer-when-downgrade"
+
+# Cache Control for Images
+[[headers]]
+for = "/images/*"
+[headers.values]
+Cache-Control = "public, max-age=604800"
+
+# Cache Control for HTML
+[[headers]]
+for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+
+# Custom MIME Type
+[[mime.types]]
+"application/wasm" = ["wasm"]
+
+# Redirects
+[[redirects]]
+from = "/old-path"
+to = "/new-path"
+status = 301
+force = true
+
+[[redirects]]
+from = "/another-old-path"
+to = "/another-new-path"
+status = 302
+force = false
+
+# Rewrite for SPA (Single Page Application) or specific paths
+[[redirects]]
+from = "/app/*"
+to = "/app/index.html"
+status = 200
+
+# Setting custom 404 page
+[[redirects]]
+from = "/*"
+to = "/custom-404.html"
+status = 404
