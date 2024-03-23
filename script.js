@@ -234,12 +234,13 @@ $(document).ready(function() {
 
 		function showInstallButtonPopup() {
 			let popupHTML = `
-        <div class="popupContainer" style="position: fixed; top: 10; left: 10; right: 10; bottom: 10; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
-            <div style="padding: 12px; background: #000; border: 1px solid #fff; border-radius: 20px; display: flex; flex-direction: column; align-items: center;">
-                <button id="installButton" style="padding: 10px 20px;">Install App</button>
-                <button class="closePopup" style="margin-top: 5px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 5px;">&#10005;</button>
-            </div>
-        </div>`;
+			<div class="popupContainer" style="position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;">
+				<div style="padding: 20px; background: #000; border: 2px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; font-family: 'Press Start 2P', cursive;">
+			         <p style="color: #fff; text-align: center; margin-bottom: 20px;">This feature is required for LIVE mode.</p>
+					 <button id="installButton" style="padding: 10px 20px; background: #000; color: #fff; border: 2px solid #fff; border-radius: 10px; cursor: pointer; font-family: 'Press Start 2P', cursive;">Install App</button>
+					 <button class="closePopup" style="margin-top: 20px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 5px;">&#10005;</button>
+				 </div>
+			</div>`;
 			showPopup(popupHTML);
 
 			$('#installButton').on('click', async () => {
@@ -253,12 +254,13 @@ $(document).ready(function() {
 			});
 		}
 
+
 		function showImageBasedPWAInstallationPrompt() {
 			if (isIOSDevice()) {
 				let imageSrc = 'https://i.ibb.co/99zCbQ4/pwa-incentive-2.png';
 				let popupHTML = `
-            <div class="popupContainer" style="position: fixed; top: 10; left: 10; right: 10; bottom: 10; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
-                <div style="position: relative; padding: 12px; background: #000; border: 1px solid #fff; border-radius: 20px; display: flex; flex-direction: column; align-items: center;">
+			<div class="popupContainer" style="position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+				<div style="position: relative; padding: 12px; background: #000; border: 1px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;">
                     <img src="${imageSrc}" alt="Install App" style="max-width:100%;height:auto;">
                     <button class="closePopup" style="margin-top: 5px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 5px;">&#10005;</button>
                 </div>
