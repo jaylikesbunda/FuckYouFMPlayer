@@ -13,6 +13,12 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
+    },
+	{
+      "src": "https://i.ibb.co/dtHjvBB/Untit33333led-1.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
   "start_url": "/",
