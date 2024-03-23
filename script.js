@@ -103,7 +103,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM",
       file: "https://audio.jukehost.co.uk/XxP4grpUn8HB5tHZBLMdqFEUCbRIyCW7",
-      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
+      image: "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"
     },
     { 
       name: "FuckYou FM 2",
@@ -113,7 +113,7 @@ $(document).ready(function() {
     { 
       name: "FuckYou FM 3",
       file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
-      image: "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"
+      image: "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"
     },
   ];
 
@@ -263,7 +263,7 @@ $(document).ready(function() {
 
 
 	function updateHeaderImage(trackImage) {
-		var defaultImage = "https://i.ibb.co/fHDSnRP/fuckyoufm-1.gif"; // Default GIF when no track is selected
+		var defaultImage = "https://i.ibb.co/YjJfrwH/ezgif-4-80bcfa9637.webp"; // Default GIF when no track is selected
 		$("#header-image").attr("src", trackImage || defaultImage);
 	}
 
