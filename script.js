@@ -301,18 +301,19 @@ $(document).ready(function() {
 
 
 	function activateLiveMode() {
-		isLiveMode = true; // Set live mode to true
-		playRandomTrack(-1, true); // -1 indicates no track to exclude, true for isFirstTrack
+		isLiveMode = true;
+		playRandomTrack(-1, true);
 	}
-
+	
 	function playRandomTrack(excludeIndex, isFirstTrack = false) {
 		var randomTrackIndex;
 		do {
 			randomTrackIndex = Math.floor(Math.random() * trackList.length);
-		} while (randomTrackIndex === excludeIndex); // Ensure the new track is not the same as the excludeIndex
-
+		} while (randomTrackIndex === excludeIndex);
+	
 		selectTrack(randomTrackIndex, true, isFirstTrack);
 	}
+	
 	
 	function preloadTrack(index) {
 		// Calculate the next index, ensuring it wraps around to the start of the playlist if needed
@@ -540,14 +541,11 @@ $(document).ready(function() {
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 	
-			// Unbind existing events to prevent duplicate triggers
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
-				.unbind($.jPlayer.event.timeupdate);
-	
-			// Set the selected media and handle playback differently based on the mode
-			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
+				.unbind($.jPlayer.event.timeupdate)
+				.jPlayer("setMedia", { mp3: track.file });
 	
 			if (isLive) {
 				$('#live-button').addClass('playing');
@@ -555,14 +553,9 @@ $(document).ready(function() {
 				bindLiveEvents(isFirstTrack);
 				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
 			} else {
-				// Start playback immediately in response to the user interaction
-				$("#jquery_jplayer_1").one($.jPlayer.event.canplay, function() {
-					$(this).jPlayer("play");
-				});
-	
 				let uiIndex = index + 1;
 				$('.track-item').eq(uiIndex).addClass('playing');
-				bindStandardEvents();
+				bindStandardEvents(); // Immediate playback control for iOS
 				updateMediaSessionWithTrackInfo(index);
 			}
 	
@@ -572,6 +565,7 @@ $(document).ready(function() {
 			handleNoTrackSelected();
 		}
 	}
+	
 	
 	
 	
@@ -585,13 +579,14 @@ $(document).ready(function() {
 		$("#jquery_jplayer_1").bind($.jPlayer.event.loadeddata, function(event) {
 			var duration = event.jPlayer.status.duration;
 			var randomStartPosition = isFirstTrack ? Math.random() * duration : 0;
-			$(this).jPlayer("play", randomStartPosition);
-
+			$(this).jPlayer("play", randomStartPosition); // Immediate play at random position
+	
 			$(this).bind($.jPlayer.event.ended, function() {
-				playRandomTrack(currentTrackIndex);
+				playRandomTrack(currentTrackIndex); // Loop or transition to another track
 			});
 		});
 	}
+	
 
 	function bindStandardEvents() {
 		$("#jquery_jplayer_1").jPlayer("play");
