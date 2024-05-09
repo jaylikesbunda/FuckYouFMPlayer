@@ -423,47 +423,44 @@ $(document).ready(function() {
 
 
 	function initializePlayer() {
-		// Throttled function to efficiently update the seek bar and time display
+		// Throttled function to update the seek bar efficiently
 		var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
 			var percentage = (currentTime / duration) * 100;
 			$(".jp-play-bar").css("width", percentage + "%");
 			$(".current-time").text(formatTime(currentTime));
 			$(".duration").text(formatTime(duration - currentTime));
-		}, 250); // Updates are throttled to every 250 milliseconds
+		}, 250);
 	
 		// Initialize the jPlayer with the desired settings
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
 				updateHeaderImage(); // Initial header image update
 			},
-			swfPath: "/js", // Path to the JPlayer Swf file for fallback
-			supplied: "mp3", // Specifies the supplied media format
-			cssSelectorAncestor: "#jp_container_1", // The CSS selector for the JPlayer ancestor
-			useStateClassSkin: true, // Enables jPlayer's state class skin
-			autoBlur: false, // Prevents focus blur
-			smoothPlayBar: true, // Smooth transitions in the play bar
-			keyEnabled: true, // Enables keyboard control
-			remainingDuration: true, // Shows the remaining duration
-			toggleDuration: true, // Allows toggling the duration display
+			swfPath: "/js",
+			supplied: "mp3",
+			cssSelectorAncestor: "#jp_container_1",
+			useStateClassSkin: true,
+			autoBlur: false,
+			smoothPlayBar: true,
+			keyEnabled: true,
+			remainingDuration: true,
+			toggleDuration: true,
 			timeupdate: function(event) {
 				if (isLiveMode) {
 					$(".current-time, .duration").text('LIVE').show();
-					$(".jp-seek-bar, .jp-play-bar").hide(); // Hide seek bar elements
+					$(".jp-seek-bar, .jp-play-bar").hide();
 				} else {
 					if (!isSeeking) {
 						throttledUpdateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
 					}
 				}
 			},
-			loadstart: function(event) {
-				// No need to set "Loading..." text; handle load initiation here if needed
-			},
 			canplay: function(event) {
-				// Automatically start playback when media is ready
-				$("#jquery_jplayer_1").jPlayer("play");
+				$("#jquery_jplayer_1").jPlayer("play"); // Automatically start playback
 			}
 		});
 	}
+	
 	
 
 	$('.jp-progress').on('mousedown touchstart', function(e) {
@@ -536,7 +533,6 @@ $(document).ready(function() {
 	});
 
 
-
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
 		$('.track-item').removeClass('playing');
 		window.isLiveMode = isLive;
@@ -545,7 +541,7 @@ $(document).ready(function() {
 			currentTrackIndex = index;
 			var track = trackList[index];
 	
-			// Prepare the media for playback
+			// Set up the media and bind events
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
