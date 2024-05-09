@@ -555,6 +555,7 @@ $(document).ready(function() {
 				$('.current-time, .duration').text('LIVE');
 				bindLiveEvents(isFirstTrack);
 				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
+				$("#jquery_jplayer_1").jPlayer("play"); // Ensure playback starts immediately in live mode
 			} else {
 				let uiIndex = index + 1;
 				$('.track-item').eq(uiIndex).addClass('playing');
@@ -568,7 +569,6 @@ $(document).ready(function() {
 			handleNoTrackSelected();
 		}
 	}
-	
 	
 	
 	
