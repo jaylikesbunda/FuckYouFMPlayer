@@ -540,11 +540,14 @@ $(document).ready(function() {
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 	
+			// Unbind existing events to prevent duplicate triggers
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
-				.unbind($.jPlayer.event.timeupdate)
-				.jPlayer("setMedia", { mp3: track.file });
+				.unbind($.jPlayer.event.timeupdate);
+	
+			// Set the selected media and handle playback differently based on the mode
+			$("#jquery_jplayer_1").jPlayer("setMedia", { mp3: track.file });
 	
 			if (isLive) {
 				$('#live-button').addClass('playing');
@@ -552,7 +555,7 @@ $(document).ready(function() {
 				bindLiveEvents(isFirstTrack);
 				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
 			} else {
-				// Bind the canplay event to handle when the media can start playing
+				// Start playback immediately in response to the user interaction
 				$("#jquery_jplayer_1").one($.jPlayer.event.canplay, function() {
 					$(this).jPlayer("play");
 				});
@@ -563,11 +566,13 @@ $(document).ready(function() {
 				updateMediaSessionWithTrackInfo(index);
 			}
 	
+			// Update the header image for the selected track
 			$("#header-image").attr("src", track.image);
 		} else {
 			handleNoTrackSelected();
 		}
 	}
+	
 	
 	
 
