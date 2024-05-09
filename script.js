@@ -537,7 +537,6 @@ $(document).ready(function() {
 
 
 
-
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
 		$('.track-item').removeClass('playing');
 		window.isLiveMode = isLive;
@@ -549,36 +548,41 @@ $(document).ready(function() {
 			// Update UI to indicate loading status
 			$('.jp-play').text('Loading...').addClass('loading');
 	
-			// Prepare media
+			// Prepare media and handle events
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
 				.unbind($.jPlayer.event.timeupdate)
 				.jPlayer("setMedia", { mp3: track.file })
 				.one($.jPlayer.event.canplay, function() {
-					// Play immediately when media can play, leveraging the initial user interaction
-					$(this).jPlayer("play");
+					$(this).jPlayer("play"); // Automatically start playback when ready
 				});
+	
+			// Capture the user interaction to start playback
+			$('.jp-play').one('click', function() {
+				$("#jquery_jplayer_1").jPlayer("play");
+			});
 	
 			// UI updates for live mode or standard tracks
 			if (isLive) {
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
-				bindLiveEvents(isFirstTrack); // Bind events specific to live playback
-				updateMediaSession("Live Broadcast", "FY INDUSTRIES"); // Metadata for media session
+				bindLiveEvents(isFirstTrack);
+				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
 			} else {
 				let uiIndex = index + 1;
 				$('.track-item').eq(uiIndex).addClass('playing');
-				bindStandardEvents(); // Bind events for standard track playback
-				updateMediaSessionWithTrackInfo(index); // Metadata for media session with track info
+				bindStandardEvents();
+				updateMediaSessionWithTrackInfo(index);
 			}
 	
 			// Update header image for the track
 			$("#header-image").attr("src", track.image);
 		} else {
-			handleNoTrackSelected(); // Handle cases where no track is selected
+			handleNoTrackSelected();
 		}
 	}
+	
 	
 
 
