@@ -545,25 +545,18 @@ $(document).ready(function() {
 			currentTrackIndex = index;
 			var track = trackList[index];
 	
-			// Update UI to indicate loading status
-			$('.jp-play').text('Loading...').addClass('loading');
-	
-			// Prepare media and handle events
+			// Prepare the media for playback
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
 				.unbind($.jPlayer.event.timeupdate)
 				.jPlayer("setMedia", { mp3: track.file })
 				.one($.jPlayer.event.canplay, function() {
-					$(this).jPlayer("play"); // Automatically start playback when ready
+					// Automatically start playback when the media is ready
+					$(this).jPlayer("play");
 				});
 	
-			// Capture the user interaction to start playback
-			$('.jp-play').one('click', function() {
-				$("#jquery_jplayer_1").jPlayer("play");
-			});
-	
-			// UI updates for live mode or standard tracks
+			// Update the UI for live or standard tracks
 			if (isLive) {
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
@@ -576,12 +569,13 @@ $(document).ready(function() {
 				updateMediaSessionWithTrackInfo(index);
 			}
 	
-			// Update header image for the track
+			// Update the header image for the selected track
 			$("#header-image").attr("src", track.image);
 		} else {
 			handleNoTrackSelected();
 		}
 	}
+	
 	
 	
 
