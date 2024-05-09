@@ -431,6 +431,7 @@ $(document).ready(function() {
 			$(".duration").text(formatTime(duration - currentTime));
 		}, 250); // Updates are throttled to every 250 milliseconds
 	
+		// Initialize the jPlayer with the desired settings
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
 				updateHeaderImage(); // Initial header image update
@@ -438,7 +439,7 @@ $(document).ready(function() {
 			swfPath: "/js", // Path to the JPlayer Swf file for fallback
 			supplied: "mp3", // Specifies the supplied media format
 			cssSelectorAncestor: "#jp_container_1", // The CSS selector for the JPlayer ancestor
-			useStateClassSkin: true, // Enables JPlayer's state class skin
+			useStateClassSkin: true, // Enables jPlayer's state class skin
 			autoBlur: false, // Prevents focus blur
 			smoothPlayBar: true, // Smooth transitions in the play bar
 			keyEnabled: true, // Enables keyboard control
@@ -455,11 +456,11 @@ $(document).ready(function() {
 				}
 			},
 			loadstart: function(event) {
-				$('.jp-play').text('Loading...').addClass('loading');
+				// No need to set "Loading..." text; handle load initiation here if needed
 			},
 			canplay: function(event) {
-				$('.jp-play').text('Play').removeClass('loading');
-				$("#jquery_jplayer_1").jPlayer("play"); // Start playback automatically when media can play
+				// Automatically start playback when media is ready
+				$("#jquery_jplayer_1").jPlayer("play");
 			}
 		});
 	}
@@ -545,18 +546,25 @@ $(document).ready(function() {
 			currentTrackIndex = index;
 			var track = trackList[index];
 	
-			// Prepare the media for playback
+			// Update UI to indicate loading status
+			$('.jp-play').text('Loading...').addClass('loading');
+	
+			// Prepare media and handle events
 			$("#jquery_jplayer_1")
 				.unbind($.jPlayer.event.loadeddata)
 				.unbind($.jPlayer.event.ended)
 				.unbind($.jPlayer.event.timeupdate)
 				.jPlayer("setMedia", { mp3: track.file })
 				.one($.jPlayer.event.canplay, function() {
-					// Automatically start playback when the media is ready
-					$(this).jPlayer("play");
+					$(this).jPlayer("play"); // Automatically start playback when ready
 				});
 	
-			// Update the UI for live or standard tracks
+			// Capture the user interaction to start playback
+			$('.jp-play').one('click', function() {
+				$("#jquery_jplayer_1").jPlayer("play");
+			});
+	
+			// UI updates for live mode or standard tracks
 			if (isLive) {
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
@@ -569,13 +577,12 @@ $(document).ready(function() {
 				updateMediaSessionWithTrackInfo(index);
 			}
 	
-			// Update the header image for the selected track
+			// Update header image for the track
 			$("#header-image").attr("src", track.image);
 		} else {
 			handleNoTrackSelected();
 		}
 	}
-	
 	
 	
 
