@@ -268,7 +268,7 @@ $(document).ready(function() {
 	
 	function populateTrackList() {
 		const trackSelection = $('#track-selection');
-
+	
 		// Prepend the LIVE button at the top of the track list
 		$('<a>', {
 			'id': 'live-button',
@@ -277,11 +277,13 @@ $(document).ready(function() {
 			'text': 'LIVE'
 		}).on('click', function(e) {
 			e.preventDefault();
+			// Activate live mode and start playing a random track immediately when LIVE is clicked
 			activateLiveMode();
+			playRandomTrack(-1, true); // Ensures playback begins with user interaction
 			$('.track-item').removeClass('playing'); // Remove playing class from all tracks
 			$(this).addClass('playing'); // Highlight the LIVE button
 		}).prependTo(trackSelection);
-
+	
 		// Add other tracks to the list
 		trackList.forEach((track, index) => {
 			$('<a>', {
@@ -294,10 +296,11 @@ $(document).ready(function() {
 			}).on('click', function(e) {
 				e.preventDefault();
 				const index = $(this).data('index'); // Retrieve the index of the clicked track
-				selectTrack(index);
+				selectTrack(index); // Select the track and play it
 			}).appendTo(trackSelection);
 		});
 	}
+	
 
 
 	function activateLiveMode() {
