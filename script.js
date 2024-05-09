@@ -240,17 +240,15 @@ $(document).ready(function() {
 		}
 
 		function showImageBasedPWAInstallationPrompt() {
-			if (isIOSDevice()) {
+			if (isIOSDevice() && !isRunningAsPWA()) {
 				let imageSrc = 'https://i.ibb.co/QKWKWWC/pwa-incentive-2-high-res.webp';
 				let popupHTML = `
-			<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
-				<div style="position: relative; padding: 12px; max-width: 500px; background: #000; border: 1px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;">
-					<img src="${imageSrc}" alt="Install App" style="max-width:95%; margin-bottom: 0px;">
-					<button class="closePopup" style="margin-top: 0px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 10px; font-size: 24px; padding: 10px;">&#10005;</button>
-
-
-				</div>
-			</div>`;
+				<div class="popupContainer" style="position: fixed; inset: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+					<div style="position: relative; padding: 12px; max-width: 500px; background: #000; border: 1px solid #fff; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;">
+						<img src="${imageSrc}" alt="Install App" style="max-width:95%; margin-bottom: 0px;">
+						<button class="closePopup" style="margin-top: 0px; background: none; border: none; color: #fff; cursor: pointer; position: absolute; top: 5px; right: 10px; font-size: 24px; padding: 10px;">&#10005;</button>
+					</div>
+				</div>`;
 				showPopup(popupHTML);
 			}
 		}
@@ -432,7 +430,7 @@ $(document).ready(function() {
 			$(".current-time").text(formatTime(currentTime));
 			$(".duration").text(formatTime(duration - currentTime));
 		}, 250); // Updates are throttled to every 250 milliseconds
-
+	
 		$("#jquery_jplayer_1").jPlayer({
 			ready: function() {
 				updateHeaderImage(); // Initial header image update
@@ -461,9 +459,11 @@ $(document).ready(function() {
 			},
 			canplay: function(event) {
 				$('.jp-play').text('Play').removeClass('loading');
+				$("#jquery_jplayer_1").jPlayer("play"); // Start playback automatically when media can play
 			}
 		});
 	}
+	
 
 	$('.jp-progress').on('mousedown touchstart', function(e) {
 		isSeeking = true;
@@ -540,44 +540,42 @@ $(document).ready(function() {
 
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
 		$('.track-item').removeClass('playing');
-
-		// Set isLiveMode based on isLive parameter
 		window.isLiveMode = isLive;
-
+	
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			currentTrackIndex = index;
 			var track = trackList[index];
-
-			// Update play button to indicate loading
-			$('.jp-play').text('Loading...').addClass('loading');
-
-			$("#jquery_jplayer_1").unbind($.jPlayer.event.loadeddata)
-								  .unbind($.jPlayer.event.ended)
-								  .unbind($.jPlayer.event.timeupdate)
-								  .jPlayer("setMedia", { mp3: track.file });
-
+			$('.jp-play').text('Loading...').addClass('loading'); // Set loading text
+	
+			$("#jquery_jplayer_1")
+				.unbind($.jPlayer.event.loadeddata)
+				.unbind($.jPlayer.event.ended)
+				.unbind($.jPlayer.event.timeupdate)
+				.jPlayer("setMedia", { mp3: track.file }); // Media is set but not played yet
+	
+			$('.jp-play').one('click', function() {
+				$("#jquery_jplayer_1").jPlayer("play"); // Ensure play happens on user interaction
+			});
+	
+			// UI updates for live mode
 			if (isLive) {
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
 				bindLiveEvents(isFirstTrack);
-				updateMediaSession("Live Broadcast", "FY INDUSTRIES"); // Update for live mode explicitly
+				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
 			} else {
 				let uiIndex = index + 1;
 				$('.track-item').eq(uiIndex).addClass('playing');
 				bindStandardEvents();
-				updateMediaSessionWithTrackInfo(index); // Use the dedicated function for standard tracks
+				updateMediaSessionWithTrackInfo(index);
 			}
-
+	
 			$("#header-image").attr("src", track.image);
-		} else if (isLive) {
-			$('#live-button').addClass('playing');
-			$('.current-time, .duration').text('LIVE');
-			bindLiveEvents(isFirstTrack);
-			updateMediaSession("Live Broadcast", "FY INDUSTRIES");
 		} else {
 			handleNoTrackSelected();
 		}
 	}
+	
 
 
 
