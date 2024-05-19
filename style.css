@@ -257,8 +257,10 @@ input:focus, textarea:focus {
     padding: 10px 15px; /* Reduced padding for a more moderate size */
     font-size: 0.75rem;
     transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s;
-    display: inline-block;
-    margin: 0 5px;
+    display: block; /* Change to block to stack vertically */
+    width: 80%; /* Adjust width to be a percentage of the container */
+    max-width: 300px; /* Set a max-width to avoid overly long buttons */
+    margin: 10px auto; /* Center the buttons and provide vertical spacing */
     text-transform: uppercase;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
@@ -297,6 +299,7 @@ input:focus, textarea:focus {
     height: auto;
     margin: 10px;
 }
+
 
 .social-icon {
     width: 100px; /* Increase icon size for better visibility */
