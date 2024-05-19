@@ -545,30 +545,51 @@ function initializePlayer() {
 		}
 	});
 
+	// Prepopulate the other places box
+	var otherPlacesBox = document.getElementById('other-places-box');
+	var places = [
+		{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/nCqtTsq/Apple-Music-4.webp', alt: 'Apple Music' },
+		{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/PF1VCYb/6297981ce01809629f11358d.webp', alt: 'Deezer' },
+		{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/pwJMn08/6297981ce01809629fasdasda11358d.webp', alt: 'Spotify' },
+	];
+	var otherPlacesContent = places.map(function(place) {
+		return `<a href="${place.url}" target="_blank"><img src="${place.img}" alt="${place.alt}" style="width: 100px; height: auto; margin: 10px;"></a>`;
+	}).join('');
+	otherPlacesBox.innerHTML = otherPlacesContent;
+
+	// Prepopulate the social media box
+	var socialMediaBox = document.getElementById('social-media-box');
+	var socialMediaLinks = [
+		{ url: 'https://discord.gg/mWhBXcNATq', img: 'https://i.ibb.co/FxnLhYc/discordpng.png', alt: 'Discord' },
+		{ url: 'https://www.instagram.com/fuckyoucorp/', img: 'https://i.ibb.co/qCQK5f9/igpng.png', alt: 'Instagram' },
+		// Add more social media links as needed
+	];
+	var socialMediaContent = socialMediaLinks.map(function(link) {
+		return `<a href="${link.url}" target="_blank"><img src="${link.img}" alt="${link.alt}" style="width: 32px; height: 32px; margin: 10px;"></a>`;
+	}).join('');
+	socialMediaBox.innerHTML = socialMediaContent;
+
+	// Event listener for other places toggle
 	document.getElementById('other-places-toggle').addEventListener('click', function() {
-		var otherPlacesBox = document.getElementById('other-places-box');
 		if (otherPlacesBox.style.display === 'none' || !otherPlacesBox.style.display) {
 			otherPlacesBox.style.display = 'block';
-			
-			if (otherPlacesBox.innerHTML.trim() === '') {
-				var places = [
-					{ url: 'https://music.apple.com/au/album/f-u-fm-2/1731257521', img: 'https://i.ibb.co/nCqtTsq/Apple-Music-4.webp', alt: 'Apple Music' },
-					{ url: 'https://www.deezer.com/us/playlist/12386040983', img: 'https://i.ibb.co/PF1VCYb/6297981ce01809629f11358d.webp', alt: 'Deezer' },
-					{ url: 'https://open.spotify.com/playlist/4JtgKIx9yeoGG8YExRf9Ub?si=0724cb01a4ce446e', img: 'https://i.ibb.co/pwJMn08/6297981ce01809629fasdasda11358d.webp', alt: 'Spotify' },
-				];
-
-				var content = places.map(function(place) {
-					return `<a href="${place.url}" target="_blank"><img src="${place.img}" alt="${place.alt}" style="width: 100px; height: auto; margin: 10px;"></a>`;
-				}).join('');
-
-				otherPlacesBox.innerHTML = content;
-			}
-
 			otherPlacesBox.scrollIntoView({ behavior: 'smooth' });
 		} else {
 			otherPlacesBox.style.display = 'none';
 		}
 	});
+
+	// Event listener for social media toggle
+	document.getElementById('social-media-toggle').addEventListener('click', function() {
+		if (socialMediaBox.style.display === 'none' || !socialMediaBox.style.display) {
+			socialMediaBox.style.display = 'block';
+			socialMediaBox.scrollIntoView({ behavior: 'smooth' });
+		} else {
+			socialMediaBox.style.display = 'none';
+		}
+	});
+
+
 
 	function selectTrack(index, isLive = false, isFirstTrack = false) {
 		$('.track-item').removeClass('playing');
