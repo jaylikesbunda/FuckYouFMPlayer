@@ -1,45 +1,78 @@
-const cacheName = 'site-static-v1';
-const assets = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/script.js',
-    // Include other assets like images, stylesheets, and scripts that you want to cache
-    'https://code.jquery.com/jquery-3.6.0.min.js',
-    'https://code.jquery.com/ui/1.12.1/jquery-ui.js',
-    'https://jaylikesbunda.github.io/jplayer/jquery.jplayer.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js',
-    // Add URLs for other external assets you use
+const CACHE_NAME = 'fuckyoufm-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/style.css',
+  '/script.js',
+  '/manifest.json',
+  '/favicon.ico',
+  'https://i.ibb.co/d7VwWMh/Untitled-2.webp', // Logo image
+  // Add other URLs to cache here
 ];
 
 // Install event
-self.addEventListener('install', evt => {
-    evt.waitUntil(
-        caches.open(cacheName).then(cache => {
-            console.log('Caching shell assets');
-            cache.addAll(assets);
-        })
-    );
-});
-
-// Activate event
-self.addEventListener('activate', evt => {
-    // Clear old caches
-    evt.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all(keys
-                .filter(key => key !== cacheName)
-                .map(key => caches.delete(key))
-            );
-        })
-    );
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
 });
 
 // Fetch event
-self.addEventListener('fetch', evt => {
-    evt.respondWith(
-        caches.match(evt.request).then(cacheRes => {
-            return cacheRes || fetch(evt.request);
-        })
-    );
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then(
+          response => {
+            // Check if we received a valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            // Clone the response
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          }
+        );
+      })
+  );
 });
+
+// Activate event
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+// Background sync
+self.addEventListener('sync', event => {
+  if (event.tag === 'sync-tag') {
+    event.waitUntil(syncFunction());
+  }
+});
+
+async function syncFunction() {
+  console.log('Background sync in progress...');
+  // Add your background sync logic here
+}
