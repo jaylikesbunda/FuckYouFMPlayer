@@ -116,6 +116,11 @@ $(document).ready(function() {
       file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
       image: "https://i.ibb.co/0MkWY9n/ezgif-com-webp-maker-1.webp"
     },
+	{ 
+      name: "FuckYou FM: UTOPIA ",
+      file: "https://audio.jukehost.co.uk/333kiycgY0x15kAmMujTkbtelYUEntpA",
+      image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
+    },
   ];
 
 	// Ad rotation functionality
@@ -125,7 +130,7 @@ $(document).ready(function() {
 		'https://i.ibb.co/FwMBKHK/Untitled-6.webp',
 		'https://i.ibb.co/B2M8PXk/kinder-dark.webp',
 		// Add more ad image links as needed
-		'https://i.ibb.co/t89bJgJ/Untitled-2.png',
+		'https://i.ibb.co/7bnZbXP/Untitled-richerthanyou2.png',
 		'https://i.ibb.co/C6XvZM3/untitled8-min.gif',
 	];
 

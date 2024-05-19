@@ -214,7 +214,7 @@ input:focus, textarea:focus {
     color: white;
     border: 2px solid white; /* Slightly thicker border for better visibility */
     border-radius: 8px; /* Rounded corners for buttons */
-    padding: 10px 15px;
+    padding: 10px 10px;
     font-size: 0.75rem;
     transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
     display: inline-block;
@@ -365,58 +365,58 @@ input:focus, textarea:focus {
     color: white;
     text-decoration: none;
     display: block;
-    padding: 10px; /* Increased padding */
+    padding: 12px; /* Slightly increased padding for better spacing */
     border: 1px solid white;
-    margin-bottom: 7px;
+    margin-bottom: 10px; /* Increased margin for better separation */
     text-align: center;
     cursor: pointer;
     background: #000;
     box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+    transition: box-shadow 0.3s, background-color 0.3s, color 0.3s; /* Smooth transitions */
 }
 
 .track-item.playing {
     background-color: #555;
-    box-shadow: 0 0 5px #fff, 0 0 6px #fff, 0 0 6px #fff; /* Smooth white glow on hover */
-    text-shadow: 0 0 1px #ffffff, 0 0 4px #ffffff; /* Add glow effect to text */
+    box-shadow: 0 0 6px #fff, 0 0 8px #fff, 0 0 10px #fff; /* Enhanced glow effect */
+    text-shadow: 0 0 2px #ffffff, 0 0 5px #ffffff; /* Add glow effect to text */
 }
 
-/* Smoother and Whiter Glow on Hover for Track Items */
 .track-item:hover {
-    box-shadow: 0 0 5px #fff, 0 0 6px #fff, 0 0 6px #fff; /* Smooth white glow on hover */
+    box-shadow: 0 0 6px #fff, 0 0 8px #fff, 0 0 10px #fff; /* Enhanced hover glow */
 }
-
 
 /* LIVE Track Styling */
 .live-track {
     background-color: rgba(255, 99, 71, 0.1); /* Slight transparent red background */
     color: #FF6347; /* Sets the text color to red */
-    padding: 10px; /* Retains padding for better visual spacing */
-    margin-bottom: 10px; /* Ensures spacing between this and next elements */
-    border: 2px solid #FF6347; /* Sets the border to a red color */
-    display: block; /* Ensures it's displayed as a block for full-width */
-    text-align: center; /* Centers the text within */
-    font-weight: bold; /* Ensures the text is bold */
-    cursor: pointer; /* Indicates it's clickable */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transitions for hover effects */
+    padding: 12px; /* Slightly increased padding */
+    margin-bottom: 12px; /* Increased margin for better separation */
+    border: 2px solid #FF6347; /* Red border */
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Smooth transitions for hover effects */
 }
 
-/* Adjusting for hover and active states */
 .live-track:hover, .live-track.playing {
-    background-color: rgba(255, 99, 71, 0.2); /* Slightly darker transparent red on hover/active for a subtle effect */
+    background-color: rgba(255, 99, 71, 0.2); /* Slightly darker transparent red on hover/active */
     color: white; /* Change text color to white for contrast */
-    border-color: #FF6347; /* Maintain the red border color */
-	box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
+    border-color: #FF6347; /* Maintain red border color */
+    box-shadow: 0 0 8px #fff, 0 0 10px #fff, 0 0 12px #fff; /* Enhanced glow effect */
 }
-
 
 #track-selection {
     width: 100%;
-    max-width: 500px; /* Match other components */
-    margin: 30px auto; /* Increase margin top and center the container */
-    padding: 10px; /* Add some padding for spacing */
-    background-color: #000; /* Slightly lighter background for the container */
-    overflow: hidden; /* Prevents elements from overflowing */
+    max-width: 500px; /* Limit width to match other components */
+    margin: 30px auto; /* Center the container */
+    padding: 15px; /* Add padding for spacing */
+    background-color: #000; /* Consistent background */
+    overflow: hidden; /* Prevent overflow */
+    border-radius: 10px; /* Slightly rounded corners for a smoother look */
+   
 }
+
 
 /* Media Player Controls Styling */
 .jp-controls {
@@ -424,7 +424,7 @@ input:focus, textarea:focus {
     justify-content: center;
     align-items: center;
     /* Adjust the margin to create more space between the controls and the time info */
-    margin-top: 20px; /* This negative margin pulls the controls up towards the header */
+    margin-top: 0px; /* This negative margin pulls the controls up towards the header */
 }
 
 #track-select-popup {
@@ -476,7 +476,7 @@ input:focus, textarea:focus {
         padding: 10px;
         font-size: 3vw;
         min-width: 50px;
-        min-height: 50px;
+        min-height: 35px;
     }
 
     .jp-progress{
@@ -496,7 +496,7 @@ input:focus, textarea:focus {
     }
     .jp-controls {
         /* Adjust the margin-top if necessary for smaller screens */
-        margin-top: 20px; /* Adjust this value as needed */
+        margin-top: 0px; /* Adjust this value as needed */
     }
     .time-info {
         font-size: 3.5vw;
@@ -566,8 +566,14 @@ input:focus, textarea:focus {
 	.jp-controls button, .jp-mute, .jp-unmute {
 		border: 2px solid white; /* Slightly thicker border for better visibility */
 		border-radius: 10px;
-		padding: 4px 6px;
+		padding: 2px 2px; /* Reduced padding on top and bottom for a slimmer look */
+	
+	
 	}
+	    .jp-controls button, .jp-mute, .jp-unmute {
+        padding: 2px 4px; /* Further reduced padding for even slimmer buttons */
+    }
+
 
 	.track-item.playing {
 		background-color: #555;
