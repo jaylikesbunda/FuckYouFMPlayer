@@ -12,6 +12,7 @@ $(document).ready(function() {
               console.log('Service Worker Registration Failed', err);
           });
   }
+
   
 	(function() {
 		// Enhanced Volume and Mute Control Functionality with Smooth Interaction
@@ -426,45 +427,78 @@ $(document).ready(function() {
 
 
 
-	function initializePlayer() {
-		// Throttled function to update the seek bar efficiently
-		var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
-			var percentage = (currentTime / duration) * 100;
-			$(".jp-play-bar").css("width", percentage + "%");
-			$(".current-time").text(formatTime(currentTime));
-			$(".duration").text(formatTime(duration - currentTime));
-		}, 250);
-	
-		// Initialize the jPlayer with the desired settings
-		$("#jquery_jplayer_1").jPlayer({
-			ready: function() {
-				updateHeaderImage(); // Initial header image update
-			},
-			swfPath: "/js",
-			supplied: "mp3",
-			cssSelectorAncestor: "#jp_container_1",
-			useStateClassSkin: true,
-			autoBlur: false,
-			smoothPlayBar: true,
-			keyEnabled: true,
-			remainingDuration: true,
-			toggleDuration: true,
-			timeupdate: function(event) {
-				if (isLiveMode) {
-					$(".current-time, .duration").text('LIVE').show();
-					$(".jp-seek-bar, .jp-play-bar").hide();
-				} else {
-					if (!isSeeking) {
-						throttledUpdateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
-					}
-				}
-			},
-			canplay: function(event) {
-				$("#jquery_jplayer_1").jPlayer("play"); // Automatically start playback
-			}
-		});
-	}
-	
+function initializePlayer() {
+    // Throttled function to update the seek bar efficiently
+    var throttledUpdateSeekBar = _.throttle(function(currentTime, duration) {
+        var percentage = (currentTime / duration) * 100;
+        $(".jp-play-bar").css("width", percentage + "%");
+        $(".current-time").text(formatTime(currentTime));
+        $(".duration").text(formatTime(duration - currentTime));
+    }, 250);
+
+    // Initialize the jPlayer with the desired settings
+    $("#jquery_jplayer_1").jPlayer({
+        ready: function() {
+            updateHeaderImage(); // Initial header image update
+            // Set media source here if needed
+            $(this).jPlayer("setMedia", {
+                title: "Your Media Title",
+                mp3: "path/to/your/media.mp3" // Replace with actual media path
+            });
+        },
+        swfPath: "/js",
+        supplied: "mp3",
+        cssSelectorAncestor: "#jp_container_1",
+        useStateClassSkin: true,
+        autoBlur: false,
+        smoothPlayBar: true,
+        keyEnabled: true,
+        remainingDuration: true,
+        toggleDuration: true,
+        timeupdate: function(event) {
+            if (isLiveMode) {
+                $(".current-time, .duration").text('LIVE').show();
+                $(".jp-seek-bar, .jp-play-bar").hide();
+            } else {
+                if (!isSeeking) {
+                    throttledUpdateSeekBar(event.jPlayer.status.currentTime, event.jPlayer.status.duration);
+                }
+            }
+        },
+        canplay: function(event) {
+            $("#jquery_jplayer_1").jPlayer("play"); // Automatically start playback
+        },
+        ended: function() {
+            // Handle what happens when playback ends
+            console.log("Playback ended.");
+        },
+        play: function() {
+            // Handle play event
+            console.log("Playback started.");
+        },
+        pause: function() {
+            // Handle pause event
+            console.log("Playback paused.");
+        },
+        stop: function() {
+            // Handle stop event
+            console.log("Playback stopped.");
+            $("#jquery_jplayer_1").jPlayer("clearMedia"); // Clear the media to ensure it stops
+        },
+        error: function(event) {
+            console.error("jPlayer error: " + event.jPlayer.error.message);
+        }
+    });
+
+    // Custom stop button functionality
+    $(".jp-stop").click(function() {
+        $("#jquery_jplayer_1").jPlayer("clearMedia"); // Clear the media to ensure it stops
+        $(".jp-play-bar").css("width", "0%"); // Reset the play bar
+        $(".current-time").text("00:00"); // Reset current time display
+        $(".duration").text("00:00"); // Reset duration display
+    });
+}
+
 	
 
 	$('.jp-progress').on('mousedown touchstart', function(e) {
