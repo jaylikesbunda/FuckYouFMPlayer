@@ -131,7 +131,7 @@ $(document).ready(function() {
 		'https://i.ibb.co/B2M8PXk/kinder-dark.webp',
 		// Add more ad image links as needed
 		'https://i.ibb.co/7bnZbXP/Untitled-richerthanyou2.png',
-		'https://i.ibb.co/C6XvZM3/untitled8-min.gif',
+		'https://i.ibb.co/RNMrM70/meet-singles-green-new1.png',
 	];
 
 	var currentAdIndex = 0;
@@ -616,7 +616,7 @@ function initializePlayer() {
 				$('#live-button').addClass('playing');
 				$('.current-time, .duration').text('LIVE');
 				bindLiveEvents(isFirstTrack);
-				updateMediaSession("Live Broadcast", "FY INDUSTRIES");
+				updateMediaSession("Live Broadcast", "FUCKYOU CORP");
 				$("#jquery_jplayer_1").jPlayer("play"); // Ensure playback starts immediately in live mode
 			} else {
 				let uiIndex = index + 1;
@@ -670,10 +670,10 @@ function initializePlayer() {
 		if (index !== undefined && index >= 0 && index < trackList.length) {
 			var track = trackList[index];
 			// Update media session with track details
-			updateMediaSession(track.name, "FY INDUSTRIES");
+			updateMediaSession(track.name, "FUCKYOU CORP");
 		} else {
 			// Default message when no track is selected or available
-			updateMediaSession("No track selected", "FY INDUSTRIES");
+			updateMediaSession("No track selected", "FUCKYOU CORP");
 		}
 	}
 
@@ -699,7 +699,7 @@ function initializePlayer() {
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: trackName || "No track selected",
-				artist: artistName || "FY INDUSTRIES",
+				artist: artistName || "FUCKYOU CORP",
 				artwork: artwork
 			});
 

@@ -213,7 +213,7 @@ input:focus, textarea:focus {
     background: #000;
     color: white;
     border: 2px solid white; /* Slightly thicker border for better visibility */
-    border-radius: 8px; /* Rounded corners for buttons */
+    border-radius: 10px; /* Rounded corners for buttons */
     padding: 10px 10px;
     font-size: 0.75rem;
     transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
@@ -408,9 +408,9 @@ input:focus, textarea:focus {
 
 #track-selection {
     width: 100%;
-    max-width: 500px; /* Limit width to match other components */
-    margin: 30px auto; /* Center the container */
-    padding: 15px; /* Add padding for spacing */
+    max-width: 450px; /* Limit width to match other components */
+    margin: 10px auto; /* Center the container */
+    padding: 10px; /* Add padding for spacing */
     background-color: #000; /* Consistent background */
     overflow: hidden; /* Prevent overflow */
     border-radius: 10px; /* Slightly rounded corners for a smoother look */
@@ -476,7 +476,7 @@ input:focus, textarea:focus {
         padding: 10px;
         font-size: 3vw;
         min-width: 50px;
-        min-height: 35px;
+        min-height: 40px;
     }
 
     .jp-progress{
@@ -524,7 +524,7 @@ input:focus, textarea:focus {
         height: 10px; /* Adjust if needed */
     }
     #track-selection {
-        margin: 20px auto; /* Adjusts margin for smaller screens */
+        margin: 10px auto; /* Adjusts margin for smaller screens */
         padding: 5px;
 		
 		/* Reduces padding for smaller screens */
