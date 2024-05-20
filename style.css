@@ -373,7 +373,9 @@ input:focus, textarea:focus {
     background: #000;
     box-sizing: border-box; /* Ensures padding doesn't affect overall width */
     transition: box-shadow 0.3s, background-color 0.3s, color 0.3s; /* Smooth transitions */
+    border-radius: 10px; /* Adds rounded corners */
 }
+
 
 .track-item.playing {
     background-color: #555;
@@ -615,13 +617,13 @@ input:focus, textarea:focus {
     color: white;
     border: 2px solid white;
     border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 20px; /* Adjust this value as needed to increase spacing */
+    padding: 7px 12px;
+    margin-bottom: 5px; /* Adjust this value as needed to increase spacing */
     display: inline-block; /* Ensure buttons are inline */
 }
 
 #disclaimer-box {
-    margin: 20px auto;
+    margin: 8px auto;
     text-align: center;
     width: 100%;
     max-width: 800px;
@@ -629,7 +631,7 @@ input:focus, textarea:focus {
     box-sizing: border-box;
     background-color: #000;
     transition: border 0.4s ease;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 #disclaimer-content {
@@ -647,7 +649,7 @@ input:focus, textarea:focus {
     display: flex;
     justify-content: center;
     flex-wrap: wrap; /* Allow items to wrap within the container */
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 #other-places-box img, #social-media-box img {
