@@ -56,9 +56,9 @@ a:hover {
 #header-image {
     width: 100%;
     height: auto;
-    aspect-ratio: 3.21 / 1;
+    aspect-ratio: 2.9 / 1;
     object-fit: cover;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 
@@ -212,8 +212,6 @@ input:focus, textarea:focus {
     cursor: pointer;
     background: #000;
     color: white;
-    border: 2px solid white; /* Slightly thicker border for better visibility */
-    border-radius: 10px; /* Rounded corners for buttons */
     padding: 10px 10px;
     font-size: 0.75rem;
     transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s; /* Smooth transitions for colors and shadow */
@@ -234,6 +232,7 @@ input:focus, textarea:focus {
 .jp-controls button:active, .jp-mute:active, .jp-unmute:active {
     transform: translateY(2px); /* Slight move down to simulate pressing */
     box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Less glow to simulate the button being pressed */
+	color: #0f0;
 }
 #disclaimer-box {
     margin: 20px auto;
@@ -252,17 +251,14 @@ input:focus, textarea:focus {
     cursor: pointer;
     background: #000;
     color: white;
-    border: 2px solid white;
-    border-radius: 8px;
-    padding: 10px 15px; /* Reduced padding for a more moderate size */
+    padding: 8px 15px; /* Reduced padding for a more moderate size */
     font-size: 0.75rem;
     transition: background-color 0.3s, color 0.3s, transform 0.1s, box-shadow 0.3s;
     display: block; /* Change to block to stack vertically */
-    width: 80%; /* Adjust width to be a percentage of the container */
+    width: 100%; /* Adjust width to be a percentage of the container */
     max-width: 300px; /* Set a max-width to avoid overly long buttons */
     margin: 10px auto; /* Center the buttons and provide vertical spacing */
     text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 #other-places-toggle:hover, #disclaimer-toggle:hover, #social-media-toggle:hover {
@@ -478,7 +474,7 @@ input:focus, textarea:focus {
         padding: 10px;
         font-size: 3vw;
         min-width: 50px;
-        min-height: 40px;
+        min-height: 34px;
     }
 
     .jp-progress{
@@ -566,14 +562,12 @@ input:focus, textarea:focus {
     }
 	/* Controls Styles with Retro Rounded Buttons and Enhanced Hover Effect */
 	.jp-controls button, .jp-mute, .jp-unmute {
-		border: 2px solid white; /* Slightly thicker border for better visibility */
-		border-radius: 10px;
 		padding: 2px 2px; /* Reduced padding on top and bottom for a slimmer look */
 	
 	
 	}
 	    .jp-controls button, .jp-mute, .jp-unmute {
-        padding: 2px 4px; /* Further reduced padding for even slimmer buttons */
+        padding: 2px 8px; /* Further reduced padding for even slimmer buttons */
     }
 
 
@@ -615,11 +609,9 @@ input:focus, textarea:focus {
     cursor: pointer;
     background: #000;
     color: white;
-    border: 2px solid white;
-    border-radius: 8px;
-    padding: 7px 12px;
+    padding: 9px 12px;
     margin-bottom: 5px; /* Adjust this value as needed to increase spacing */
-    display: inline-block; /* Ensure buttons are inline */
+    display: inline-block; 
 }
 
 #disclaimer-box {
@@ -648,8 +640,7 @@ input:focus, textarea:focus {
 #other-places-box, #social-media-box {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; /* Allow items to wrap within the container */
-    margin-top: 5px;
+    flex-wrap: wrap;
 }
 
 #other-places-box img, #social-media-box img {
