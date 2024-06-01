@@ -1,0 +1,421 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    word-wrap: break-word;
+}
+
+/* Other general styles omitted for brevity */
+/* CSS for Fact Titles */
+.fact-title {
+    text-transform: uppercase; /* Capitalize the text */
+    border: 0.3rem solid #000; /* Add border with specific color */
+    border-radius: 10px; /* Rounded borders */
+    padding: 21px; /* Padding inside the border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 1); /* Add shadow */
+    background-color: #fff; /* Background color to make the text stand out */
+    display: inline-block; /* Inline block to fit the text size */
+    margin-bottom: 15px; /* Space below the title */
+	margin-top: 35px; /* Space below the title */
+}
+
+/* CSS for the switch */
+.switch-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 33px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Other styles omitted for brevity */
+
+/* Navigation Styles */
+nav {
+    background-color: #333;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+	text-align: right;
+}
+
+nav a:hover {
+    color: #6a11cb;
+}
+
+/* Mobile Menu Button */
+nav .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+nav .menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/* Main Content Styles */
+main {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 1200px;
+    margin: 20px auto;
+    margin-top: 140px; /* Adjusted margin for fixed navbar */
+}
+
+section {
+  margin-bottom: -10px;
+  margin-top: auto;
+  padding-top: 82px;
+}
+
+h2 {
+  font-size: 3.2em;
+  margin-bottom: 44px;
+  color: #000;
+}
+
+h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+p, li {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+/* Popup ad styling */
+.popup {
+    position: fixed;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 250px; /* Adjust width as needed */
+    border: 2px solid #000;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none; /* Initially hidden */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.mp-label {
+  font-size: 52px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: block;
+  margin-top: 106px;
+}
+
+.mp-select {
+	padding: 10px;
+	font-size: 16px;
+	border-radius: 22px;
+	border: 1px solid #ccc;
+	margin: 10px 0;
+	width: 100%;
+	max-width: 500px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+	background: linear-gradient(45deg, #ff6b6b, #f06595);
+	color: black;
+	text-align: center;
+}
+
+.email-button {
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	background: linear-gradient(45deg, #ff6b6b, #f06595);
+	border: none;
+	border-radius: 25px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	transition: background 0.3s ease, transform 0.3s ease;
+	margin: 20px 0;
+	cursor: pointer;
+}
+
+.email-button:hover {
+	background: linear-gradient(45deg, #f06595, #ff6b6b);
+	transform: translateY(-2px);
+}
+.popup.show {
+    display: block;
+    opacity: 1;
+}
+
+.popup img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.popup .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #f00;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    pointer-events: none; /* Initially disable button */
+    opacity: 0.0; /* Make button semi-transparent */
+}
+
+.popup .close-btn.enabled {
+    pointer-events: auto; /* Enable button */
+    opacity: 1; /* Make button fully opaque */
+}
+
+@media screen and (max-width: 600px) {
+    .popup {
+        width: 80%; /* Adjust width for mobile view */
+        right: 10%;
+    }
+}
+
+/* Accordion Styles */
+.accordion {
+    background-color: #f8f9fa;
+    color: #000;
+    cursor: pointer;
+    padding: 18px;
+    width: 92%;
+    border: 1px solid #000;
+    border-radius: 32px;
+    text-align: center;
+    outline: none;
+    font-size: 1.2em;
+    transition: background-color 0.4s, box-shadow 0.4s;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+.common-myths {
+	width: 100%;
+	max-width: 700px; /* You can adjust this max-width value */
+	height: auto;
+
+}
+.accordion:hover, .accordion.active {
+    background-color: #6a11cb;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+}
+
+.panel p {
+    text-align: left;
+    padding: 20px;
+    background: #d5d5d5;
+    border-left: 3px solid #6a11cb;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+/* List Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+ul li a {
+    color: #2575fc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+ul li a:hover {
+    color: #6a11cb;
+}
+
+/* Footer Styles */
+footer {
+    background: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin: 0;
+    font-size: 1em;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    nav a {
+        font-size: 1em;
+        margin: 0 10px;
+    }
+
+    main {
+        padding: 20px 10px;
+        margin-top: 120px; /* Adjusted margin for fixed navbar on smaller screens */
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    p, li {
+        font-size: 1em;
+    }
+
+    .accordion {
+        font-size: 1em;
+        padding: 15px;
+    }
+
+    .panel p {
+        padding: 15px;
+    }
+
+    footer p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    nav .nav-links.active {
+        display: flex;
+    }
+
+    nav .menu-toggle {
+        display: flex;
+		margin: 5px 0;
+    }
+
+    nav a {
+        margin: 7px 0;
+    }
+}
