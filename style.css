@@ -324,6 +324,19 @@ input:focus, textarea:focus {
     max-height: 200px; /* Maximum height for ad images */
 }
 
+/* Seek bar within the progress bar */
+.jp-seek-bar {
+    background-color: transparent; /* Ensure it's transparent so the play bar shows through */
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  /* Actual play bar showing the current progress */
+.jp-play-bar {
+    background-color: #fff;
+    height: 100%;
+    border-radius: 5px;
+  }
 /* Container for the progress bar */
 .jp-progress {
   background-color: #333;
@@ -340,13 +353,14 @@ input:focus, textarea:focus {
   transition: box-shadow 0.3s ease-in-out;
   border-radius: 5px;
 }
+/* Container for the volume bar */
 .jp-volume-bar {
     background-color: #333;
     cursor: pointer;
     height: 10px;
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Align children to the start for correct volume representation */
     align-items: center;
     margin: 20px 0;
     width: 100%;
@@ -355,31 +369,16 @@ input:focus, textarea:focus {
     transition: box-shadow 0.3s ease-in-out;
     border-radius: 5px;
   }
-/* Seek bar within the progress bar */
-.jp-seek-bar {
-  background-color: transparent; /* Ensure it's transparent so the play bar shows through */
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-/* Actual play bar showing the current progress */
-.jp-play-bar {
-  background-color: #fff;
-  height: 100%;
-  border-radius: 5px;
-}
-
-/* Hover effect for the progress bar */
-.jp-volume-bar:hover, .jp-progress:hover {
-  box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
-}
-
-/* Cursor styles for various elements */
-.jp-seek-bar, .jp-volume-bar, .jp-seek-bar *, .jp-volume-bar *, button, .volume-label, .current-time, .duration, .jp-play-bar, .jp-progress {
-  cursor: url('https://i.ibb.co/dL8Jq8t/mac-cursor-32x.png'), pointer !important;
-}
-
+  
+  /* Actual play bar showing the current volume */
+  .jp-volume-bar-value {
+    background-color: #fff;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease; /* Smooth transition for width */
+    width: 80%; /* This should be dynamically set based on the current volume */
+  }
+  
 /* Hover effect to enhance visibility */
 .jp-volume-bar:hover, .jp-progress:hover {
     box-shadow: 0 0 6px #fff, 0 0 9px #fff, 0 0 12px #fff;
