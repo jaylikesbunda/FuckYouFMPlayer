@@ -113,7 +113,7 @@ $(document).ready(function() {
     },
     { 
       name: "FuckYou FM 3",
-      file: "https://audio.jukehost.co.uk/lgVlPbpiTlU827PuI4LTpAeTfnVHqUVq",
+      file: "https://api.plwcse.top/api/get/889c6a63bb21354119d4965fc5e6ff3e",
       image: "https://i.ibb.co/0MkWY9n/ezgif-com-webp-maker-1.webp"
     },
 	{ 
