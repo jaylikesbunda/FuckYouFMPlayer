@@ -103,22 +103,22 @@ $(document).ready(function() {
   var trackList = [
     { 
       name: "FuckYou FM",
-      file: "https://audio.jukehost.co.uk/XxP4grpUn8HB5tHZBLMdqFEUCbRIyCW7",
+      file: "https://audio.jukehost.co.uk/mEFyQnxiyDTJi2kKL7oAMTqKoFiq95lk",
       image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
     },
     { 
       name: "FuckYou FM 2",
-      file: "https://audio.jukehost.co.uk/Zrm4Ic3XvCtsfbVzsKI1e7NmhAsorKJk",
+      file: "https://audio.jukehost.co.uk/adFr3u1BFk02bpSDAWr1qcOP7mrGWxuG",
       image: "https://i.ibb.co/s35zvp3/ezgif-com-webp-maker.webp"
     },
     { 
       name: "FuckYou FM 3",
-      file: "https://api.plwcse.top/api/get/889c6a63bb21354119d4965fc5e6ff3e",
+      file: "https://audio.jukehost.co.uk/MB8fl9u92gZM5Or5IFqOn7ghXY8F5RF1",
       image: "https://i.ibb.co/0MkWY9n/ezgif-com-webp-maker-1.webp"
     },
 	{ 
       name: "FuckYou FM: UTOPIA ",
-      file: "https://audio.jukehost.co.uk/333kiycgY0x15kAmMujTkbtelYUEntpA",
+      file: "https://audio.jukehost.co.uk/HEXj0hyMJU2J6CxeIoV9EdsCfys4dtX0",
       image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
     },
   ];
