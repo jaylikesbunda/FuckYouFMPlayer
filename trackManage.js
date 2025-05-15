@@ -22,6 +22,11 @@ var trackList = [
     file: "https://audio.jukehost.co.uk/333kiycgY0x15kAmMujTkbtelYUEntpA",
     image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
   },
+  {
+    name: "FuckYou FM Special Edition",
+    file: "https://audio.jukehost.co.uk/y0nHPPoczaNFoZloa6kSA0w5IXc1JkuS",
+    image: "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"
+  }
 ];
 // trackManage.js
 
@@ -36,10 +41,6 @@ function initializePlayer() {
     $("#jquery_jplayer_1").jPlayer({
         ready: function() {
             updateHeaderImage();
-            $(this).jPlayer("setMedia", {
-                title: "Your Media Title",
-                mp3: "path/to/your/media.mp3"
-            });
         },
         swfPath: "/js",
         supplied: "mp3",
@@ -98,6 +99,7 @@ function formatTime(seconds) {
 // Other functions related to track management can be added here
 
 function populateTrackList() {
+  console.log("Tracklist used by populateTrackList:", JSON.stringify(trackList, null, 2));
   const trackSelection = $('#track-selection');
 
   $('<a>', {
@@ -129,14 +131,10 @@ function populateTrackList() {
   });
 }
 
-
-
 function updateHeaderImage(trackImage) {
     var defaultImage = "https://i.ibb.co/QXb2VRT/ezgif-com-optiwebp-1.webp"; // Default GIF when no track is selected
     $("#header-image").attr("src", trackImage || defaultImage);
 }
-
-
 
 function activateLiveMode() {
   isLiveMode = true;
